@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    Goddess Anime Cards :: User Settings
+  </title>
+
+  <style>
+    .disabled {
+      cursor: not-allowed;
+    }
+
+    .cardErrorMessage {
+      /* Make it center */
+      margin: 0 auto;
+      /* Make it color white */
+      color: white;
+      /* Bring it down a little */
+      margin-top: 100px;
+      /* Make it bigger */
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include ("../templates/header.ejs") %>
+  <link rel="stylesheet" href="/assets/css/utils.css">
+    <!-- main content -->
+    <main class="main">
+      <div class="container">
+        <div class="row row--grid">
+          <!-- breadcrumb -->
+          <div class="col-12">
+            <ul class="breadcrumb">
+              <li class="breadcrumb__item"><a href="/">Home</a></li>
+              <li class="breadcrumb__item">
+                <a href="/user/<%= auth.discordId %>">
+                  <%= auth.username %>
+                </a>
+              </li>
+              <li class="breadcrumb__item breadcrumb__item--active">
+                Settings
+              </li>
+            </ul>
+          </div>
+          <!-- end breadcrumb -->
+
+          <!-- title -->
+          <div class="col-12 col-xl-9">
+            <!-- title -->
+            <div class="main__title main__title--create">
+              <h2>
+                User Settings
+              </h2>
+            </div>
+            <!-- end title -->
+
+            <!-- create form -->
+            <span class="text-center cardErrorMessage" id="errorMessage" style="color:red; display: none;">{{text}}</span>
+            <form action="#" class="sign__form sign__form--create" method="post">
+              <div class="row">
+
+                <div class="col-12">
+                  <div class="sign__group">
+                    <label class="sign__label" for="about">About Me</label>
+                    <input id="about" type="text" name="about" class="sign__input" placeholder="<%= auth.about %>">
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="sign__group">
+                    <label class="sign__label" for="banner">Banner</label>
+                    <input id="banner" type="text" name="banner" class="sign__input"
+                      placeholder="<%= auth.banner.split("/").pop() %>">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="sign__group">
+                    <label class="sign__label" for="pronouns">Pronouns</label>
+                    <input id="pronouns" type="text" name="pronouns" class="sign__input"
+                      placeholder="<%= auth.pronouns %>">
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <button class="sign__btn" type="button" id="profile_details_button">Save</button>
+                </div>
+              </div>
+            </form>
+            <!-- end create form -->
+          </div>
+        </div>
+        <div id="error-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
+            <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/></svg></button>
+            
+            <h4 class="sign__title">
+                Error
+            </h4>
+            
+            <p class="modal__text" id="error-text">
+                [[error]]]
+            </p>
+        </div>
+
+        <div id="changed-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
+            <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/></svg></button>
+            
+            <h4 class="sign__title">
+                We have changed your settings!
+            </h4>
+            
+            <p class="modal__text" id="success-text">
+                We have changed your settings!
+
+                Click the button below to close this popup and go back to your profile.
+            </p>
+
+            <button class="sign__btn" type="button" onclick="closePopup()">Close</button>
+        </div>
+      </div>
+    </main>
+
+
+
+
+
+
+    <!-- end main content -->
+    <%- include ("../templates/footer.ejs") %>
+
+
+      <script>
+
+        function closePopup() {
+            $.magnificPopup.close();
+
+            window.location.href = "/user/<%= auth.discordId %>";
+        }
+
+        function showPopup(pop_name) {
+            $.magnificPopup.open({
+                items: {
+                    src: `#${pop_name}`
+                },
+                type: 'inline',
+                preloader: false,
+                modal: true,
+                callbacks: {
+                    open: function () {
+                        console.log("Opened");
+                    }
+                }
+            });
+        }
+        const profileDetailsButton = document.getElementById('profile_details_button');
+        const errortext = document.getElementById('error-text');
+        const successText = document.getElementById('success-text');
+
+        const successTemplate = `
+                    <ul class="star-list">
+                        <li>{changed}</li>
+                    </ul>`;
+
+
+        profileDetailsButton.addEventListener('click', () => {
+          const about = document.getElementById('about').value;
+          const banner = document.getElementById('banner').value;
+          const pronouns = document.getElementById('pronouns').value;
+        
+          const gData = {
+            about: about,
+            banner: banner,
+            pronouns: pronouns,
+          };
+      
+          fetch('/api/settings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `<%= token %>`,
+            },
+            body: JSON.stringify(gData),
+          })
+            .then((res) => {
+                res.json().then((data) => {
+                  if (data.error) {
+                    errortext.innerHTML = data.error;
+                    showPopup('error-popup');
+                  } else {
+                    showPopup('changed-popup');
+                  }
+                });
+            })
+        });
+
+      </script>
+
+</body>
+
+</html>

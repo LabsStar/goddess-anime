@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Goddess Anime Cards :: Activity
+    </title>
+
+    <style>
+        .no-activity {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            padding: 20px;
+            /* Center it in the middle */
+            margin: 0 auto;
+
+        }
+
+        .activity-img {
+            /* Do not allow the user to get the image */
+            -webkit-user-drag: none;
+
+            /* For Firefox */
+            -moz-user-select: none;
+
+            /* For Chrome, Opera and Safari */
+            -webkit-user-select: none;
+
+            /* When the user clicks the image, prevent it from being highlighted */
+            -webkit-touch-callout: none;
+
+            user-select: none;
+        }
+    </style>
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Goddess Anime Cards">
+    <meta property="og:title" content="Goddess Anime Cards :: Activity">
+    <meta property="og:description" content="Look at all the activity you've done!">
+    <meta property="og:image" content="https://media.tenor.com/_XDO6eLcugYAAAAC/ishiguro-dance.gif">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="Goddess Anime Cards">
+    <meta name="twitter:creator" content="Goddess Anime Cards">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+</head>
+
+<body>
+    <%- include ("../templates/header.ejs") %>
+
+        <!-- main content -->
+        <main class="main">
+            <div class="container">
+                <div class="row row--grid">
+                    <!-- breadcrumb -->
+                    <div class="col-12">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb__item"><a href="/">Home</a></li>
+                            <li class="breadcrumb__item breadcrumb__item--active">Activity</li>
+                        </ul>
+                    </div>
+                    <!-- end breadcrumb -->
+
+                    <!-- title -->
+                    <div class="col-12">
+                        <div class="main__title main__title--page">
+                            <h1>Activity</h1>
+                        </div>
+                    </div>
+                    <!-- end title -->
+                </div>
+
+                <div class="row">
+
+
+                    <!-- content -->
+                    <div class="col-12 col-xl-9 order-xl-1">
+                        <div class="row row--grid">
+
+
+
+                            <% if (userData.activity !=0) { %>
+                                <% userData.activity.forEach(item=> { %>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="activity">
+                                            <div class="activity__cover">
+                                                <img class="activity-img" src="<%= item.image %>" alt="Activity Image" title="Activity Image">
+                                            </div>
+                                            <div class="activity__content">
+                                                <h3 class="activity__title"><a href="<%= item.url %>"><%- item.title
+                                                            %></a></h3>
+                                                <p class="activity__text">
+                                                    <%- item.description %>
+                                                </p>
+                                                <span class="activity__time">
+                                                    <p>
+                                                        <%= item.time %>
+                                                    </p>
+
+                                                    <% item.buttons.forEach(button=> { %>
+                                                        <a href="<%= button.cb %>" class="activity__time"
+                                                            role="button"><%- button.label %></a>
+
+                                                        <% }) %>
+                                                </span>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <img src="/assets/images/5666.png" class="no-activity" alt="No Activity"
+                                                title="No Activity" height="200px" width="200px">
+                                            <% } %>
+
+
+
+                        </div>
+                    </div>
+                    <!-- end content -->
+                </div>
+            </div>
+        </main>
+        <!-- end main content -->
+
+
+        <script>
+
+
+        </script>
+
+
+
+        <!-- end main content -->
+        <%- include ("../templates/footer.ejs") %>
+
+
+</body>
+
+</html>

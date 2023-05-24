@@ -1,0 +1,1 @@
+console.warn("The file [...tree...]/assets/js/slide.js is deprecated and will be removed in a future version.");

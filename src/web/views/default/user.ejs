@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    Goddess Anime Cards :: User
+  </title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Goddess Anime">
+  <meta property="og:title" content="Check out <%= user.username %> on Goddess Anime!">
+  <meta property="og:description" content="This User Has Not Made an account yet.">
+  <meta property="og:image" content="https://media.tenor.com/GMqRZrRN3fsAAAAC/zoom-oh-no.gif">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="Goddess Anime Cards">
+  <meta name="twitter:creator" content="Goddess Anime Cards">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+</head>
+<style>
+   .cardErrorMessage {
+        /* Make it center */
+        margin: 0 auto;
+        /* Make it color white */
+        color: white;
+        /* Bring it down a little */
+        margin-top: 100px;
+        /* Make it bigger */
+        font-size: 30px;
+    }
+</style>
+
+
+<body>
+  <%- include ("../templates/header.ejs") %> 
+  <link rel="stylesheet" href="/assets/css/card.css">
+
+  <!-- main content -->
+  <main class="main">
+    <div class="main__user" data-bg="https://i2.wp.com/codemyui.com/wp-content/uploads/2017/02/android-marshmallow-boot-animation.gif"></div>
+    <div class="container">
+      <div class="row row--grid">
+        <div class="col-12 col-xl-3">
+          <div class="author author--page">
+            <div class="author__meta">
+                  <a href="#" class="author__avatar author__avatar" id="<%= user.id %>-avatar">
+                    <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %><%= user.avatar.startsWith("a_") ? ".gif" : ".png" %>" alt="avatar">
+                
+              </a>
+
+
+              <h1 class="author__name"><%= user.username %></h1>
+              <p class="author__text">
+                This User Has Not Made an account yet.
+              </p>
+             
+              <div class="author__wrap">
+                <div class="author__followers">
+                  <p>$0</p>
+                  <span>Balance</span>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-9">
+          <div class="profile">
+           <!-- tabs nav -->
+           <ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active " data-toggle="tab" href="#claimed" role="tab" aria-controls="claimed" aria-selected="false">Claimed Cards</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#badges" role="tab" aria-controls="badges" aria-selected="false">Badges</a>
+            </li>
+        </ul>
+        <!-- end tabs nav -->
+          </div>
+
+
+<!-- content tabs -->
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="tab-1" role="tabpanel">
+    <div class="row row--grid">
+        <span class="text-center cardErrorMessage">This user has no favorite cards.</span>
+    </div>
+</div>
+    <div class="tab-pane fade" id="tab-2" role="tabpanel">
+        <div class="row row--grid">
+            <span class="text-center cardErrorMessage">This user has not claimed any cards yet.</span>
+        </div>
+
+        <!-- end collapse -->
+    </div>
+
+
+<div class="tab-pane fade" id="tab-3" role="tabpanel">
+    <div class="row row--grid">
+        
+      <span class="text-center cardErrorMessage">
+                   We have removed this for right now. :(
+         </span>
+
+    </div>
+  </div>
+
+
+         
+
+        </div>
+        <!-- end content tabs -->
+      </div>
+    </div>
+    </div>
+  </main>
+  <!-- end main content -->
+
+  <%- include ("../templates/footer.ejs") %>
+
+
+
+  
+
+  
+</div>
+
+
+</body>
+
+</html>

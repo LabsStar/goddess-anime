@@ -1,0 +1,10 @@
+.card:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+
+/* Off hover */
+.card {
+  transform: scale(1);
+  transition: 0.3s;
+}

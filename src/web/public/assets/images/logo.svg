@@ -1,0 +1,15 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 77 36" width="77" height="36">
+	<title>procsLogo</title>
+	<defs>
+		<image  width="77" height="36" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE0AAAAkAQMAAAD2PCVhAAAAAXNSR0IB2cksfwAAAANQTFRFAAAAp3o92gAAAAF0Uk5TAEDm2GYAAAAOSURBVHicY2AYBYMFAAABjAABAScgngAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+		tspan { white-space:pre } 
+		.t0 { font-size: 19px;fill: #ffffff;font-weight: 400;font-family: "DejaVuSans", "DejaVu Sans" } 
+	</style>
+	<use id="Background" href="#img1" x="0" y="0"/>
+	<text id="Goddess Anime" style="transform: matrix(1,0,0,1,4,25)" >
+		<tspan x="0" y="0" class="t0">U</tspan><tspan  y="0" class="t0">n</tspan><tspan  y="0" class="t0">f</tspan><tspan  y="0" class="t0">a</tspan><tspan  y="0" class="t0">t</tspan><tspan  y="0" class="t0">a</tspan><tspan  y="0" class="t0">l
+</tspan>
+	</text>
+</svg>

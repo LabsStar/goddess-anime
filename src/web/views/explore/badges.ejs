@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    Goddess Anime badges :: Explore - Badges
+  </title>
+  <meta property="og:type" content="website">
+<meta property="og:site_name" content="Goddess Anime badges">
+<meta property="og:title" content="Goddess Anime badges :: Badges">
+<meta property="og:description" content="Look at all the badges on Goddess Anime badges!">
+<meta property="og:image" content="https://media.tenor.com/GxlCsjtB094AAAAC/thumbs-up-yes.gif">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="Goddess Anime badges">
+<meta name="twitter:creator" content="Goddess Anime badges">
+<meta name="twitter:card" content="summary_large_image">
+<meta content="#43B581" data-react-helmet="true" name="theme-color" />
+
+</head>
+
+
+
+<body>
+  <%- include ("../templates/header.ejs") %>
+  <link rel="stylesheet" href="/assets/css/card.css">
+
+  <!-- main content -->
+  <main class="main">
+    <div class="container">
+        <div class="row row--grid">
+            <!-- breadcrumb -->
+            <div class="col-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb__item"><a href="/">Home</a></li>
+                    <li class="breadcrumb__item">Explore</li>
+                    <li class="breadcrumb__item breadcrumb__item--active">Badges</li>
+
+                </ul>
+            </div>
+            <!-- end breadcrumb -->
+
+            <!-- title -->
+            <div class="col-12">
+                <div class="main__title main__title--page">
+                    <h1>Explore Our Collection Of Badges</h1>
+                </div>
+            </div>
+            <!-- end title -->
+
+            <!-- filter -->
+            <div class="col-12">
+              <div class="main__filter">
+                  <form class="main__filter-search">
+                      <input type="text" placeholder="Search for a badge..." id="searchInput">
+                      <button type="button" id="searchButton"><svg xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24">
+                              <path
+                                  d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z" />
+                          </svg></button>
+                  </form>
+              </div>
+          </div>
+          <!-- end filter -->
+           
+        </div>
+
+        <div class="row row--grid">
+            <% badges.forEach(badge => { %>
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 badges">
+                    <!-- card -->
+                    <div class="card">
+                        <a href="<%= badge.image %>" class="card__cover">
+                            <img src="<%= badge.image %>" alt="">
+                        </a>
+                        <h3 class="card__title"><a href="#"><%= badge.name %></a></h3>
+                        <div class="card__info">
+                            <div class="card__price">
+                                <p><%= badge.description %></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+            <% }) %>
+
+        </div>
+        <!-- paginator -->
+        <div class="row row--grid">
+            <div class="col-12">
+                <div class="paginator">
+                    <span class="paginator__pages"><%= badges.length %> <%= badges.length == 1 ? "Badge" : "Badges" %></span>
+                </div>
+            </div>
+        </div>
+        <!-- end paginator -->
+    </div>
+  </main>
+  <!-- end main content -->
+
+  <%- include ("../templates/footer.ejs") %>
+
+
+  <script>
+    document.addEventListener('keydown', function(event) {
+      if (event.key == "u") {
+        document.querySelector('.paginator').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    });
+  </script>
+
+<script>
+  const search = document.querySelector('.main__filter-search');
+  const searchButton = search.querySelector('button');
+
+
+  let badges = document.querySelectorAll('.badges');
+
+  searchButton.addEventListener('click', () => {
+
+      const searchValue = search.querySelector('input').value.toLowerCase();
+
+
+      if (searchValue.length < 1) {
+          badges.forEach(card => {
+              card.style.display = 'block';
+          });
+      }
+
+
+          badges.forEach(card => {
+
+              if (card.querySelector('.card__title').innerText.toLowerCase().match(search.querySelector('input').value.toLowerCase())) {
+
+                  card.style.transition = 'all .10s ease-in-out';
+                  card.style.display = 'block';
+
+
+              } else {
+                  card.style.display = 'none';
+              }
+
+          })
+  });
+
+
+  search.querySelector('input').addEventListener('keyup', (e) => {
+      searchButton.click();
+      if (e.target.value.length > 0) console.log(`User searched for ${e.target.value}`);
+  });
+
+  search.addEventListener('submit', (e) => {
+      e.preventDefault();
+  });
+
+
+  document.addEventListener('keyup', (e) => {
+      if (e.key === '/') {
+          search.querySelector('input').focus();
+      }
+      else if (e.key === 'Escape') {
+          if (search.querySelector('input').matches(':focus')) {
+              return;
+          } else {
+              const modalTemplate = `
+              <div id="help-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
+                <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/></svg></button>
+                
+                <h4 class="sign__title">
+                  <span>Keyboard Shortcuts</span>
+                </h4>
+                
+                <p class="modal__text">
+                    
+                    <ul class="number-list">
+                        <li>Search - <span class="key">/</span> or <span class="key">?</span></li>
+                        <li>Help Menu - <span class="key">ESC</span></li>
+                    </ul>
+                </p>
+            </div>
+              `;
+
+              // Append modal to body
+              document.body.insertAdjacentHTML('beforeend', modalTemplate);
+
+              $.magnificPopup.open({
+                items: {
+                    src: '#help-popup'
+                },
+                type: 'inline',
+                preloader: false,
+                modal: true,
+                callbacks: {
+                    open: function() {
+                        document.querySelector('.modal__close').addEventListener('click', () => {
+                            $.magnificPopup.close();
+                        });
+                    }
+                }
+            });
+
+
+          }
+      }
+  });
+
+
+</script>
+
+
+
+  </div>
+
+
+  
+
+
+
+
+  </div>
+
+
+</body>
+
+</html>
