@@ -149,8 +149,6 @@ function webServer(client: Client) {
 
         const marketPromise = Promise.all(marketMap);
 
-        console.log(await marketPromise);
-
 
         res.render("home", {
             discord: client,
@@ -472,6 +470,48 @@ function webServer(client: Client) {
 
 
 
+    });
+
+
+    app.get("/shop/:id", async (req, res) => {
+        const id = req?.params?.id?.toString();
+
+        if (!id) return generateErrorMessage(req, res, "No shop ID provided");
+
+        if (checkIfBsonId(id) === false) return generateErrorMessage(req, res, "Invalid shop ID provided");
+
+        const shopDoc = await shop.findOne({ _id: id });
+
+        if (!shopDoc) return generateErrorMessage(req, res, "Invalid shop ID provided");
+
+        const card = await cards.findOne({ _id: shopDoc.card });
+
+        if (!card) return generateErrorMessage(req, res, "Invalid shop ID provided");
+
+        const seller = await user.findOne({ discordId: shopDoc.seller });
+
+        if (!seller) return generateErrorMessage(req, res, "Invalid shop ID provided");
+
+        const data = {
+            id: shopDoc._id,
+            price: shopDoc.price,
+            card: {
+                id: card._id,
+                name: card.name,
+                description: card.description,
+                image: card.image,
+                tagLine: card.tagLine,
+            },
+            seller: seller,
+        };
+
+        console.log(data);
+
+        return res.render("shop/card", {
+            discord: client,
+            auth: await auth(req, res, null),
+            data: data,
+        });
     });
 
 

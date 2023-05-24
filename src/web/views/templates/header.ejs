@@ -145,7 +145,7 @@
           </div>
 
           <div class="header__action header__action--signin">
-            <a class="header__action-btn header__action-btn--signin open-modal" href="#modal-login">
+            <a class="header__action-btn header__action-btn--signin" href="/login" id="login_link">
               <i class="bi bi-box-arrow-in-right" style="fill: #bdbdbd; color: #bdbdbd; width: 24px; height: 24px;"></i>
               <span>Sign in</span>
             </a>
@@ -266,12 +266,4 @@
     $.magnificPopup.close();
     localStorage.setItem('neverShowPopup', true);
   }
-
-  $(document).ready(function () {
-    $('.open-modal').on('click', function () {
-      if ($.magnificPopup.instance.isOpen) {
-        window.location.href = '/login';
-      }
-    });
-  });
 </script>

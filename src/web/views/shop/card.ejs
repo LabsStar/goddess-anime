@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    Goddess Anime Cards :: Marketplace
+  </title>
+    <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Unfatal">
+  <meta property="og:title" content="<%= data.card.name %> is for sale!">
+  <meta property="og:description" content="The card is for sale for <%= data.card.price %> coins.">
+  <meta property="og:image" content="<%= data.card.image %>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="Goddess Anime Cards">
+  <meta name="twitter:creator" content="Goddess Anime Cards">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+
+</head>
+
+
+
+<body>
+  <%- include ("../templates/header.ejs") %>
+  <link rel="stylesheet" href="/assets/css/card.css">
+
+  <!-- main content -->
+  <main class="main">
+    <div class="container">
+      <div class="row row--grid">
+        <!-- breadcrumb -->
+        <div class="col-12">
+          <ul class="breadcrumb">
+            <li class="breadcrumb__item"><a href="/">Home</a></li>
+            <li class="breadcrumb__item">Shop</li>
+            <li class="breadcrumb__item breadcrumb__item--active" id="crumb_name"><%= data.card.name %></li>
+          </ul>
+        </div>
+        <!-- end breadcrumb -->
+
+        <!-- title -->
+        <div class="col-12">
+          <div class="main__title main__title--page">
+            <h1>
+              <%= data.card.name %>
+            </h1>
+          </div>
+        </div>
+        <!-- end title -->
+      </div>
+
+      <div class="row">
+        <!-- content -->
+        <div class="col-12 col-xl-8">
+          <div class="asset__item">
+            <a class="asset__img" href="<%= data.card.image %>">
+              <img src="<%= data.card.image %>" alt="Card" width="512" height="512" id="card">
+            </a>
+          </div>
+        </div>
+        <!-- end content -->
+
+        <!-- sidebar -->
+        <div class="col-12 col-xl-4">
+          <div class="asset__info">
+            <div class="asset__desc">
+              <h2>
+                Description
+              </h2>
+              <p>
+                <%= data.card.description %>
+              </p>
+            </div>
+
+            <ul class="asset__users">
+              <li>
+                <span>Seller</span>
+                  <div class="asset__user <%= data.seller.verified ? "asset__user--verified" : "" %>">
+               
+                  <img src="<%= data.seller.avatar %>" alt="Seller" title="<%= data.seller.username %>" width="50" height="50">
+                  <a href="/user/<%= data.seller.discordId %>" id="sell_user"><%= data.seller.username %></a>
+                </div>
+              </li>
+            </ul><!-- tabs -->
+
+
+            <div class="asset__wrap">
+
+
+              <div class="asset__price">
+                <img src="https://cdn.discordapp.com/attachments/1093655688431013909/1110627110298583130/1824_coin.png" alt="Coin" title="Coin">
+                <p>Price</p>
+                <span><%= data.price %></span>
+              </div>
+            </div>
+
+            <!-- actions -->
+            <div class="asset__btns">
+                <a href="#buy-card" class="asset__btn asset__btn--full asset__btn--clr open-modal">Buy</a>
+            </div>
+            <!-- end actions -->
+                </div>
+            </div>
+            <!-- end sidebar -->
+
+
+
+          </div>
+
+
+        </div>
+  </main>
+  <!-- end main content -->
+
+  <%- include ("../templates/footer.ejs") %>
+
+  <script>
+    const cardImg = document.getElementById('card');
+
+
+    // When cardImg is hovered over, scale the image
+    cardImg.addEventListener('mousemove', () => {
+      // perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)
+
+      // Get the mouse position
+      const mousePos = {
+        x: event.clientX,
+        y: event.clientY
+      }
+
+      // Get the card position
+      const cardPos = {
+        x: cardImg.getBoundingClientRect().left,
+        y: cardImg.getBoundingClientRect().top
+      }
+
+      // Get the mouse position relative to the card
+      const mousePosRelative = {
+        x: mousePos.x - cardPos.x,
+        y: mousePos.y - cardPos.y
+      }
+
+      cardImg.style.transform = 'perspective(600px) rotateX(' + (mousePosRelative.y - 256) / 256 * 10 + 'deg) rotateY(' + (mousePosRelative.x - 256) / 256 * -10 + 'deg) scale(1.1)';
+
+
+    });
+
+    // When cardImg is not hovered over, reset the image
+    cardImg.addEventListener('mouseleave', () => {
+      // Add a ease-in transition
+      cardImg.style.transition = 'transform 0.5s ease-in-out';
+      cardImg.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
+
+      // Remove the transition after 0.5s
+      setTimeout(() => {
+        cardImg.style.transition = 'none';
+      }, 500);
+    });
+  </script>
+
+
+  
+
+
+
+
+  </div>
+
+
+  
+
+
+
+
+  </div>
+
+
+</body>
+
+</html>
