@@ -8,6 +8,7 @@ import config from "../config";
 import system from "../models/system";
 import cron from "node-cron";
 import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
+import shop from "../models/shop";
 
 module.exports = {
   name: "ready",
@@ -81,5 +82,25 @@ module.exports = {
     });
 
     await cardService.start();
+
+
+    cron.schedule("*/1 * * * *", async () => {
+      const cards = await shop.find({});
+
+      if (!cards) return;
+
+      const expiredCards = cards.filter((card) => {
+        return card.expires.getTime() < Date.now();
+      });
+
+      if (expiredCards.length > 0) {
+        for (const card of expiredCards) {
+          await shop.deleteOne({ _id: card._id });
+        }
+      } else {
+        return;
+      }
+    });
+
   },
 };
