@@ -95,4 +95,4 @@ To view the developer documentation, please visit [https://docs.goddessanime.com
 
 It contains information about the API, the database, and the bot itself and how you can use it.
 
-If you have any questions, please join our [Discord Server](https://discord.goddessanime.com) and ask in the #「📚」faq channel.
+If you have any questions, please join our [Discord Server](https://discord.goddessanime.com) and ask in the [#「📚」faq](https://discord.com/channels/1110574418733838489/1110577436879507546) channel.
