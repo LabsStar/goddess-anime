@@ -3,7 +3,7 @@
 
 
 # Goddess Anime
-![Discord](https://img.shields.io/discord/1062574590406172692?color=grey&label=%20&logo=discord&logoColor=red&style=for-the-badge) ![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/LabsStar/goddess-anime/master?color=light-green&label=Version&logo=canonical&style=for-the-badge) ![GitHub top language](https://img.shields.io/github/languages/top/LabsStar/goddess-anime?style=for-the-badge)
+![Discord](https://img.shields.io/discord/1110574418733838489?color=grey&label=%20&logo=discord&logoColor=red&style=for-the-badge) ![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/LabsStar/goddess-anime/master?color=light-green&label=Version&logo=canonical&style=for-the-badge) ![GitHub top language](https://img.shields.io/github/languages/top/LabsStar/goddess-anime?style=for-the-badge)
 
 Goddess Anime Cards is a website / bot where you can trade anime cards with other users. You can also buy cards from the shop and sell your own cards to other users.
 
@@ -19,7 +19,7 @@ Goddess Anime Cards is a website / bot where you can trade anime cards with othe
     <li><a href="run-locally">Run Locally</a></li>
     <li><a href="support">Support</a></li>
     <li><a href="roadmap">Roadmap</a></li>
-    <li><a href="other">Other</a></li>
+    <li><a href="developer-documentation">Developer Documentation</a></li>
   </ul>
 </details>
 
@@ -90,6 +90,9 @@ For support, email [admin@hyperstar.cloud](mailto:admin@hyperstar.cloud) or join
 
 - Better Api (Add in the interface)
 
-## Other
+## Developer Documentation
+To view the developer documentation, please visit [https://docs.goddessanime.com](https://docs.goddessanime.com). This is a work in progress and will be updated as we go along.
 
-[Api ReadMe](./Api.md)
+It contains information about the API, the database, and the bot itself and how you can use it.
+
+If you have any questions, please join our [Discord Server](https://discord.goddessanime.com) and ask in the #「📚」faq channel.
