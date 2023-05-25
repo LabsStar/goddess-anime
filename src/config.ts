@@ -16,6 +16,10 @@ const config = {
         name: "catch",
         id: "1109951147898318889",
     },
+    help: {
+        name: "help",
+        id: "1109866175413878876",
+    },
     TIME_TO_DELETE: 60000,
     SHOP_EXPIRE_DAYS: 3,
     RATE_LIMIT_WINDOW: 60000,

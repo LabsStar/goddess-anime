@@ -1,4 +1,4 @@
-import { Client, MessageEmbed, MessageActionRow, MessageButton, Message, Channel, TextChannel } from "discord.js";
+import { Client, MessageEmbed, MessageActionRow, MessageButton, Message, Channel, TextChannel, Guild } from "discord.js";
 import CustomClient from "../interfaces/CustomClient";
 import config from "../config";
 import axios from "axios";
