@@ -24,7 +24,7 @@ config();
 const commandFolders = readdirSync(join(__dirname, "commands", 'Interaction'));
 
 for (const folder of commandFolders) {
-    const commandFiles = readdirSync(join(__dirname, "commands", 'Interaction', folder)).filter(file => file.endsWith(".ts"));
+    const commandFiles = readdirSync(join(__dirname, "commands", 'Interaction', folder)).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
     for (const file of commandFiles) {
         const command = require(join(__dirname, "commands", 'Interaction', folder, file));
         client.commands.set(command.command.data.name, command.command);
@@ -34,7 +34,7 @@ for (const folder of commandFolders) {
 const messageCommandFolders = readdirSync(join(__dirname, "commands", 'Message'));
 
 for (const folder of messageCommandFolders) {
-    const commandFiles = readdirSync(join(__dirname, "commands", 'Message', folder)).filter(file => file.endsWith(".ts"));
+    const commandFiles = readdirSync(join(__dirname, "commands", 'Message', folder)).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
     for (const file of commandFiles) {
         const command = require(join(__dirname, "commands", 'Message', folder, file));
         client.messageCommands.set(command.command.name, command.command);
@@ -42,7 +42,7 @@ for (const folder of messageCommandFolders) {
 }
 
 
-const eventFiles = readdirSync(join(__dirname, "events")).filter(file => file.endsWith(".ts"));
+const eventFiles = readdirSync(join(__dirname, "events")).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
 
 for (const file of eventFiles) {
     const event = require(join(__dirname, "events", file));

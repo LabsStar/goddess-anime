@@ -2,13 +2,14 @@
   "name": "goddess-anime",
   "version": "1.0.0",
   "description": "Goddess Anime Cards is a bot where you can trade anime cards with other users. You can also buy cards from the shop and sell your own cards to other users.",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "dev": "ts-node src/index.ts",
     "build": "tsc",
     "deploy-commands": "ts-node src/deploy-commands.ts",
-    "deploy": "git add . && git commit -m \"Deploy\" && git push heroku main && heroku logs --tail"
+    "deploy": "git add . && git commit -m \"Deploy\" && git push heroku main && heroku logs --tail",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
