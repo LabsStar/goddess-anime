@@ -12,14 +12,14 @@ Goddess Anime Cards is a website / bot where you can trade anime cards with othe
 <details>
   <summary>Table of Contents</summary>
   <ul>
-    <li><a href="enviroment-variables">Environment Variables</a></li>
-    <li><a href="authors">Authors</a></li>
-    <li><a href="features">Features</a></li>
-    <li><a href="feedback">Feedback</a></li>
-    <li><a href="run-locally">Run Locally</a></li>
-    <li><a href="support">Support</a></li>
-    <li><a href="roadmap">Roadmap</a></li>
-    <li><a href="developer-documentation">Developer Documentation</a></li>
+    <li><a href="#enviroment-variables">Environment Variables</a></li>
+    <li><a href="#authors">Authors</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#feedback">Feedback</a></li>
+    <li><a href="#run-locally">Run Locally</a></li>
+    <li><a href="#support">Support</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#developer-documentation">Developer Documentation</a></li>
   </ul>
 </details>
 
