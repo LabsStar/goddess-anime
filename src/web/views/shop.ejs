@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    Goddess Anime Cards :: Shop
+  </title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Goddess Anime Cards">
+  <meta property="og:title" content="Goddess Anime Cards :: Shop">
+  <meta property="og:description" content="View all the cards currently for sale on the marketplace.">
+  <meta property="og:image" content="https://media.tenor.com/GxlCsjtB094AAAAC/thumbs-up-yes.gif">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="Goddess Anime Cards">
+  <meta name="twitter:creator" content="Goddess Anime Cards">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+
+</head>
+
+
+
+<body>
+  <%- include ("./templates/header.ejs") %>
+    <link rel="stylesheet" href="/assets/css/card.css">
+
+    <!-- main content -->
+    <main class="main">
+      <div class="container">
+        <div class="row row--grid">
+          <!-- breadcrumb -->
+          <div class="col-12">
+            <ul class="breadcrumb">
+              <li class="breadcrumb__item"><a href="/">Home</a></li>
+              <li class="breadcrumb__item breadcrumb__item--active">Shop</li>
+            </ul>
+          </div>
+          <!-- end breadcrumb -->
+
+          <!-- title -->
+          <div class="col-12">
+            <div class="main__title main__title--page">
+              <h1>Shop</h1>
+            </div>
+          </div>
+          <!-- end title -->
+
+
+        </div>
+
+        <div class="row row--grid">
+          <% shop.forEach(shop => { %>
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+              <!-- card -->
+              <div class="card">
+                <a href="<%= shop.card.image %>" class="card__cover">
+                  <img src="<%= shop.card.image %>" alt="<%= shop.card.name %>" title="<%= shop.card.name %>">
+                </a>
+                <h3 class="card__title"><a href="/shop/<%= shop.id %>">
+                    <%= shop.card.name %>
+                  </a></h3>
+                  <div class="card__user">
+										<img src="<%= shop.seller.avatar %>" alt="<%= shop.seller.username %>" id="sell_author" title="<%= shop.seller.username %>">
+										<a href="/user/<%= shop.seller.discordId %>" id="sell_user"><%= shop.seller.username %></a>
+									</div>
+                <div class="card__info">
+                  <div class="card__price">
+                    <img
+                      src="https://cdn.discordapp.com/attachments/1093655688431013909/1110627110298583130/1824_coin.png"
+                      alt="Coin" title="Coin">
+                    <p>Price</p>
+                    <span>
+                      <%= shop.price %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- end card -->
+            </div>
+            <% }) %>
+
+        </div>
+        <!-- paginator -->
+        <div class="row row--grid">
+          <div class="col-12">
+            <div class="paginator">
+              <span class="paginator__pages">
+                <%= shop.length %> <%= shop.length > 1 ? 'cards' : 'card' %>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- end paginator -->
+      </div>
+    </main>
+    <!-- end main content -->
+
+    <%- include ("./templates/footer.ejs") %>
+
+
+      <script>
+        document.addEventListener('keydown', function (event) {
+          if (event.key == "u") {
+            document.querySelector('.paginator').scrollIntoView({
+              behavior: 'smooth'
+            });
+          }
+        });
+      </script>
+
+
+
+      </div>
+
+
+
+
+
+
+
+      </div>
+
+
+</body>
+
+</html>

@@ -20,6 +20,7 @@ import config from '../config';
 import system from '../models/system';
 import shop from '../models/shop';
 import { Document } from 'mongoose';
+import ErrorCodes from '../utils/errorcodes';
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
 
@@ -91,9 +92,9 @@ async function getUserCards(id: string, split: boolean) {
     }
 }
 
-function generateErrorMessage(req: any, res: any, error: string) {
+function generateErrorMessage(req: any, res: any, error: string, code?: ErrorCodes) {
     const encodedError = Buffer.from(error).toString('base64');
-    return res.redirect(`/?error=${encodedError}`);
+    return res.redirect(`/?error=${encodedError}&code=${code || ErrorCodes.DEFAULT_ERROR}`);
 }
 
 
@@ -104,6 +105,7 @@ function webServer(client: Client) {
     app.get('/', async (req, res) => {
 
         const error = req.query.error;
+        const code = req.query.code;
 
         const staffRole = await client.guilds.cache.get(process.env.SUPPORT_SERVER as string)?.roles.cache.get(process.env.STAFF_ROLE as string);
 
@@ -156,6 +158,7 @@ function webServer(client: Client) {
             auth: await auth(req, res, null),
             market: await marketPromise,
             error: error ? error : null,
+            code: code ? code : null,
             staff: slicedStaff,
         })
     });
@@ -473,45 +476,75 @@ function webServer(client: Client) {
     });
 
 
-    app.get("/shop/:id", async (req, res) => {
-        const id = req?.params?.id?.toString();
+    app.get("/shop/:id?", async (req, res) => {
+        const { id } = req?.params;
 
-        if (!id) return generateErrorMessage(req, res, "No shop ID provided");
+        const shopItems = await shop.find({}).sort({ price: -1 });
 
-        if (checkIfBsonId(id) === false) return generateErrorMessage(req, res, "Invalid shop ID provided");
+        const getShopData = async (id: string) => {
+            // Only show the item in shopItems that matches the id provided
+            const shopItem = shopItems.filter((item) => item._id.toString() === id);
 
-        const shopDoc = await shop.findOne({ _id: id });
+            if (shopItem.length === 0) return null;
 
-        if (!shopDoc) return generateErrorMessage(req, res, "Invalid shop ID provided");
+            const card = await cards.findOne({ _id: shopItem[0].card });
 
-        const card = await cards.findOne({ _id: shopDoc.card });
+            const userDoc = await user.findOne({ discordId: shopItem[0].seller });
 
-        if (!card) return generateErrorMessage(req, res, "Invalid shop ID provided");
+            const mappedShopItem = {
+                id: shopItem[0]._id,
+                price: shopItem[0].price,
+                card: card,
+                seller: userDoc,
+            };
 
-        const seller = await user.findOne({ discordId: shopDoc.seller });
-
-        if (!seller) return generateErrorMessage(req, res, "Invalid shop ID provided");
-
-        const data = {
-            id: shopDoc._id,
-            price: shopDoc.price,
-            card: {
-                id: card._id,
-                name: card.name,
-                description: card.description,
-                image: card.image,
-                tagLine: card.tagLine,
-            },
-            seller: seller,
+            return mappedShopItem;
         };
 
-        console.log(data);
+        const shopMap = shopItems.map(async (item) => {
+            const card = await cards.findOne({ _id: item.card });
+            const userDoc = await user.findOne({ discordId: item.seller });
+
+            const marketItem = {
+                id: item._id,
+                price: item.price,
+                card: card,
+                seller: userDoc,
+            };
+
+            return marketItem;
+        });
+
+        const shopPromise = Promise.all(shopMap);
+
+
+
+        if (!id) return res.render("shop", {
+            discord: client,
+            auth: await auth(req, res, null),
+            shop: await shopPromise,
+        });
+
+        if (checkIfBsonId(id) === false) return generateErrorMessage(req, res, "Invalid shop ID provided", ErrorCodes.INVALID_SHOP_ID);
+
+        const isInDb = await shop.findOne({ _id: id });
+
+        if (!isInDb) return generateErrorMessage(req, res, "Sorry, that item does not exist", ErrorCodes.SHOP_NOT_FOUND);
 
         return res.render("shop/card", {
             discord: client,
             auth: await auth(req, res, null),
-            data: data,
+            shop: await getShopData(id),
         });
+
+    });
+
+    app.get("/discord", async (req, res) => {
+        res.redirect("https://discord.gg/u9cudxBVTG");
+    });
+
+    app.get("/invite", async (req, res) => {
+        res.redirect(`https://discord.com/oauth2/authorize?client_id=${client.user?.id}&scope=bot&permissions=8%20applications.commands`);
     });
 
 

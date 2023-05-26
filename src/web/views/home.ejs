@@ -221,13 +221,15 @@
 						</svg></button>
 
 					<h4 class="sign__title">
-						Error <span class="sign__span">!</span>
+						Error <span class="sign__span"><a href="https://docs.goddessanime.com/docs/error-codes/<%= code %>" target="_blank"><%= code %></a></span>
 					</h4>
 
 					<p class="modal__text">
 						<% if (!error.includes(" ")) { %>
 						<%= Buffer.from(error, 'base64').toString('ascii') %>
 					<% } %>
+
+					<button class="sign__btn" type="button" onclick="window.location.href = 'https://docs.goddessanime.com/docs/error-codes/<%= code %>'">View Error Code</button>
 				</p>
 			</div>
 		<% } %>
