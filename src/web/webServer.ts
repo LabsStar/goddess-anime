@@ -548,6 +548,10 @@ function webServer(client: Client) {
     });
 
 
+    app.get("*", async (req, res) => {
+        return generateErrorMessage(req, res, `Page not found`, ErrorCodes.NO_PAGE);
+    });
+
 
     app.listen(process.env.PORT || 80, () => {
         logger.info(`Goddess Anime is listening at http://localhost:${process.env.PORT || 80}`);
