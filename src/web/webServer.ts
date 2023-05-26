@@ -126,7 +126,7 @@ function webServer(client: Client) {
         });
 
 
-        if (!staff) return generateErrorMessage(req, res, "An error occurred");
+        if (!staff) return generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
 
 
         const staffPromise = Promise.all(staff);
@@ -164,7 +164,7 @@ function webServer(client: Client) {
     });
 
     app.get("/login", (req, res) => {
-        if (req.cookies.token) return generateErrorMessage(req, res, "You are already logged in.");
+        if (req.cookies.token) return generateErrorMessage(req, res, "You are already logged in.", ErrorCodes.LOGGED_IN);
         res.redirect(`${process.env.redirectUri}`);
     });
 
@@ -257,11 +257,11 @@ function webServer(client: Client) {
                 })
                 .catch((err: any) => {
                     console.log(err);
-                    generateErrorMessage(req, res, "An error occurred");
+                    generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
                 });
         } catch (error) {
             console.log(error);
-            generateErrorMessage(req, res, "An error occurred");
+            generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
         }
     });
 
@@ -279,13 +279,13 @@ function webServer(client: Client) {
         const uId = req?.params?.id?.toString();
         const newUser = req?.query?.new?.toString() || false;
 
-        if (!uId) return generateErrorMessage(req, res, "No user ID provided");
+        if (!uId) return generateErrorMessage(req, res, "No user ID provided", ErrorCodes.INVALID_USER_ID);
 
         try {
             await client.users.fetch(uId);
         }
         catch (err) {
-            return generateErrorMessage(req, res, "Invalid user ID provided");
+            return generateErrorMessage(req, res, "Invalid user ID provided", ErrorCodes.INVALID_USER_ID);
         }
 
         const isInDb = await user.findOne({ discordId: uId });
@@ -311,13 +311,13 @@ function webServer(client: Client) {
     app.get("/user/:id/cards", async (req, res) => {
         const uId = req?.params?.id?.toString();
 
-        if (!uId) return generateErrorMessage(req, res, "No user ID provided");
+        if (!uId) return generateErrorMessage(req, res, "No user ID provided", ErrorCodes.INVALID_USER_ID);
 
         try {
             await client.users.fetch(uId);
         }
         catch (err) {
-            return generateErrorMessage(req, res, "Invalid user ID provided");
+            return generateErrorMessage(req, res, "Invalid user ID provided", ErrorCodes.INVALID_USER_ID);
         }
 
         const isInDb = await user.findOne({ discordId: uId });
@@ -389,7 +389,7 @@ function webServer(client: Client) {
     app.get("/explore/:content", async (req, res) => {
         const content = req?.params?.content?.toString();
 
-        if (!content) return generateErrorMessage(req, res, "No content provided");
+        if (!content) return generateErrorMessage(req, res, "No content provided", ErrorCodes.NO_CONTENT);
 
         switch (content) {
             case "cards":
@@ -405,7 +405,7 @@ function webServer(client: Client) {
                     badges: await badges.find({}),
                 });
             default:
-                return generateErrorMessage(req, res, "Invalid content provided");
+                return generateErrorMessage(req, res, "Invalid content provided", ErrorCodes.INVALID_CONTENT);
         }
     });
 
@@ -413,15 +413,15 @@ function webServer(client: Client) {
     app.get("/card/:id", async (req, res) => {
         const cId = req?.params?.id?.toString();
 
-        if (!cId) return generateErrorMessage(req, res, "No card ID provided");
+        if (!cId) return generateErrorMessage(req, res, "No card ID provided", ErrorCodes.INVALID_CARD_ID);
 
-        if (cId.length !== 24) return generateErrorMessage(req, res, "Invalid card ID provided");
+        if (cId.length !== 24) return generateErrorMessage(req, res, "Invalid card ID provided", ErrorCodes.INVALID_CARD_ID);
 
-        if (checkIfBsonId(cId) === false) return generateErrorMessage(req, res, "Invalid card ID provided");
+        if (checkIfBsonId(cId) === false) return generateErrorMessage(req, res, "Invalid card ID provided", ErrorCodes.INVALID_CARD_ID);
 
         const isInDb = await cards.findOne({ _id: cId });
 
-        if (!isInDb) return generateErrorMessage(req, res, "Invalid card ID provided");
+        if (!isInDb) return generateErrorMessage(req, res, "Card not found", ErrorCodes.CARD_NOT_FOUND);
 
         return res.render("market/card", {
             discord: client,
