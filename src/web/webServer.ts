@@ -174,7 +174,7 @@ function webServer(client: Client) {
         data_1.append('client_id', client.user?.id.toString()!);
         data_1.append('client_secret', process.env.clientSecret!);
         data_1.append('grant_type', 'authorization_code');
-        data_1.append('redirect_uri', `http://localhost/oauth`);
+        data_1.append('redirect_uri', `${process.env.oauthRedirectUri}`);
         data_1.append('scope', 'identify, email, connections');
         data_1.append('code', req?.query?.code?.toString()!);
 
