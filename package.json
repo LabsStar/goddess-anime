@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/src/deploy-commands.js && node dist/src/index.js",
     "dev": "ts-node src/index.ts",
-    "build": "tsc",
+    "build": "tsc && cp -R src/web/views dist && cp -R src/web/public dist",
     "deploy-commands": "ts-node src/deploy-commands.ts",
     "deploy": "git add . && git commit -m \"Deploy\" && git push heroku main && heroku logs --tail",
     "postinstall": "npm run build"
