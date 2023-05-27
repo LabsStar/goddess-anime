@@ -10,15 +10,15 @@ const config = {
     prefix: "/",
     link: {
         name: "link",
-        id: "1109876060524380260",
+        id: "1109876060524380260" || process.env.LINK_ID,
     },
     catch: {
         name: "catch",
-        id: "1109951147898318889",
+        id: "1109951147898318889" || process.env.CATCH_ID,
     },
     help: {
         name: "help",
-        id: "1109866175413878876",
+        id: "1109866175413878876" || process.env.HELP_ID,
     },
     TIME_TO_DELETE: 60000,
     SHOP_EXPIRE_DAYS: 3,
@@ -27,9 +27,9 @@ const config = {
     VERSION: version,
     allow_developer_applications: true,
     DEVELOPER_PREFIX: "dev/",
-    COMMUNITY_UPDATES_CHANNEL: "1110434165670821948",
+    COMMUNITY_UPDATES_CHANNEL: "1110434165670821948" || process.env.COMMUNITY_UPDATES_CHANNEL,
     IS_IN_DEV_MODE: true,
-    BOT_ID: "1108925960952217610",
+    BOT_ID: process.env.BOT_ID,
     COINS: {
         unverified: 40,
         verified: 100,
