@@ -4,7 +4,7 @@
   "description": "Goddess Anime Cards is a bot where you can trade anime cards with other users. You can also buy cards from the shop and sell your own cards to other users.",
   "main": "dist/src/index.js",
   "scripts": {
-    "start": "node dist/src/index.js",
+    "start": "node dist/src/deploy-commands.js && node dist/src/index.js",
     "dev": "ts-node src/index.ts",
     "build": "tsc",
     "deploy-commands": "ts-node src/deploy-commands.ts",

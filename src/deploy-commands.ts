@@ -12,7 +12,7 @@ const commands: Array<Command['data']> = []; // Specify the type of the commands
 const commandFolders = readdirSync(join(__dirname, 'commands', 'Interaction'));
 
 for (const folder of commandFolders) {
-  const commandFiles = readdirSync(join(__dirname, 'commands', 'Interaction', folder)).filter((file) => file.endsWith('.ts'));
+  const commandFiles = readdirSync(join(__dirname, 'commands', 'Interaction', folder)).filter((file) => file.endsWith('.ts') || file.endsWith('.js')); // Get all the files in the folder
   for (const file of commandFiles) {
     const { command } = require(join(__dirname, 'commands', 'Interaction', folder, file)); // Destructure the command object
     commands.push(command.data.toJSON());
@@ -24,7 +24,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.token as string || 
 const args = process.argv.slice(2);
 
 const clientID = args[0] || '1108925960952217610';
-const guildID = args[1] || '1102922824580091924';
+const guildID = args[1];
 
 if (!clientID) throw new Error('Please provide a client ID');
 if (!guildID) {
