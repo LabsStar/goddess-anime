@@ -97,7 +97,7 @@ export const command: MessageCommand = {
 
         const embed = new MessageEmbed()
             .setTitle(`Downtime Scheduled`)
-            .setAuthor({ name: `Downtime Planned by ${message.author.tag}`, iconURL: message.author.displayAvatarURL({ dynamic: true }), url: `https://users.goddessanime.com/${message.author.id}` })
+            .setAuthor({ name: `Downtime Planned by ${message.author.tag}`, iconURL: message.author.displayAvatarURL({ dynamic: true }), url: `https://user.goddessanime.com/${message.author.id}` })
             .setURL(`https://status.goddessanime.com`)
             .setThumbnail(`https://cdn.discordapp.com/avatars/${client.user?.id}/${client.user?.avatar}.${client.user?.avatar?.startsWith('a_') ? 'gif' : 'png'}?size=1024`)
             .setDescription(`${downtimeMessage}\n \nThis downtime will begin <t:${convertTimeToRaw(systemDoc?.expectedDowntime)}:R>`)
