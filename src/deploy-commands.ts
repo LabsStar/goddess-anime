@@ -7,6 +7,12 @@ import Command from './interfaces/Command'; // Import the Command interface
 
 config();
 
+const getClientId = () => {
+  const clientID = process.env.CLIENT_ID;
+  if (!clientID) return "1108925960952217610";
+  return clientID;
+};
+
 const commands: Array<Command['data']> = []; // Specify the type of the commands array
 
 const commandFolders = readdirSync(join(__dirname, 'commands', 'Interaction'));
@@ -23,7 +29,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.token as string || 
 
 const args = process.argv.slice(2);
 
-const clientID = args[0] || '1108925960952217610';
+const clientID = args[0] || getClientId(); // Get the client ID from the .env file
 const guildID = args[1];
 
 if (!clientID) throw new Error('Please provide a client ID');
