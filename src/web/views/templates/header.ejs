@@ -229,35 +229,22 @@
   };
 
   const ping = () => {
-    fetch('/api/ping', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      })
-      .then(res => {
-        if (res.error === true) {
-          if (!localStorage.getItem('neverShowPopup')) {
-            openModal();
-          }
-          else {
-            console.error('Server is down');
-          }
-        } else {
-          if ($.magnificPopup.instance.isOpen) {
-            $.magnificPopup.close();
-          }
-        }
-      })
-      .catch(err => {
+    // Check if the user has internet connection
+    // If not, show popup
+
+    const internet = navigator.onLine;
+
+    if (!internet) {
+      if (!localStorage.getItem('neverShowPopup')) {
         openModal();
-      });
+      }
+      else {
+        console.warn('User has disabled [Lost Connection] popup');
+      }
+    }
+    else {
+      console.log('User has internet connection');
+    }
   };
 
   setInterval(ping, 10000);
