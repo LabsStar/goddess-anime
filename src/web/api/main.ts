@@ -273,7 +273,7 @@ router.post("/settings", async (req: Request, res: Response) => {
 
 router.get("/open-source", async (req: Request, res: Response) => {
     try {
-        const github_repo = "https://api.github.com/repos/goddess-anime";
+        const github_repo = "https://api.github.com/repos/LabsStar/goddess-anime";
 
         const [github_repo_data, commits, issues, github_repo_contributors] = await Promise.all([
             axios.get(github_repo).then(res => res.data),
