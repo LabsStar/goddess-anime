@@ -151,8 +151,6 @@ function webServer(client: Client) {
 
         const marketPromise = Promise.all(marketMap);
 
-        console.log(slicedStaff);
-
         res.render("home", {
             discord: client,
             news: await news.find({}),
