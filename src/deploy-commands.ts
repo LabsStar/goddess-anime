@@ -8,7 +8,7 @@ import Command from './interfaces/Command'; // Import the Command interface
 config();
 
 const getClientId = () => {
-  const clientID = process.env.CLIENT_ID;
+  const clientID = process.env.BOT_ID;
   if (!clientID) return "1108925960952217610";
   return clientID;
 };
