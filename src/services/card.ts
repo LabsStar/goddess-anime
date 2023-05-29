@@ -8,8 +8,8 @@ import config from "../config";
 const TIME_TO_DELETE = 60000; // 1 minute
 
 const cronJobs = { // Cron jobs for spawning and despawning cards (in cron format) [ https://crontab.guru/ ]
-    spawn: "*/15 * * * *", 
-    despawn: "* * * * * * */10" 
+    spawn: "*/15 * * * *",
+    despawn: "* * * * * * */10"
 }
 
 const createCaptcha = (length: number) => {
@@ -51,25 +51,32 @@ class CardService {
             .setFooter({ text: captcha, iconURL: this.client.user?.displayAvatarURL() || "" })
             .setColor("RANDOM");
 
-        spawnChannel.send({ embeds: [embed] });
+        try {
+            spawnChannel.send({ embeds: [embed] });
 
-        logger.info(`Spawned card ${card.name} in ${spawnChannel.guild.name} (${spawnChannel.guild.id})`);
+            logger.info(`Spawned card ${card.name} in ${spawnChannel.guild.name} (${spawnChannel.guild.id})`);
 
-        guild.findOne({ guildId: spawnChannel.guild.id }).then((doc) => {
-            if (!doc) return;
+            guild.findOne({ guildId: spawnChannel.guild.id }).then((doc) => {
+                if (!doc) return;
 
-            doc.currentCards.push({
-                id: card._id,
-                captcha: captcha,
-                time_until_despawn: TIME_TO_DELETE,
-                time_spawned: Date.now(),
-                refrence_id: spawnChannel.id
+                doc.currentCards.push({
+                    id: card._id,
+                    captcha: captcha,
+                    time_until_despawn: TIME_TO_DELETE,
+                    time_spawned: Date.now(),
+                    refrence_id: spawnChannel.id
+                });
+
+                doc.save();
+
+                logger.info(`Added card ${card.name} to ${spawnChannel.guild.name} (${spawnChannel.guild.id})`);
             });
+        }
 
-            doc.save();
-
-            logger.info(`Added card ${card.name} to ${spawnChannel.guild.name} (${spawnChannel.guild.id})`);
-        });
+        catch (err) {
+            console.error(`Failed to spawn card in ${spawnChannel.guild.name} (${spawnChannel.guild.id})\n${err}`);
+        }
+        
     }
 
     async despawnCard() {
@@ -77,7 +84,7 @@ class CardService {
 
         guilds.forEach((guild) => {
             if (guild.currentCards.length === 0) return;
-            
+
 
             guild.currentCards.forEach(async (card, index) => {
                 if (card.time_until_despawn <= 0) {
