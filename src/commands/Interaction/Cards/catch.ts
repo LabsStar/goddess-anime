@@ -25,7 +25,7 @@ export const command: Command = {
 
     const captcha = interaction.options.getString('captcha')!;
 
-    const userDB = await user.findOne({ id: interaction.user.id });
+    const userDB = await user.findOne({ discordId: interaction.user.id });
 
     if (!userDB) return;
 
