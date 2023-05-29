@@ -512,6 +512,10 @@ function webServer(client: Client) {
     app.get("/application/:id?", async (req, res) => {
         const aId = req?.params?.id?.toString();
 
+        if (!req.cookies.token) return res.redirect("/login");
+
+        if (config.allow_developer_applications === false) return res.redirect(req.headers.referer || "/");
+
         if (!aId) return generateErrorMessage(req, res, "No application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
 
         if (aId.length !== 10) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
