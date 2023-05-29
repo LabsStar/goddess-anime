@@ -37,10 +37,10 @@ export const command: Command = {
         ephemeral: true
       });
 
-    const card = guildDB.currentCards.find((card) => card.captcha === captcha);
+    const card = guildDB.currentCards.find((card) => card.captcha.toLowerCase() === captcha.toLowerCase());
 
     if (!card)
-      return interaction.reply({ content: `There is no card with the captcha \`${captcha}\`!`, ephemeral: true });
+      return interaction.reply({ content: `There is no card with the captcha \`${captcha.toLowerCase()}\`!`, ephemeral: true });
 
     const cardDB = await cards.findOne({ _id: card.id });
 
