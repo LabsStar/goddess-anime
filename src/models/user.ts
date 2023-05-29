@@ -174,6 +174,12 @@ const UserSchema = new Schema({
         },
     },
 
+    applications: {
+        type: Array,
+        required: false,
+        default: [],
+    },
+
 }, { timestamps: true });
 
 export default mongoose.model("User", UserSchema);

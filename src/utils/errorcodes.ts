@@ -11,6 +11,8 @@ enum ErrorCodes {
     UNKOWN_ERROR = 447,
     LOGGED_IN = 356,
     NO_PAGE = 559,
+    INVALID_APPLICATION_ID = 18,
+    NOT_LOGGED_IN = 357,
 }
 
 export default ErrorCodes;

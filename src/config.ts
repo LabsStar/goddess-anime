@@ -23,7 +23,7 @@ const config = {
     TIME_TO_DELETE: 60000,
     SHOP_EXPIRE_DAYS: 3,
     RATE_LIMIT_WINDOW: 60000,
-    NO_RATE_LIMIT: ["hylia.dev", "hyperstar.cloud", "nanoha.live"],
+    NO_RATE_LIMIT: ["hylia.dev", "hyperstar.cloud", "nanoha.live", "goddessanime", "localhost"],
     VERSION: version,
     allow_developer_applications: true,
     DEVELOPER_PREFIX: "dev/",

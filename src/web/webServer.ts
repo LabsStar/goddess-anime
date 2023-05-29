@@ -21,6 +21,7 @@ import system from '../models/system';
 import shop from '../models/shop';
 import { Document } from 'mongoose';
 import ErrorCodes from '../utils/errorcodes';
+import developer_applications from '../models/developer_applications';
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
 
@@ -436,44 +437,6 @@ function webServer(client: Client) {
         });
     });
 
-    app.get("/application/:id?", async (req, res) => {
-
-        if (!config.allow_developer_applications) return generateErrorMessage(req, res, "Developer applications are currently closed");
-        const aId = req?.params?.id?.toString();
-
-        if (!aId) return generateErrorMessage(req, res, "No application ID provided");
-
-        // if (aId.length !== 24) return generateErrorMessage(req, res, "Invalid application ID provided");
-
-        // if (checkIfBsonId(aId) === false) return generateErrorMessage(req, res, "Invalid application ID provided");
-
-        const app = {
-            _id: aId,
-            name: "Test Application",
-            description: "This is a test application",
-            icon: "https://cdn.discordapp.com/attachments/1093655688431013909/1110395230332649513/download.png",
-            owner: await user.findOne({ discordId: "1102808167760531457" }).then((user) => { return user; }),
-            permissions: ["APPLY_SETTINGS", "MANAGE_APPLICATIONS"],
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        };
-
-        if (!app) return generateErrorMessage(req, res, "Invalid application ID provided");
-
-        console.log(app);
-
-        if (!await auth(req, res, app)) return generateErrorMessage(req, res, "You are not logged in");
-
-        return res.render("application", {
-            discord: client,
-            auth: await auth(req, res, null),
-            application: app,
-        });
-
-
-
-    });
-
 
     app.get("/shop/:id?", async (req, res) => {
         const { id } = req?.params;
@@ -544,6 +507,29 @@ function webServer(client: Client) {
 
     app.get("/invite", async (req, res) => {
         res.redirect(`https://discord.com/oauth2/authorize?client_id=${client.user?.id}&scope=bot&permissions=8%20applications.commands`);
+    });
+
+    app.get("/application/:id?", async (req, res) => {
+        const aId = req?.params?.id?.toString();
+
+        if (!aId) return generateErrorMessage(req, res, "No application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+
+        if (aId.length !== 10) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+
+        const app = await developer_applications.findOne({ client_id: aId });
+
+        console.log(app);
+
+        if (!app) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+
+        if (!await auth(req, res, app)) return generateErrorMessage(req, res, "You are not logged in", ErrorCodes.NOT_LOGGED_IN);
+
+        return res.render("applications/authorize", {
+            discord: client,
+            auth: await auth(req, res, null),
+            application: app,
+        });
+
     });
 
 
