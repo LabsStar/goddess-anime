@@ -41,25 +41,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(async (req, res, next) => {
-    const systemDoc = await system.findOne({});
-
-    if (!systemDoc) return generateErrorMessage(req, res, "An error occurred");
-
-    if (IS_IN_DEV_MODE) return next();
-    if (systemDoc.isDown) {
-        return res.render("down", {
-            auth: await auth(req, res, null),
-            message: systemDoc.downtimeMessage,
-            time: systemDoc.expectedDowntime,
-        });
-    }
-    else {
-        next();
-    }
-});
-
-
 function checkIfBsonId(id: string) {
 
     const bjsonRegex = /^[0-9a-fA-F]{24}$/;
@@ -96,15 +77,20 @@ async function getUserCards(id: string, split: boolean) {
     }
 }
 
-function generateErrorMessage(req: any, res: any, error: string, code?: ErrorCodes) {
-    const encodedError = Buffer.from(error).toString('base64');
-    return res.redirect(`/?error=${encodedError}&code=${code || ErrorCodes.DEFAULT_ERROR}`);
-}
-
 
 
 
 function webServer(client: Client) {
+
+    async function generateErrorMessage(req: any, res: any, error: string, code?: ErrorCodes) {
+        return res.render("error", {
+            discord: client,
+            auth: await auth(req, res, null),
+            error: error,
+            code: code || ErrorCodes.DEFAULT_ERROR,
+        });
+    
+    }
 
     app.get('/', async (req, res) => {
 
@@ -130,7 +116,7 @@ function webServer(client: Client) {
         });
 
 
-        if (!staff) return generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
+        if (!staff) return await generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
 
 
         const staffPromise = Promise.all(staff);
@@ -166,8 +152,8 @@ function webServer(client: Client) {
         })
     });
 
-    app.get("/login", (req, res) => {
-        if (req.cookies.token) return generateErrorMessage(req, res, "You are already logged in.", ErrorCodes.LOGGED_IN);
+    app.get("/login", async (req, res) => {
+        if (req.cookies.token) return await generateErrorMessage(req, res, "You are already logged in.", ErrorCodes.LOGGED_IN);
         res.redirect(`${process.env.redirectUri}`);
     });
 
@@ -258,13 +244,13 @@ function webServer(client: Client) {
 
                     });
                 })
-                .catch((err: any) => {
+                .catch(async (err: any) => {
                     console.log(err);
-                    generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
+                    await generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
                 });
         } catch (error) {
             console.log(error);
-            generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
+            await generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
         }
     });
 
@@ -282,13 +268,13 @@ function webServer(client: Client) {
         const uId = req?.params?.id?.toString();
         const newUser = req?.query?.new?.toString() || false;
 
-        if (!uId) return generateErrorMessage(req, res, "No user ID provided", ErrorCodes.INVALID_USER_ID);
+        if (!uId) return await generateErrorMessage(req, res, "No user ID provided", ErrorCodes.INVALID_USER_ID);
 
         try {
             await client.users.fetch(uId);
         }
         catch (err) {
-            return generateErrorMessage(req, res, "Invalid user ID provided", ErrorCodes.INVALID_USER_ID);
+            return await generateErrorMessage(req, res, "Invalid user ID provided", ErrorCodes.INVALID_USER_ID);
         }
 
         const isInDb = await user.findOne({ discordId: uId });
@@ -314,13 +300,13 @@ function webServer(client: Client) {
     app.get("/user/:id/cards", async (req, res) => {
         const uId = req?.params?.id?.toString();
 
-        if (!uId) return generateErrorMessage(req, res, "No user ID provided", ErrorCodes.INVALID_USER_ID);
+        if (!uId) return await generateErrorMessage(req, res, "No user ID provided", ErrorCodes.INVALID_USER_ID);
 
         try {
             await client.users.fetch(uId);
         }
         catch (err) {
-            return generateErrorMessage(req, res, "Invalid user ID provided", ErrorCodes.INVALID_USER_ID);
+            return await generateErrorMessage(req, res, "Invalid user ID provided", ErrorCodes.INVALID_USER_ID);
         }
 
         const isInDb = await user.findOne({ discordId: uId });
@@ -392,7 +378,7 @@ function webServer(client: Client) {
     app.get("/explore/:content", async (req, res) => {
         const content = req?.params?.content?.toString();
 
-        if (!content) return generateErrorMessage(req, res, "No content provided", ErrorCodes.NO_CONTENT);
+        if (!content) return await generateErrorMessage(req, res, "No content provided", ErrorCodes.NO_CONTENT);
 
         switch (content) {
             case "cards":
@@ -408,7 +394,7 @@ function webServer(client: Client) {
                     badges: await badges.find({}),
                 });
             default:
-                return generateErrorMessage(req, res, "Invalid content provided", ErrorCodes.INVALID_CONTENT);
+                return await generateErrorMessage(req, res, "Invalid content provided", ErrorCodes.INVALID_CONTENT);
         }
     });
 
@@ -416,15 +402,15 @@ function webServer(client: Client) {
     app.get("/card/:id", async (req, res) => {
         const cId = req?.params?.id?.toString();
 
-        if (!cId) return generateErrorMessage(req, res, "No card ID provided", ErrorCodes.INVALID_CARD_ID);
+        if (!cId) return await generateErrorMessage(req, res, "No card ID provided", ErrorCodes.INVALID_CARD_ID);
 
-        if (cId.length !== 24) return generateErrorMessage(req, res, "Invalid card ID provided", ErrorCodes.INVALID_CARD_ID);
+        if (cId.length !== 24) return await generateErrorMessage(req, res, "Invalid card ID provided", ErrorCodes.INVALID_CARD_ID);
 
-        if (checkIfBsonId(cId) === false) return generateErrorMessage(req, res, "Invalid card ID provided", ErrorCodes.INVALID_CARD_ID);
+        if (checkIfBsonId(cId) === false) return await generateErrorMessage(req, res, "Invalid card ID provided", ErrorCodes.INVALID_CARD_ID);
 
         const isInDb = await cards.findOne({ _id: cId });
 
-        if (!isInDb) return generateErrorMessage(req, res, "Card not found", ErrorCodes.CARD_NOT_FOUND);
+        if (!isInDb) return await generateErrorMessage(req, res, "Card not found", ErrorCodes.CARD_NOT_FOUND);
 
         return res.render("market/card", {
             discord: client,
@@ -490,11 +476,11 @@ function webServer(client: Client) {
             shop: await shopPromise,
         });
 
-        if (checkIfBsonId(id) === false) return generateErrorMessage(req, res, "Invalid shop ID provided", ErrorCodes.INVALID_SHOP_ID);
+        if (checkIfBsonId(id) === false) return await generateErrorMessage(req, res, "Invalid shop ID provided", ErrorCodes.INVALID_SHOP_ID);
 
         const isInDb = await shop.findOne({ _id: id });
 
-        if (!isInDb) return generateErrorMessage(req, res, "Sorry, that item does not exist", ErrorCodes.SHOP_NOT_FOUND);
+        if (!isInDb) return await generateErrorMessage(req, res, "Sorry, that item does not exist", ErrorCodes.SHOP_NOT_FOUND);
 
         return res.render("shop/card", {
             discord: client,
@@ -519,17 +505,17 @@ function webServer(client: Client) {
 
         if (config.allow_developer_applications === false) return res.redirect(req.headers.referer || "/");
 
-        if (!aId) return generateErrorMessage(req, res, "No application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+        if (!aId) return await generateErrorMessage(req, res, "No application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
 
-        if (aId.length !== 10) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+        if (aId.length !== 10) return await generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
 
         const app = await developer_applications.findOne({ client_id: aId });
 
         console.log(app);
 
-        if (!app) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+        if (!app) return await generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
 
-        if (!await auth(req, res, app)) return generateErrorMessage(req, res, "You are not logged in", ErrorCodes.NOT_LOGGED_IN);
+        if (!await auth(req, res, app)) return await generateErrorMessage(req, res, "You are not logged in", ErrorCodes.NOT_LOGGED_IN);
 
         return res.render("applications/authorize", {
             discord: client,
@@ -576,15 +562,15 @@ function webServer(client: Client) {
             });
         }
 
-        if (aId.length !== 10) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+        if (aId.length !== 10) return await generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
 
         const app = await developer_applications.findOne({ client_id: aId });
 
-        if (!app) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+        if (!app) return await generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
 
-        if (!await auth(req, res, app)) return generateErrorMessage(req, res, "You are not logged in", ErrorCodes.NOT_LOGGED_IN);
+        if (!await auth(req, res, app)) return await generateErrorMessage(req, res, "You are not logged in", ErrorCodes.NOT_LOGGED_IN);
 
-        if (app.creator !== authUser?.discordId) return generateErrorMessage(req, res, "You are not the creator of this application", ErrorCodes.UNKOWN_ERROR);
+        if (app.creator !== authUser?.discordId) return await generateErrorMessage(req, res, "You are not the creator of this application", ErrorCodes.UNKOWN_ERROR);
 
         return res.render("developers/view", {
             discord: client,
@@ -596,7 +582,7 @@ function webServer(client: Client) {
 
 
     app.get("*", async (req, res) => {
-        return generateErrorMessage(req, res, `Page not found`, ErrorCodes.NO_PAGE);
+        return await generateErrorMessage(req, res, `Page not found`, ErrorCodes.NO_PAGE);
     });
 
 

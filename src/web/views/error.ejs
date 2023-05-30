@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Goddess Anime Cards :: 404</title>
+	<style>
+
+	</style>
+
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="Goddess Anime Cards">
+	<meta property="og:title" content="Goddess Anime Cards">
+	<meta property="og:description" content="404 Error" />
+	<meta property="og:image" content="https://media.tenor.com/hGNZ41ePbjsAAAAC/sagiri-dancing.gif">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="Goddess Anime Cards">
+	<meta name="twitter:creator" content="Goddess Anime Cards">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta content="#43B581" data-react-helmet="true" name="theme-color" />
+	<link rel="stylesheet" href="/assets/css/utils.css">
+</head>
+<body>
+
+    <%- include ("templates/header.ejs") %> 
+
+<!-- main content -->
+<main class="main">
+    <div class="container">
+        <div class="row row--grid">
+            <!-- breadcrumb -->
+            <div class="col-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb__item"><a href="/">Home</a></li>
+                    <li class="breadcrumb__item breadcrumb__item--active">Error <%= code %></li>
+                </ul>
+            </div>
+            <!-- end breadcrumb -->
+
+            <!-- error -->
+            <div class="col-12">
+                <div class="page-404">
+                    <div class="page-404__wrap">
+                        <div class="page-404__content">
+                            <h1 class="page-404__title"><%= code %></h1>
+                            <p class="page-404__text" id="error-text"></p>
+                            <button class="page-404__btn" onclick="window.location.href = 'https://docs.goddessanime.com/docs/error-codes/<%= code %>'">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end error -->
+        </div>
+    </div>
+    <script>
+        const msg = "<%= error %>";
+
+        // Based on the amount of characters in the message, we can make the text fit the screen better
+        if (msg.length > 100) {
+            document.getElementById("error-text").innerHTML = "An error has occurred. Please try again later.";
+        } else {
+            document.getElementById("error-text").innerHTML = msg;
+        }
+
+    </script>
+</main>
+<!-- end main content -->
+</body>
+</html>

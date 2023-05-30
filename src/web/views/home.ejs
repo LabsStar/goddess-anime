@@ -211,53 +211,6 @@
 		<!-- end main content -->
 
 		<%- include ("templates/footer.ejs") %>
-
-			<% if (error) { %>
-				<div id="error-modal" class="zoom-anim-dialog mfp-hide modal modal--form">
-					<button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24">
-							<path
-								d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z" />
-						</svg></button>
-
-					<h4 class="sign__title">
-						Error <span class="sign__span"><a href="https://docs.goddessanime.com/docs/error-codes/<%= code %>" target="_blank"><%= code %></a></span>
-					</h4>
-
-					<p class="modal__text">
-						<% if (!error.includes(" ")) { %>
-						<%= Buffer.from(error, 'base64').toString('ascii') %>
-					<% } %>
-
-					<button class="sign__btn" type="button" onclick="window.location.href = 'https://docs.goddessanime.com/docs/error-codes/<%= code %>'">View Error Code</button>
-				</p>
-			</div>
-		<% } %>
-
-		<script>
-			const urlParams = new URLSearchParams(window.location.search);
-			const error = urlParams.get('error');
-			if (error) {
-				if (!error.includes(" ")) {
-					$.magnificPopup.open({
-						items: {
-							src: '#error-modal'
-						},
-						type: 'inline',
-						preloader: false,
-						modal: true,
-						callbacks: {
-							open: function () {
-								console.error(`Error modal opened`)
-							},
-							close: function () {
-								console.error(`Error modal closed`)
-								window.location.href = " /";
-							}
-						}
-					});
-				}
-			} </script>
 </body>
 
 </html>
