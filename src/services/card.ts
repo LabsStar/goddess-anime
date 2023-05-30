@@ -8,8 +8,8 @@ import config from "../config";
 const TIME_TO_DELETE = 60000; // 1 minute
 
 const cronJobs = { // Cron jobs for spawning and despawning cards (in cron format) [ https://crontab.guru/ ]
-    spawn: "*/15 * * * *",
-    despawn: "* * * * * * */10"
+    spawn: "*/5 * * * *", // Every 5 minutes
+    despawn: "*/1 * * * *" // Every minute
 }
 
 const createCaptcha = (length: number) => {

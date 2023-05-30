@@ -22,6 +22,8 @@ import shop from '../models/shop';
 import { Document } from 'mongoose';
 import ErrorCodes from '../utils/errorcodes';
 import developer_applications from '../models/developer_applications';
+import devrouter from './developer/_api';
+import { ApplicationStatus, Permissions } from "../utils/developerapps";
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
 
@@ -32,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use("/api", router);
+app.use("/dev", devrouter);
 app.set("trust proxy", 1);
 app.use((req, res, next) => {
     res.setHeader("X-Powered-By", "Hyperstar");
@@ -529,6 +532,61 @@ function webServer(client: Client) {
         if (!await auth(req, res, app)) return generateErrorMessage(req, res, "You are not logged in", ErrorCodes.NOT_LOGGED_IN);
 
         return res.render("applications/authorize", {
+            discord: client,
+            auth: await auth(req, res, null),
+            application: app,
+        });
+
+    });
+
+
+    app.get("/developers/applications/:id?", async (req, res) => {
+        if (!req.cookies.token) return res.redirect("/login");
+
+        const aId = req?.params?.id?.toString();
+
+        if (config.allow_developer_applications === false) return res.redirect(req.headers.referer || "/");
+
+        const authUser = await auth(req, res, null);
+
+        if (!aId) {
+            const applications = await developer_applications.find({ creator: authUser?.discordId });
+
+            const mappedApplications = applications.map(async (application) => {
+                const userDoc = await user.findOne({ discordId: application.creator });
+
+                const mappedApplication = {
+                    client_id: application.client_id,
+                    image: application.image,
+                    name: application.name,
+                    createdAt: application.createdAt || new Date(),
+                    creator: userDoc,
+                };
+
+                return mappedApplication;
+            });
+
+            const applicationsPromise = Promise.all(mappedApplications);
+
+
+            return res.render("developers/index", {
+                discord: client,
+                auth: await auth(req, res, null),
+                applications: await applicationsPromise,
+            });
+        }
+
+        if (aId.length !== 10) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+
+        const app = await developer_applications.findOne({ client_id: aId });
+
+        if (!app) return generateErrorMessage(req, res, "Invalid application ID provided", ErrorCodes.INVALID_APPLICATION_ID);
+
+        if (!await auth(req, res, app)) return generateErrorMessage(req, res, "You are not logged in", ErrorCodes.NOT_LOGGED_IN);
+
+        if (app.creator !== authUser?.discordId) return generateErrorMessage(req, res, "You are not the creator of this application", ErrorCodes.UNKOWN_ERROR);
+
+        return res.render("developers/view", {
             discord: client,
             auth: await auth(req, res, null),
             application: app,

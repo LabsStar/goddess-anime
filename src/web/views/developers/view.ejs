@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title> Goddess Anime Cards :: Developer Applications - <%= application.name %>
+    </title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Goddess Anime Cards">
+    <meta property="og:title" content="Goddess Anime Cards">
+    <meta property="og:description" content="View <%= application.name %> application.">
+    <meta property="og:image"
+        content="https://rare-gallery.com/mocahbig/451099-anime-c-programming-New-Game-blue-eyes-blonde.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="Goddess Anime Cards">
+    <meta name="twitter:creator" content="Goddess Anime Cards">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta content="#52FF33" data-react-helmet="true" name="theme-color" />
+    <link rel="icon" href="<%= application.image %>">
+
+
+    <style>
+        @keyframes blurData {
+            0% {
+                filter: blur(5px);
+            }
+
+            100% {
+                filter: blur(5px);
+            }
+        }
+
+        @keyframes unBlurData {
+            0% {
+                filter: blur(0px);
+            }
+
+            100% {
+                filter: blur(0px);
+            }
+        }
+
+        .sensitveData {
+            animation: blurData 1s infinite;
+        }
+
+        .sensitveData:hover {
+            animation: unBlurData 1s infinite;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #f7f1f1;
+        }
+
+        .cardErrorMessage {
+            /* Make it center */
+            margin: 0 auto;
+            /* Make it color white */
+            color: white;
+            /* Bring it down a little */
+            margin-top: 100px;
+            /* Make it bigger */
+            font-size: 30px;
+        }
+
+        .code_block {
+            /* Make it look like a discord code block (One Tick) */
+            background-color: #2f3136;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: "Source Code Pro", monospace;
+            font-size: 14px;
+            color: #dcddde;
+        }
+
+        .captcha_input {
+            /* Make sure the text can not be highlighted */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ("../templates/header.ejs") %>
+
+        <!-- main content -->
+        <main class="main">
+            <div class="container">
+                <div class="row row--grid">
+                    <!-- breadcrumb -->
+                    <div class="col-12">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb__item"><a href="/">Home</a></li>
+                            <li class="breadcrumb__item">Developers</li>
+                            <li class="breadcrumb__item">
+                                <a href="/developers/applications">Applications</a>
+                            </li>
+                            <li class="breadcrumb__item breadcrumb__item--active">
+                                <%= application.name %>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end breadcrumb -->
+
+                    <div class="col-12">
+                        <div class="page-404">
+                            <div class="page-404__wrap">
+
+
+
+                                <% if (application.length===0) { %>
+                                    <span class="text-center cardErrorMessage">
+                                        There are no applications! <a href="/developers/applications/new">Create
+                                            one!</a>
+                                    </span>
+                                    <% } else { %>
+
+                                        <form class="sign__form sign__form--create">
+                                            <div class="row">
+
+                                                <div class="col-12">
+                                                    <div class="sign__group">
+                                                        <label class="sign__label" for="name">Name</label>
+                                                        <input id="name" type="text" name="name" class="sign__input"
+                                                            placeholder="<%= application.name %>" disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="sign__group">
+                                                        <label class="sign__label" for="clientId">Client ID</label>
+                                                        <input id="clientId" type="text" name="clientId"
+                                                            class="sign__input"
+                                                            placeholder="<%= application.client_id %>" disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="sign__group">
+                                                        <label class="sign__label" for="clientSecret">Client
+                                                            Secret</label>
+                                                        <input id="clientSecret" type="text" name="clientSecret"
+                                                            class="sign__input sensitveData"
+                                                            placeholder="<%= application.client_secret %>" disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="sign__group">
+                                                        <label class="sign__label" for="description">Description</label>
+                                                        <textarea id="description" name="description"
+                                                            class="sign__textarea"
+                                                            placeholder="<%= application.description %>"
+                                                            disabled></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <h4 class="sign__title">
+                                                        Intents
+                                                    </h4>
+                                                </div>
+
+
+                                                <div class="col-12">
+                                                    <div class="sign__group sign__group--row">
+                                                        <ul class="sign__radio sign__radio--single">
+
+                                                            <% application.permissions.forEach(permission=> { %>
+                                                                <li>
+                                                                    <input id="<%= permission %>" type="checkbox"
+                                                                        name="<%= permission %>" value="true" disabled
+                                                                        checked>
+                                                                    <label for="<%= permission %>">
+                                                                        <%= permission.replaceAll("_", " " ) %>
+                                                                    </label>
+                                                                </li>
+                                                                <% }) %>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <button class="asset__btn asset__btn--full asset__btn--clr"
+                                                    type="button" onclick="deleteApp()">Delete</button>
+                                                <button class="asset__btn asset__btn--full asset__btn--clr"
+                                                    type="button"
+                                                    onclick="window.location.href='/developers/applications/<%= application.client_id %>/edit'">Edit</button>
+
+
+                                            </div>
+                                        </form>
+                                        <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="delete-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
+                        <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z" />
+                            </svg></button>
+
+                        <h4 class="sign__title">
+                            Delete Application • <%= application.name %>
+                        </h4>
+
+                        <p class="modal__text">
+                            Please Enter the text below to confirm you want to delete this application.
+                            <br>
+                            <br>
+
+                            <span class="code_block captcha_input" id="delete_captcha" style="text-align: center;">
+                                DELETE <%= application.name %>
+
+                            </span>
+
+                            <br>
+                            <br>
+
+                            <input type="text" class="sign__input" placeholder="Enter the text above here"
+                                id="delete_captcha_input">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- end main content -->
+        <%- include ("../templates/footer.ejs") %>
+
+            <script>
+
+                const delete_captcha = document.getElementById("delete_captcha");
+
+
+                const delete_captcha_text = `DELETE <%= application.name %>`;
+
+                const delete_captcha_input = document.getElementById("delete_captcha_input");
+
+                function deleteApp() {
+                    $.magnificPopup.open({
+                        items: {
+                            src: '#delete-popup'
+                        },
+                        type: 'inline',
+                        preloader: false,
+                        modal: true,
+                        callbacks: {
+                            open: function () {
+                                delete_captcha.innerHTML = delete_captcha_text;
+                            }
+                        }
+                    });
+
+                    delete_captcha_input.addEventListener("keyup", function (event) {
+                        if (event.keyCode === 13) {
+                            event.preventDefault();
+                            if (delete_captcha_input.value === delete_captcha_text) {
+                                alert("Deleting Application!");
+                            } else {
+                                alert("Incorrect Captcha!");
+                            }
+                        }
+                    });
+                }
+            </script>
+</body>
+
+</html>

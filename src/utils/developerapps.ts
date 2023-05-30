@@ -11,6 +11,7 @@ enum Permissions {
     UPDATE_BADGES = "UPDATE_BADGES",
     SELL_CARDS = "SELL_CARDS",
     BUY_CARDS = "BUY_CARDS",
+    VIEW_USERS = "VIEW_USERS",
 }
 
 export { ApplicationStatus, Permissions };

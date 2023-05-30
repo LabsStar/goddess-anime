@@ -76,6 +76,11 @@ const DeveloperApplicationsSchema = new Schema({
         default: createClientSecret(),
     },
 
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+
 }, { timestamps: true });
 
 export default mongoose.model("Developer Applications", DeveloperApplicationsSchema);

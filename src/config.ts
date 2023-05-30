@@ -34,6 +34,7 @@ const config = {
         unverified: 40,
         verified: 100,
     },
+    OPEN_FOR_DEVLOPERS: false,
 };
 
 export default config;
