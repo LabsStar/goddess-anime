@@ -83,6 +83,8 @@ module.exports = {
 
     await cardService.start();
 
+    await cardService.subscribeToUpdates();
+
 
     cron.schedule("*/1 * * * *", async () => {
       const cards = await shop.find({});

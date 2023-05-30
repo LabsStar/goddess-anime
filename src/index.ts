@@ -64,7 +64,7 @@ process.on("unhandledRejection", (error: any) => {
         (channel as TextBasedChannel).send({ embeds: [embed] });
     });
 
-    error.preventDefault();
+    console.error(error);
 });
 
 process.on("uncaughtException", (error: any) => {
@@ -78,7 +78,7 @@ process.on("uncaughtException", (error: any) => {
         (channel as TextBasedChannel).send({ embeds: [embed] });
     });
 
-    error.preventDefault();
+    console.error(error);
 });
 
 client.login(process.env.token as string || "");

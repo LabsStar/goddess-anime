@@ -1,5 +1,5 @@
 import cards from "../models/cards";
-import { MessageEmbed, MessageActionRow, MessageButton, Client, TextChannel, MessageCollector, CommandInteraction } from "discord.js";
+import { MessageEmbed, MessageActionRow, MessageButton, Client, TextChannel, MessageCollector, CommandInteraction, GuildChannel, TextBasedChannel } from "discord.js";
 import logger from "../utils/logger";
 import guild from "../models/guild";
 import cron from "node-cron";
@@ -203,6 +203,45 @@ class CardService {
 
         cron.schedule(cronJobs.despawn, async () => {
             await this.despawnCard();
+        });
+    }
+
+    async subscribeToUpdates() {
+        cards.watch().on("change", async (change) => {
+            if (change.operationType === "insert") {
+                const card = change.fullDocument;
+
+                const author = await this.client.users.fetch(card.creator || "1045919089048178828");
+
+                const embed = new MessageEmbed()
+                    .setTitle(`New Card Added!`)
+                    .setDescription(`A new card has been added to the database!\n${card.name} has been added!`)
+                    .setImage(card.image)
+                    .setAuthor({ name: `${author.tag}`, iconURL: author.displayAvatarURL({ dynamic: true }), url: `https://users.goddessanime.com/${author.id}` })
+                    .setFooter({ text: `${card.tagLine.substring(0, 50)}...`, iconURL: this.client.user?.displayAvatarURL() })
+                    .setColor("RANDOM")
+                    .setTimestamp();
+
+                const row = new MessageActionRow()
+                    .addComponents(
+                        new MessageButton()
+                            .setURL(`https://cards.goddessanime.com/${card._id}`)
+                            .setLabel("View Card")
+                            .setEmoji("📄")
+                            .setStyle("LINK"),
+                        new MessageButton()
+                            .setURL(`https://cards.goddessanime.com/`)
+                            .setLabel("View All Cards")
+                            .setEmoji("📄")
+                            .setStyle("LINK"),
+                    );
+
+                    this.client.channels.fetch(process.env.LOGGING_CHANNEL as string).then((channel) => {
+                        (channel as TextBasedChannel).send({ embeds: [embed], components: [row] });
+                    });
+
+                    
+            }
         });
     }
 }
