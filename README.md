@@ -33,6 +33,7 @@ To run this project, you will need to add the following environment variables to
 - `MONGO_URI` - Your MongoDB Connection String - [MongoDB](https://www.mongodb.com/)
 - `redirectUri` - Your Discord Login Url - [Discord Developer Portal](https://discord.com/developers/applications)
 - `clientSecret` - Your Discord App Secret - [Discord Developer Portal](https://discord.com/developers/applications)
+- `CARD_UPDATE_CHANNEL` - The channel ID where the bot will send card updates - [Discord Developer Portal](https://discord.com/developers/applications)
 
 
 ## Authors

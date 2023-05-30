@@ -236,7 +236,7 @@ class CardService {
                             .setStyle("LINK"),
                     );
 
-                    this.client.channels.fetch(process.env.LOGGING_CHANNEL as string).then((channel) => {
+                    this.client.channels.fetch(process.env.CARD_UPDATE_CHANNEL as string).then((channel) => {
                         (channel as TextBasedChannel).send({ embeds: [embed], components: [row] });
                     });
 
