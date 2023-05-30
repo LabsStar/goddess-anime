@@ -1,4 +1,4 @@
-import { Client, Collection, Intents, TextBasedChannel } from 'discord.js';
+import { Client, Collection, Intents, TextBasedChannel, MessageEmbed } from 'discord.js';
 import { config } from 'dotenv';
 import CustomClient from './interfaces/CustomClient';
 import Command from './interfaces/Command';
@@ -52,5 +52,29 @@ for (const file of eventFiles) {
         client.on(event.name, (...args) => event.execute(...args, client));
     }
 }
+
+process.on("unhandledRejection", (error) => {
+    const embed = new MessageEmbed()
+        .setTitle("Unhandled Rejection")
+        .setDescription(`\`\`\`${error}\`\`\``)
+        .setColor("RED")
+        .setTimestamp();
+
+    client.channels.fetch(process.env.LOGGING_CHANNEL as string).then((channel) => {
+        (channel as TextBasedChannel).send({ embeds: [embed] });
+    });
+});
+
+process.on("uncaughtException", (error) => {
+    const embed = new MessageEmbed()
+        .setTitle("Uncaught Exception")
+        .setDescription(`\`\`\`${error}\`\`\``)
+        .setColor("RED")
+        .setTimestamp();
+
+    client.channels.fetch(process.env.LOGGING_CHANNEL as string).then((channel) => {
+        (channel as TextBasedChannel).send({ embeds: [embed] });
+    });
+});
 
 client.login(process.env.token as string || "");

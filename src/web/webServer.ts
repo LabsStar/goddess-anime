@@ -602,7 +602,6 @@ function webServer(client: Client) {
 
     app.listen(process.env.PORT || 80, () => {
         logger.info(`Goddess Anime is listening at http://localhost:${process.env.PORT || 80}`);
-
     });
 }
 
