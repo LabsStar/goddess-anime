@@ -53,7 +53,7 @@ for (const file of eventFiles) {
     }
 }
 
-process.on("unhandledRejection", (error) => {
+process.on("unhandledRejection", (error: any) => {
     const embed = new MessageEmbed()
         .setTitle("Unhandled Rejection")
         .setDescription(`\`\`\`${error}\`\`\``)
@@ -63,9 +63,11 @@ process.on("unhandledRejection", (error) => {
     client.channels.fetch(process.env.LOGGING_CHANNEL as string).then((channel) => {
         (channel as TextBasedChannel).send({ embeds: [embed] });
     });
+
+    error.preventDefault();
 });
 
-process.on("uncaughtException", (error) => {
+process.on("uncaughtException", (error: any) => {
     const embed = new MessageEmbed()
         .setTitle("Uncaught Exception")
         .setDescription(`\`\`\`${error}\`\`\``)
@@ -75,6 +77,8 @@ process.on("uncaughtException", (error) => {
     client.channels.fetch(process.env.LOGGING_CHANNEL as string).then((channel) => {
         (channel as TextBasedChannel).send({ embeds: [embed] });
     });
+
+    error.preventDefault();
 });
 
 client.login(process.env.token as string || "");
