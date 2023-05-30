@@ -94,7 +94,15 @@ module.exports = {
     }
 
     if (message.channel.id === COMMUNITY_UPDATES_CHANNEL) {
-      if (message.author.id != BOT_ID && !message.author.bot) await message.delete();
+      const checkIfWebhook = message.webhookId;
+      if (message.author.id != BOT_ID && !checkIfWebhook) {
+        try {
+          await message.delete();
+        }
+        catch (err) {
+          console.log(`Error deleting message: ${err}`);
+        }
+      }
 
       const embed = message.embeds[0];
       const buttons = message.components[0].components;
