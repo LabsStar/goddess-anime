@@ -94,7 +94,7 @@ module.exports = {
     }
 
     if (message.channel.id === COMMUNITY_UPDATES_CHANNEL) {
-      if (message.author.id != BOT_ID) return await message.delete();
+      if (message.author.id != BOT_ID && !message.author.bot) await message.delete();
 
       const embed = message.embeds[0];
       const buttons = message.components[0].components;
