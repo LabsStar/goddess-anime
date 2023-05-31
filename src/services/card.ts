@@ -46,7 +46,7 @@ class CardService {
 
         const embed = new MessageEmbed()
             .setTitle(`New Card Spawned!`)
-            .setDescription(`${card.name} has spawned!\nUse </${config.catch.name}:${config.catch.id}> ${captcha} to catch it!`)
+            .setDescription(`${card.name} has spawned!\nUse </${config.catch.name}:${config.catch.id}> \`${captcha}\` to catch it!`)
             .setImage(card.image)
             .setFooter({ text: captcha, iconURL: this.client.user?.displayAvatarURL() || "" })
             .setColor("RANDOM");
