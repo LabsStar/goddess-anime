@@ -168,10 +168,13 @@ class CardService {
         const randomcard = await cards.aggregate([{ $sample: { size: 1 } }]);
         const card = randomcard[0];
 
+        const captcha = createCaptcha(6);
+
         const embed = new MessageEmbed()
             .setTitle(`New Card Spawned!`)
-            .setDescription(`<@${interaction.user.id}> has spawned a card for the community to catch!\n${card.name} has spawned!\nUse </${config.catch.name}:${config.catch.id}> <captcha> to catch it!`)
+            .setDescription(`<@${interaction.user.id}> has spawned a card for the community to catch!\n${card.name} has spawned!\nUse </${config.catch.name}:${config.catch.id}> ${captcha} to catch it!`)
             .setImage(card.image)
+            .setFooter({ text: captcha, iconURL: this.client.user?.displayAvatarURL() || "" })
             .setColor("RANDOM");
 
         interaction.reply({ embeds: [embed] });
@@ -183,7 +186,7 @@ class CardService {
 
             doc.currentCards.push({
                 id: card._id,
-                captcha: interaction.options.getString('captcha', true),
+                captcha: captcha,
                 time_until_despawn: TIME_TO_DELETE,
                 time_spawned: Date.now(),
                 refrence_id: interaction?.guild?.id
