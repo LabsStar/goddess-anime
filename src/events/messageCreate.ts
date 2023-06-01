@@ -93,45 +93,45 @@ module.exports = {
       }
     }
 
-    if (message.channel.id === COMMUNITY_UPDATES_CHANNEL) {
-      const checkIfWebhook = message.webhookId;
-      if (message.author.id != BOT_ID && !checkIfWebhook) {
-        try {
-          await message.delete();
-        }
-        catch (err) {
-          console.log(`Error deleting message: ${err}`);
-        }
-      }
+    // if (message.channel.id === COMMUNITY_UPDATES_CHANNEL) {
+    //   const checkIfWebhook = message.webhookId;
+    //   if (message.author.id != BOT_ID && !checkIfWebhook) {
+    //     try {
+    //       await message.delete();
+    //     }
+    //     catch (err) {
+    //       console.log(`Error deleting message: ${err}`);
+    //     }
+    //   }
 
-      const embed = message.embeds[0];
-      const buttons = message.components[0].components;
-      const attachments = message.attachments;
+    //   const embed = message.embeds[0];
+    //   const buttons = message.components[0].components;
+    //   const attachments = message.attachments;
 
-      const guilds = await guild.find({});
+    //   const guilds = await guild.find({});
 
-      for (const guildData of guilds) {
-        const guild_ = client.guilds.cache.get(guildData.guildId);
+    //   for (const guildData of guilds) {
+    //     const guild_ = client.guilds.cache.get(guildData.guildId);
 
-        if (!guild_) continue;
+    //     if (!guild_) continue;
 
-        const channel = guild_.channels.cache.get(guildData.updateChannel as Channel["id"]);
+    //     const channel = guild_.channels.cache.get(guildData.updateChannel as Channel["id"]);
 
-        if (!channel || !(channel instanceof TextChannel)) continue;
+    //     if (!channel || !(channel instanceof TextChannel)) continue;
 
-        const getImages = async () => {
-          const images = [];
-          for (const attachment of attachments.values()) {
-            const { data } = await axios.get(attachment.url, { responseType: "arraybuffer" });
-            images.push({ name: attachment.name, data });
-          }
-          return images;
-        };
+    //     const getImages = async () => {
+    //       const images = [];
+    //       for (const attachment of attachments.values()) {
+    //         const { data } = await axios.get(attachment.url, { responseType: "arraybuffer" });
+    //         images.push({ name: attachment.name, data });
+    //       }
+    //       return images;
+    //     };
 
-        await channel.send({ embeds: [embed], components: [new MessageActionRow().addComponents(buttons)], files: await getImages() as any });
-      }
+    //     await channel.send({ embeds: [embed], components: [new MessageActionRow().addComponents(buttons)], files: await getImages() as any });
+    //   }
 
-    }
+    // }
 
     if (message.author.bot) return;
 
