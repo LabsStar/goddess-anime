@@ -14,7 +14,7 @@ import news from '../models/news';
 import user from '../models/user';
 import axios from 'axios';
 import cards from '../models/cards';
-import router from './api/main';
+import apirouter from './api/_api';
 import badges from '../models/badges';
 import config from '../config';
 import system from '../models/system';
@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use("/api", router);
+app.use("/api", apirouter);
 app.use("/dev", devrouter);
 app.set("trust proxy", 1);
 app.use((req, res, next) => {

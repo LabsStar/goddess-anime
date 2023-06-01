@@ -28,9 +28,9 @@ const formatTime = (time: number, timeZone?: string) => {
 
 
 
-const router = Router();
+const apirouter = Router();
 
-router.use((req: Request, res: Response, next: Function) => {
+apirouter.use((req: Request, res: Response, next: Function) => {
     res.setHeader("X-Powered-By", "Hyperstar");
     next();
 });
@@ -68,16 +68,16 @@ const rateLimiter = async (req: Request, res: Response, next: Function) => {
     next();
 };
 
-router.use(rateLimiter);
+apirouter.use(rateLimiter);
 
-router.get('/', (req: Request, res: Response) => {
+apirouter.get('/', (req: Request, res: Response) => {
     res.json({
         error: false,
         message: "Welcome to the API."
     });
 });
 
-router.get('/users/:id/:field?', async (req: Request, res: Response) => {
+apirouter.get('/users/:id/:field?', async (req: Request, res: Response) => {
     try {
         const { id, field } = req.params;
 
@@ -111,7 +111,13 @@ router.get('/users/:id/:field?', async (req: Request, res: Response) => {
             return res.json({ error: false, message: "Token found but not shown." });
         }
 
-        res.json({ error: false, message: fieldValue });
+        if (req.query.raw === "true") {
+            res.status(200).send(fieldValue);
+        }
+        else {
+            res.json({ error: false, message: fieldValue });
+        }
+
     } catch (error) {
         console.error("Error occurred:", error);
         res.status(500).json({ error: true, message: error });
@@ -119,7 +125,7 @@ router.get('/users/:id/:field?', async (req: Request, res: Response) => {
 });
 
 
-router.get('/cards/:id?', async (req: Request, res: Response) => {
+apirouter.get('/cards/:id?', async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
@@ -141,7 +147,7 @@ router.get('/cards/:id?', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/guilds/:id?/:field?', async (req: Request, res: Response) => {
+apirouter.get('/guilds/:id?/:field?', async (req: Request, res: Response) => {
 
     let sensitiveFields = [] as string[];
 
@@ -191,7 +197,7 @@ router.get('/guilds/:id?/:field?', async (req: Request, res: Response) => {
 
 
 
-router.get('/news/:id?', async (req: Request, res: Response) => {
+apirouter.get('/news/:id?', async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
@@ -214,7 +220,7 @@ router.get('/news/:id?', async (req: Request, res: Response) => {
 });
 
 
-router.get('/badges/:id?', async (req: Request, res: Response) => {
+apirouter.get('/badges/:id?', async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
 
@@ -237,7 +243,7 @@ router.get('/badges/:id?', async (req: Request, res: Response) => {
 });
 
 
-router.post("/settings", async (req: Request, res: Response) => {
+apirouter.post("/settings", async (req: Request, res: Response) => {
     try {
         if (!req.headers["authorization"]) return res.status(401).json({ error: "You are not authorized to access this endpoint." });
 
@@ -273,7 +279,7 @@ router.post("/settings", async (req: Request, res: Response) => {
     }
 });
 
-router.get("/open-source", async (req: Request, res: Response) => {
+apirouter.get("/open-source", async (req: Request, res: Response) => {
     try {
         const github_repo = "https://api.github.com/repos/LabsStar/goddess-anime";
 
@@ -326,7 +332,7 @@ router.get("/open-source", async (req: Request, res: Response) => {
     }
 });
 
-router.get("/ping", async (req: Request, res: Response) => {
+apirouter.get("/ping", async (req: Request, res: Response) => {
     try {
         res.json({ error: false, message: "Pong!" });
     } catch (error) {
@@ -335,7 +341,7 @@ router.get("/ping", async (req: Request, res: Response) => {
     }
 });
 
-router.get("/process/:type?/:subType?", async (req: Request, res: Response) => {
+apirouter.get("/process/:type?/:subType?", async (req: Request, res: Response) => {
 
     const processInfo = {
         memoryUsage: process.memoryUsage(),
@@ -366,7 +372,7 @@ router.get("/process/:type?/:subType?", async (req: Request, res: Response) => {
 });
 
 
-router.post("/applicaton-auth", async (req: Request, res: Response) => {
+apirouter.post("/applicaton-auth", async (req: Request, res: Response) => {
     try {
       const { client_id, client_secret, auth_token } = req.body;
   
@@ -408,4 +414,4 @@ router.post("/applicaton-auth", async (req: Request, res: Response) => {
 
 
 
-export default router;
+export default apirouter;
