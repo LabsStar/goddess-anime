@@ -112,7 +112,12 @@ apirouter.get('/users/:id/:field?', async (req: Request, res: Response) => {
         }
 
         if (req.query.raw === "true") {
-            res.status(200).send(fieldValue);
+            if (fieldValue.includes("http")) {
+                res.redirect(fieldValue);
+            }
+            else {
+                res.status(200).send(fieldValue);
+            }
         }
         else {
             res.json({ error: false, message: fieldValue });
