@@ -47,6 +47,7 @@
                             <a href="<%= user.avatar %>" class="author__avatar <%= user.verified ? "author__avatar--verified" : "" %> author__avatar--staff" id="<%= user.discordId %>-avatar">
                                 <img src="<%= user.avatar %>" alt="<%= user.username %>" class="pres-avatar-user">
                             </a>
+			     <p style="display: none;" class="pres_username" id="pres_username"><%= user.username %></p>
                             <h1 class="author__name"><%= user.username %> <span class="pronouns">(<%= user.pronouns %>)</span></h1>
                             <p class="author__text"> <%= user.about %> </p> 
                             <div class="author__wrap">
