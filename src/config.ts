@@ -35,6 +35,7 @@ const config = {
         verified: 100,
     },
     OPEN_FOR_DEVLOPERS: false,
+    AUTOMATED_USERS: ["547923574833545226"],
 };
 
 export default config;
