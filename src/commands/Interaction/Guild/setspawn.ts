@@ -38,18 +38,8 @@ export const command: Command = {
 
         const guildData = await guild.findOne({ guildId: interaction.guildId });
 
-        if (!guildData) {
-            const newGuild = new guild({
-                guildId: interaction.guild?.id,
-                spawnChannel: channel.id,
-                currentCards: [],
-                updateChannel: null,
-            });
-    
-            await newGuild.save();
-        }
+        if (!guildData) throw new Error('Guild not found');
 
-        //@ts-ignore
         guildData.spawnChannel = channel.id;
         //@ts-ignore
         await guildData.save();
