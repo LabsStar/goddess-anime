@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { CommandInteraction, Guild, MessageEmbed } from 'discord.js';
 import Command from "../../../interfaces/Command";
 import CustomClient from '../../../interfaces/CustomClient';
 import guild from '../../../models/guild';
@@ -38,10 +38,20 @@ export const command: Command = {
 
         const guildData = await guild.findOne({ guildId: interaction.guildId });
 
-        if (!guildData) throw new Error('Guild not found');
+        if (!guildData) {
+            const newGuild = new guild({
+                guildId: interaction.guild?.id,
+                spawnChannel: null,
+                currentCards: [],
+                updateChannel: null,
+            });
+    
+            await newGuild.save();
+        }
 
+        //@ts-ignore
         guildData.spawnChannel = channel.id;
-
+        //@ts-ignore
         await guildData.save();
 
         const embed = new MessageEmbed()
