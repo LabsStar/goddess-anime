@@ -108,6 +108,10 @@ apirouter.get('/users/:id/:field?', async (req: Request, res: Response) => {
             return res.json({ error: true, message: "Field not found." });
         }
 
+        if (field === "_doc") {
+            return res.json({ error: false, message: "BRO?" });
+        }
+
         if (field === "token") {
             return res.json({ error: false, message: "Token found but not shown." });
         }
