@@ -4,4 +4,4 @@ node_modules
 package-lock.json
 unused.ts
 .vscode
-log
+log.txt

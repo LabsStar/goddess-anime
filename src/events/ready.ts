@@ -17,7 +17,7 @@ module.exports = {
   async execute(client: Client) {
     const cardService = new CardService(client);
     const activity = new Activity(client);
-    const consolelogger = new ConsoleLogger("log");
+    const consolelogger = new ConsoleLogger("log.txt");
     consolelogger.startLogging();
 
     console.clear();

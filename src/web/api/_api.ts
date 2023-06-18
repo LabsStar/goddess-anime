@@ -422,14 +422,14 @@ apirouter.post("/applicaton-auth", async (req: Request, res: Response) => {
 
 
   apirouter.get("/logs", async (req: Request, res: Response) => {
-    const logFilePath = path.resolve(__dirname, "../../../log");
+    const logFilePath = path.resolve(__dirname, "../../../../log.txt");
 
     try {
         const file = fs.readFileSync(logFilePath, 'utf-8');
         return res.send(`<pre>${file}</pre>`)
     } catch (error) {
         console.error(error)
-        return res.status(404).json({ error: true, message: "./log is not found. Please Contact the developers." });
+        return res.status(404).json({ error: true, message: "../../../log.txt is not found. Please Contact the developers." });
     }
 
   });
