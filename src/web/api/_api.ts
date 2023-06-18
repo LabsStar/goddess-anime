@@ -10,6 +10,7 @@ import config from '../../config';
 import fs from "fs";
 import developer_applications from '../../models/developer_applications';
 import { ApplicationStatus, Permissions } from "../../utils/developerapps";
+import path from "path";
 
 
 const findTimeZone = async (ipAddress: string) => {
@@ -413,6 +414,20 @@ apirouter.post("/applicaton-auth", async (req: Request, res: Response) => {
       console.error("Error in application authorization:", error);
       res.status(500).json({ error: true, message: "Internal server error." });
     }
+  });
+
+
+  apirouter.get("/logs", async (req: Request, res: Response) => {
+    const logFilePath = path.resolve(__dirname, "../../../log");
+
+    try {
+        const file = fs.readFileSync(logFilePath, 'utf-8');
+        return res.send(`<pre>${file}</pre>`)
+    } catch (error) {
+        console.error(error)
+        return res.status(404).json({ error: true, message: "./log is not found. Please Contact the developers." });
+    }
+
   });
   
 

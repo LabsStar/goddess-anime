@@ -54,7 +54,7 @@ class CardService {
         try {
             spawnChannel.send({ embeds: [embed] });
 
-            logger.info(`Spawned card ${card.name} in ${spawnChannel.guild.name} (${spawnChannel.guild.id})`);
+            console.log(`Spawned card ${card.name} in ${spawnChannel.guild.name} (${spawnChannel.guild.id})`);
 
             guild.findOne({ guildId: spawnChannel.guild.id }).then((doc) => {
                 if (!doc) return;
@@ -69,7 +69,7 @@ class CardService {
 
                 doc.save();
 
-                logger.info(`Added card ${card.name} to ${spawnChannel.guild.name} (${spawnChannel.guild.id})`);
+                console.log(`Added card ${card.name} to ${spawnChannel.guild.name} (${spawnChannel.guild.id})`);
             });
         }
 
@@ -111,7 +111,7 @@ class CardService {
 
                     guild.save();
 
-                    logger.info(`Despawned card ${card.captcha} in ${channel.guild.name} (${channel.guild.id})`);
+                    console.log(`Despawned card ${card.captcha} in ${channel.guild.name} (${channel.guild.id})`);
                 } else {
                     guild.currentCards[index].time_until_despawn -= 10000;
                 }
@@ -143,7 +143,7 @@ class CardService {
 
         spawnChannel.send({ embeds: [embed] });
 
-        logger.info(`Spawned card ${card.name} in ${spawnChannel.guild.name} (${spawnChannel.guild.id}) [FORCED]`);
+        console.log(`Spawned card ${card.name} in ${spawnChannel.guild.name} (${spawnChannel.guild.id}) [FORCED]`);
 
         guild.findOne({ guildId: spawnChannel.guild.id }).then((doc) => {
             if (!doc) return;
@@ -158,7 +158,7 @@ class CardService {
 
             doc.save();
 
-            logger.info(`Added card ${card.name} to ${spawnChannel.guild.name} (${spawnChannel.guild.id}) [FORCED]`);
+            console.log(`Added card ${card.name} to ${spawnChannel.guild.name} (${spawnChannel.guild.id}) [FORCED]`);
         });
     }
 
@@ -179,7 +179,7 @@ class CardService {
 
         interaction.reply({ embeds: [embed] });
 
-        logger.info(`Spawned card ${card.name} in ${interaction?.guild?.name} (${interaction?.guild?.id}) [COMMAND]`);
+        console.log(`Spawned card ${card.name} in ${interaction?.guild?.name} (${interaction?.guild?.id}) [COMMAND]`);
 
         guild.findOne({ guildId: interaction?.guild?.id }).then((doc) => {
             if (!doc) return;
@@ -194,7 +194,7 @@ class CardService {
 
             doc.save();
 
-            logger.info(`Added card ${card.name} to ${interaction?.guild?.name} (${interaction?.guild?.id}) [COMMAND]`);
+            console.log(`Added card ${card.name} to ${interaction?.guild?.name} (${interaction?.guild?.id}) [COMMAND]`);
         });
     }
 

@@ -46,7 +46,7 @@ export const command: Command = {
 
         interaction.reply({ embeds: [embed] });
 
-        logger.info(`Spawned card ${card.name} in ${interaction?.guild?.name} (${interaction?.guild?.id}) [COMMAND]`);
+        console.log(`Spawned card ${card.name} in ${interaction?.guild?.name} (${interaction?.guild?.id}) [COMMAND]`);
 
         guild.findOne({ guildId: interaction?.guild?.id }).then((doc) => {
             if (!doc) return;
@@ -62,7 +62,7 @@ export const command: Command = {
 
             doc.save();
 
-            logger.info(`Added card ${card.name} to ${interaction?.guild?.name} (${interaction?.guild?.id}) [COMMAND]`);
+            console.log(`Added card ${card.name} to ${interaction?.guild?.name} (${interaction?.guild?.id}) [COMMAND]`);
         });
     }
 } as Command;

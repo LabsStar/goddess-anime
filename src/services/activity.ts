@@ -41,7 +41,7 @@ class Activity {
 
             await userDoc.save();
 
-            logger.info(`Activity set for ${this.client.users.cache.get(userid)?.tag}!`);
+            console.log(`Activity set for ${this.client.users.cache.get(userid)?.tag}!`);
 
             const embed = new MessageEmbed()
                 .setTitle(title)

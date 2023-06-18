@@ -12,7 +12,7 @@ const supportServer = process.env.SUPPORT_SERVER;
 const staffRole = process.env.STAFF_ROLE;
 
 const generateCoins = async (u: string) => {
-  logger.info(`Generating coins for user: ${u}`);
+  console.log(`Generating coins for user: ${u}`);
 
   // Step 1: Retrieve the user document from the database
   const userDoc = await user.findOne({ discordId: u });
@@ -35,10 +35,10 @@ const generateCoins = async (u: string) => {
   // Step 2: Generate random coins based on verification status
   if (isVerified) {
     coinsToAdd = Math.floor(Math.random() * COINS.verified) + 1; // Random number between 1 and 100 (inclusive)
-    logger.info(`Generated ${coinsToAdd} coins for verified user.`);
+    console.log(`Generated ${coinsToAdd} coins for verified user.`);
   } else {
     coinsToAdd = Math.floor(Math.random() * COINS.unverified) + 1; // Random number between 1 and 40 (inclusive)
-    logger.info(`Generated ${coinsToAdd} coins for unverified user.`);
+    console.log(`Generated ${coinsToAdd} coins for unverified user.`);
   }
 
   // Step 3: Add coinsToAdd to user_bank
@@ -50,7 +50,7 @@ const generateCoins = async (u: string) => {
   // Step 5: Save the updated user document
   await userDoc.save();
 
-  logger.info(`Coins generated and saved for user: ${u}`);
+  console.log(`Coins generated and saved for user: ${u}`);
 };
 
 

@@ -9,6 +9,7 @@ import system from "../models/system";
 import cron from "node-cron";
 import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import shop from "../models/shop";
+import ConsoleLogger from "../utils/file.logger";
 
 module.exports = {
   name: "ready",
@@ -16,9 +17,11 @@ module.exports = {
   async execute(client: Client) {
     const cardService = new CardService(client);
     const activity = new Activity(client);
+    const consolelogger = new ConsoleLogger("log");
+    consolelogger.startLogging();
 
     console.clear();
-    logger.info(`Logged in as ${client.user?.tag}!`);
+    console.log(`Logged in as ${client.user?.tag}!`);
 
     mongoose.connect(process.env.MONGO_URI as string);
 
@@ -41,8 +44,11 @@ module.exports = {
     db.on("error", console.error.bind(console, "connection error:"));
 
     db.once("open", () => {
-      logger.info("Connected to MongoDB");
+      console.log("Connected to MongoDB");
     });
+
+    console.error("Test")
+    console.warn("Test")
 
     webServer(client);
 
