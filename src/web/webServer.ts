@@ -246,7 +246,7 @@ function webServer(client: Client) {
                 })
                 .catch(async (err: any) => {
                     console.log(err);
-                    await generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
+                    await generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR); // If only there was a simple way... But I am stupid so we use a function to call the error messages.
                 });
         } catch (error) {
             console.log(error);
