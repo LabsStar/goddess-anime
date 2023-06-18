@@ -9,7 +9,7 @@ config();
 
 const getClientId = () => {
   const clientID = process.env.BOT_ID;
-  if (!clientID) return "1108925960952217610";
+  if (!clientID) return "1009790799619301396";
   return clientID;
 };
 

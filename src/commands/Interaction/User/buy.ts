@@ -73,12 +73,13 @@ export const command: Command = {
             .setTitle(`You bought ${cardDoc.name}!`)
             .setDescription(`You bought the card \`${cardDoc.name}\` for \`${formatPrice(shopDoc.price as number)}\`!`)
             .setColor('GREEN')
-            .setImage(cardDoc.image)
+            .setImage(cardDoc.image as string)
             .setFooter({ text: `You now have ${formatPrice(userDoc.wallet)} coins in your wallet!` });
 
             await activity.setActivity(
                 interaction.user.id,
-                `Card Bought`, cardDoc.image,
+                `Card Bought`, 
+                cardDoc.image as string,
                 `You bought the card ${cardDoc.name} for ${formatPrice(shopDoc.price as number)}!`,
                 `https://goddessanime.com/card/${cardDoc._id}`,
                 [{ label: 'View Card', cb: `https://goddessanime.com/card/${cardDoc._id}` }],

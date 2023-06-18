@@ -57,10 +57,12 @@ export const command: Command = {
 
     await userDB.save();
 
+    if (!cardDB) throw new Error("No Card.")
+
     const embed = new MessageEmbed()
       .setTitle('Card Caught!')
       .setDescription(`You caught a **${cardDB.name}**!`)
-      .setImage(cardDB.image)
+      .setImage(cardDB.image as string)
       .setColor('GREEN')
       .setTimestamp(card.time_spawned);
 
@@ -69,7 +71,7 @@ export const command: Command = {
     await activity.setActivity(
       interaction.user.id,
       `Card Claimed`,
-      cardDB.image,
+      cardDB.image as string,
       `You caught a ${cardDB.name}!`,
       `https://goddessanime.com/card/${cardDB._id}`,
       [{ label: 'View Card', cb: `https://goddessanime.com/card/${cardDB._id}` }],
@@ -91,7 +93,7 @@ export const command: Command = {
     const embed2 = new MessageEmbed()
       .setTitle('Card Caught!')
       .setDescription(`This card has been caught by <@${interaction.user.id}>!`)
-      .setImage(cardDB.image)
+      .setImage(cardDB.image as string)
       .setColor('RED')
       .setTimestamp(card.time_spawned);
 
@@ -99,8 +101,7 @@ export const command: Command = {
 
     for (let i = 0; i < guildDB.currentCards.length; i++) {
       if (guildDB.currentCards[i].captcha === captcha) {
-        guildDB.currentCards.splice(i, 1);
-        // Remove the card from the array after it has been caught
+        guildDB.currentCards.splice(i, 1); // I wish there was a easier way...
       }
     }
 

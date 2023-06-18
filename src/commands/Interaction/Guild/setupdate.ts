@@ -38,8 +38,18 @@ export const command: Command = {
 
         const guildData = await guild.findOne({ guildId: interaction.guildId });
 
-        if (!guildData) throw new Error('Guild not found');
+        if (!guildData) {
+            const newGuild = new guild({
+                guildId: interaction.guild?.id,
+                spawnChannel: null,
+                currentCards: [],
+                updateChannel: channel.id,
+            });
+    
+            await newGuild.save();
+        }
 
+        //@ts-ignore
         guildData.updateChannel = channel.id;
 
         //! This is for the webhook (NOT USED)
@@ -63,7 +73,7 @@ export const command: Command = {
         // guildData.updateWebhook = webhook.id;
         // // @ts-ignore
         // guildData.updateWebhookToken = webhook.token;
-
+        // @ts-ignore
         await guildData.save();
 
         console.log(guildData);

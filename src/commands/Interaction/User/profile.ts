@@ -12,9 +12,45 @@ export const command: Command = {
         hasToBeLinked: false,
     async execute(interaction: CommandInteraction) {
 
+        const gUser = interaction.options.getUser("user");
+
         const userDoc = await user.findOne({ discordId: interaction.options.getUser('user')?.id || interaction.user.id });
 
-        if (!userDoc) return interaction.reply({ content: `${interaction.options.getUser('user')?.username || interaction.user.username} does not have an account linked to this bot`, ephemeral: true });
+        if (!userDoc){
+            console.log(gUser)
+            const embed = new MessageEmbed()
+            .setTitle(`${gUser?.username}'s Profile (They/Them)`)
+            .setURL(`https://user.goddessanime.com/${gUser?.id}`)
+            .setThumbnail(`https://cdn.discordapp.com/avatars/${gUser?.id}/${gUser?.avatar}.${gUser?.avatar?.startsWith('a_') ? 'gif' : 'png'}?size=1024`)
+            .setColor('GREEN')
+            .setImage("https://media.discordapp.net/attachments/1102922824580091927/1114337386894209115/image_error.webp?width=806&height=453")
+            .setTimestamp()
+            .addFields(
+                { name: 'Balance', value: `$0`, inline: true },
+                { name: 'Bank', value: `$0`, inline: true },
+                { name: 'Badges', value: `None`, inline: true },
+                //@ts-ignore (Ignores the error because createdAt is a Date object)
+                { name: "Account Created", value: `Unknown`, inline: true },
+                //@ts-ignore (Ignores the error because updatedAt is a Date object)
+                { name: "Account Updated", value: `Unknown`, inline: true },
+            );
+
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setLabel('View Profile')
+                    .setStyle('LINK')
+                    .setEmoji('👤')
+                    .setURL(`https://user.goddessanime.com/${gUser?.id}`),
+                new MessageButton()
+                    .setLabel('View Cards')
+                    .setStyle('LINK')
+                    .setEmoji('🃏')
+                    .setURL(`https://user.goddessanime.com/${gUser?.id}/cards`),
+            );
+
+        return await interaction.reply({ embeds: [embed], components: [row] });
+        }
 
         async function getBadges() {
             const badgesArray = [];

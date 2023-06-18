@@ -79,7 +79,7 @@ export const command: Command = {
                 .setTitle(`Card put on sale!`)
                 .setDescription(`Your card has been put on sale for ${formatPrice(amount as number)} coins!`)
                 .setColor("GREEN")
-                .setImage(cardDoc.image)
+                .setImage(cardDoc.image as string)
 
             const row = new MessageActionRow()
                 .addComponents(
@@ -92,7 +92,7 @@ export const command: Command = {
 
             await activity.setActivity(
                 interaction.user.id,
-                `Card Sold`, cardDoc.image,
+                `Card Sold`, cardDoc.image as string,
                 `Your card has been sold for ${formatPrice(amount as number)} coins!`,
                 `https://goddessanime.com/card/${cardDoc._id}`,
                 [{ label: 'View Card', cb: `https://goddessanime.com/card/${cardDoc._id}` }, { label: 'View Shop', cb: `https://shop.goddessanime.com/${newShopDoc._id}` }],
@@ -106,7 +106,7 @@ export const command: Command = {
                 .setTitle(`Card already on sale!`)
                 .setDescription(`Your card is already on sale!`)
                 .setColor("RED")
-                .setImage(cardDoc.image)
+                .setImage(cardDoc.image as string)
 
             const row = new MessageActionRow()
                 .addComponents(

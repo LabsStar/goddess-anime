@@ -12,10 +12,10 @@ module.exports = {
     const guildDoc = await guild.findOne({ guildId: guilddeleted.id });
 
     if (!guildDoc) return;
-
-
-   
     await guildDoc.delete();
+
+
+    console.warn(`${client.user?.username} has left ${guilddeleted.name} :(`)
 
 
 

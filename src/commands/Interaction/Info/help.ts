@@ -20,7 +20,7 @@ export const command: Command = {
 
     if (!command) {
       const embed = new MessageEmbed()
-        .setTitle('-=-=-=-=-= Help =-=-=-=-=-')
+        .setTitle(`Help Menu for ${interaction.client.user?.username}`)
         .setDescription(`Here's a list of all my commands:`)
         .setColor('BLUE')
         .setTimestamp();

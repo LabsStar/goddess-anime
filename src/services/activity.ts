@@ -4,6 +4,8 @@ import logger from "../utils/logger";
 import { Document } from "mongoose";
 import cron from "node-cron";
 
+// Going to fix this in a later update... Might just switch it out for UUID.
+
 const generateActivityId = (length: number) => {
     let result = "";
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
