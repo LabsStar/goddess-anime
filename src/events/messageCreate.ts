@@ -135,7 +135,7 @@ module.exports = {
 
     if (message.author.bot) return;
 
-    await generateCoins(message.author.id);
+    // await generateCoins(message.author.id);
 
 
   },
