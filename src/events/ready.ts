@@ -24,7 +24,20 @@ module.exports = {
     console.log(`Logged in as ${client.user?.tag}!`);
 
     mongoose.connect(process.env.MONGO_URI as string);
-    client.user?.setActivity("Shutting Down...", { type: "WATCHING" });
+
+    const pres = [
+      "/link - to link your account",
+      "/help - get help information",
+      "goddessanime.com",
+    ]
+
+    client.user?.setActivity("goddessanime.com", { type: "WATCHING" });
+
+    setInterval(() => {
+      const randomActivity = pres[Math.floor(Math.random() * pres.length)];
+      client.user?.setActivity(randomActivity, { type: "WATCHING" });
+    }, 5000)
+
 
     const db = mongoose.connection;
 
@@ -85,7 +98,7 @@ module.exports = {
       }
     });
 
-    // await cardService.start();
+    await cardService.start();
 
     await cardService.subscribeToUpdates();
 
