@@ -39,7 +39,8 @@ app.set("trust proxy", 1);
 app.use((req, res, next) => {
     res.setHeader("X-Powered-By", "Hyperstar");
     if (req.path.startsWith("/assets") || req.path.startsWith("/api")) return next();
-    else res.redirect("https://www.hyperstar.cloud/blog/the-end-of-goddess");
+    // else res.redirect("https://www.hyperstar.cloud/blog/the-end-of-goddess");
+    next();
 });
 
 function checkIfBsonId(id: string) {
