@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Goddess Anime Cards :: Premium</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    p {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cancel Subscription</h1>
+    <p>Are you sure you want to cancel your subscription?</p>
+    <div class="text-center">
+      <button id="cancelBtn" class="btn btn-danger" onclick="cancel()">Cancel Subscription</button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    async function cancel() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, cancel it!',
+            cancelButtonText: 'No, keep it'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await fetch('/api/cancel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    Swal.fire(
+                        'Cancelled!',
+                        'Your subscription has been cancelled.',
+                        'success'
+                    ).then(() => {
+                        window.location.href = '/profile';
+                    });
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        'An error occurred while cancelling your subscription.',
+                        'error'
+                    );
+                }
+            }
+        });
+    }
+  </script>
+</body>
+</html>

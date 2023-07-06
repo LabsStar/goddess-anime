@@ -30,7 +30,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.token as string || 
 const args = process.argv.slice(2);
 
 const clientID = args[0] || getClientId(); // Get the client ID from the .env file
-const guildID = args[1];
+const guildID = "1010372303911129088"; // args[1]
 
 if (!clientID) throw new Error('Please provide a client ID');
 if (!guildID) {

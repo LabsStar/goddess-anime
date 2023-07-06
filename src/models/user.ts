@@ -180,6 +180,29 @@ const UserSchema = new Schema({
         default: [],
     },
 
+    premium: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+
+    stripe_customer_id: {
+        type: String,
+        required: false,
+    },
+
+    premium_type: {
+        type: String,
+        required: false,
+        default: "None",
+    },
+
+    premium_end: {
+        type: Date,
+        required: false,
+        default: Date.now(),
+    }
+
 }, { timestamps: true });
 
 export default mongoose.model("User", UserSchema);

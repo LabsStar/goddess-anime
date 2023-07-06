@@ -1,0 +1,24 @@
+@echo off
+SETLOCAL EnableDelayedExpansion
+
+
+REM Check if npm is installed
+npm -v >nul 2>&1
+IF NOT ERRORLEVEL 1 (
+    REM Get the current directory
+    SET "currentDir=%CD%"
+
+    REM Install npm packages
+    echo Installing npm packages in %currentDir%...
+    npm install
+    IF ERRORLEVEL 1 (
+        echo Failed to install npm packages.
+        EXIT /B 1
+    ) ELSE (
+        echo Npm packages installed successfully.
+        EXIT /B 0
+    )
+) ELSE (
+    echo npm is not installed. Please install Node.js to use npm.
+    EXIT /B 1
+)

@@ -24,6 +24,8 @@ import ErrorCodes from '../utils/errorcodes';
 import developer_applications from '../models/developer_applications';
 import devrouter from './developer/_api';
 import { ApplicationStatus, Permissions } from "../utils/developerapps";
+import striperouter from './api/stripe';
+import componentsrouter from './api/components';
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
 
@@ -35,11 +37,12 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use("/api", apirouter);
 app.use("/dev", devrouter);
+app.use("/stripe", striperouter);
+app.use("/components", componentsrouter);
 app.set("trust proxy", 1);
 app.use((req, res, next) => {
     res.setHeader("X-Powered-By", "Hyperstar");
     if (req.path.startsWith("/assets") || req.path.startsWith("/api")) return next();
-    // else res.redirect("https://www.hyperstar.cloud/blog/the-end-of-goddess");
     next();
 });
 
@@ -400,6 +403,12 @@ function webServer(client: Client) {
         }
     });
 
+    app.get("/premium/:field?", async (req, res) => {
+        res.render(`premium/${req.params.field || "buy"}`, {
+            discord: client,
+            auth: await auth(req, res, null),
+        });
+    });
 
     app.get("/card/:id", async (req, res) => {
         const cId = req?.params?.id?.toString();

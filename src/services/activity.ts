@@ -73,22 +73,22 @@ class Activity {
     }
 
     async getActivities(userid: string, onlyIds: boolean) {
-    return await user.findOne({ discordId: userid }).then((userDoc: Document<any, any, any> | null) => {
-        if (!userDoc) throw new Error("User not found");
+        return await user.findOne({ discordId: userid }).then((userDoc: Document<any, any, any> | null) => {
+            if (!userDoc) throw new Error("User not found");
 
-        if (onlyIds) return userDoc.get("activity").map((activity: any) => activity.id);
+            if (onlyIds) return userDoc.get("activity").map((activity: any) => activity.id);
 
-        return userDoc.get("activity");
-    });
-}
+            return userDoc.get("activity");
+        });
+    }
 
     async getActivity(userid: string, activityid: string) {
-    return await user.findOne({ discordId: userid }).then((userDoc: Document<any, any, any> | null) => {
-        if (!userDoc) throw new Error("User not found");
+        return await user.findOne({ discordId: userid }).then((userDoc: Document<any, any, any> | null) => {
+            if (!userDoc) throw new Error("User not found");
 
-        return userDoc.get("activity").find((activity: any) => activity.id === activityid);
-    });
-}
+            return userDoc.get("activity").find((activity: any) => activity.id === activityid);
+        });
+    }
 
 }
 
