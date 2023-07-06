@@ -1,0 +1,45 @@
+# Component
+
+We allow use custom HTML tags in the template. For example, you can use `<my-component>` in the template. But you need to register it first.
+
+```js
+// Define the custom component
+class CustomComponent extends HTMLElement {
+  constructor() {
+    super();
+
+    // Retrieve the value of the settings attribute
+    const settings = this.getAttribute('settings');
+
+    // Create a shadow root for the component
+    const shadow = this.attachShadow({ mode: 'open' });
+
+    // Create a container element for the component's content
+    const container = document.createElement('div');
+
+    // Customize the component based on the settings attribute
+    container.textContent = `Custom Component with settings: ${settings}`;
+
+    // Apply some styles to the container (optional)
+    container.style.padding = '10px';
+    container.style.border = '1px solid black';
+
+    // Append the container to the shadow root
+    shadow.appendChild(container);
+  }
+}
+
+// Define the custom element name
+const customElementName = 'my-component';
+
+// Check if the custom element is already registered
+if (!customElements.get(customElementName)) {
+  // Register the custom element
+  customElements.define(customElementName, CustomComponent);
+}
+```
+
+```html
+<!-- Use the custom component in the template -->
+<my-component settings="foo"></my-component>
+```
