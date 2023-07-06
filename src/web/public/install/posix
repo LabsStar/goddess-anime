@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check if npm is installed
+if command -v npm >/dev/null 2>&1; then
+    # Get the current directory
+    currentDir=$(pwd)
+
+    # Install npm packages
+    echo "Installing npm packages in $currentDir..."
+    npm install
+    if [ $? -eq 0 ]; then
+        echo "Npm packages installed successfully."
+        exit 0
+    else
+        echo "Failed to install npm packages."
+        exit 1
+    fi
+else
+    echo "npm is not installed. Please install Node.js to use npm."
+    exit 1
+fi
