@@ -39,6 +39,11 @@ const UserSchema = new Schema({
         required: false,
     },
 
+    customUsername: {
+        type: String,
+        required: false,
+    },
+
     discriminator: {
         type: String,
         required: false,
@@ -201,7 +206,13 @@ const UserSchema = new Schema({
         type: Date,
         required: false,
         default: Date.now(),
-    }
+    },
+
+    domain: {
+        type: String,
+        required: false,
+        default: "goddessanime.com",
+    },
 
 }, { timestamps: true });
 

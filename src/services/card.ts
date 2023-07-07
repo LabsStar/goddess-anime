@@ -76,47 +76,7 @@ class CardService {
         catch (err) {
             console.error(`Failed to spawn card in ${spawnChannel.guild.name} (${spawnChannel.guild.id})\n${err}`);
         }
-        
-    }
 
-    async despawnCard() {
-        const guilds = await guild.find();
-
-        guilds.forEach((guild) => {
-            if (guild.currentCards.length === 0) return;
-
-
-            guild.currentCards.forEach(async (card, index) => {
-                if (card.time_until_despawn <= 0) {
-                    const channel = await this.client.channels.fetch(card.refrence_id) as TextChannel;
-
-                    if (!channel) return;
-
-                    const messages = await channel.messages.fetch({ limit: 100 });
-
-                    const message = messages.find((message) => message.embeds[0]?.footer?.text === card.captcha);
-
-                    if (!message) return;
-
-                    const embed = new MessageEmbed()
-                        .setTitle('Card Despawned!')
-                        .setDescription(`This card has despawned!`)
-                        .setImage(message.embeds[0].image?.url || "")
-                        .setColor('RED')
-                        .setTimestamp(card.time_spawned);
-
-                    message.edit({ embeds: [embed] });
-
-                    guild.currentCards.splice(index, 1);
-
-                    guild.save();
-
-                    console.log(`Despawned card ${card.captcha} in ${channel.guild.name} (${channel.guild.id})`);
-                } else {
-                    guild.currentCards[index].time_until_despawn -= 10000;
-                }
-            });
-        });
     }
 
     async spawnCard_force(guild_id: string, channel_id: string) {
@@ -204,8 +164,22 @@ class CardService {
             await this.spawnCard();
         });
 
-        cron.schedule(cronJobs.despawn, async () => {
-            await this.despawnCard();
+        cron.schedule("0 6 * * *", async () => {
+            const guilds = await guild.find();
+
+            guilds.forEach((guild) => {
+                if (guild.currentCards.length === 0) return;
+
+
+                guild.currentCards.forEach(async () => {
+                    // Remove all cards that have been spawned
+                    guild.currentCards = [];
+
+                    setTimeout(async () => {
+                        await guild.save();
+                    }, 2000);
+                });
+            });
         });
     }
 
@@ -232,18 +206,13 @@ class CardService {
                             .setLabel("View Card")
                             .setEmoji("📄")
                             .setStyle("LINK"),
-                        new MessageButton()
-                            .setURL(`https://cards.goddessanime.com/`)
-                            .setLabel("View All Cards")
-                            .setEmoji("📄")
-                            .setStyle("LINK"),
                     );
 
-                    this.client.channels.fetch(process.env.CARD_UPDATE_CHANNEL as string).then((channel) => {
-                        (channel as TextBasedChannel).send({ embeds: [embed], components: [row] });
-                    });
+                this.client.channels.fetch(process.env.CARD_UPDATE_CHANNEL as string).then((channel) => {
+                    (channel as TextBasedChannel).send({ embeds: [embed], components: [row] });
+                });
 
-                    
+
             }
         });
     }

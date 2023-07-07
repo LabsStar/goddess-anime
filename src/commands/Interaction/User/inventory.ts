@@ -3,6 +3,9 @@ import { CommandInteraction, MessageEmbed, MessageActionRow, MessageButton } fro
 import Command from "../../../interfaces/Command";
 import user from '../../../models/user';
 import cards from '../../../models/cards';
+import { ObjectId } from 'mongodb';
+const wait = require('util').promisify(setTimeout);
+
 
 const shouldDisable = (currentPage: number, pageLength: number, isNext: boolean) => {
     if (!isNext) return currentPage === 0 || currentPage >= pageLength;
@@ -16,8 +19,8 @@ export const command: Command = {
         .addNumberOption(option => option.setName('page').setDescription('The page you want to go to.').setRequired(false)),
     hasToBeLinked: true,
     async execute(interaction: CommandInteraction) {
-
-        // await interaction.deferReply();
+        const page = interaction.options.getNumber('page') || 1;
+        await interaction.deferReply();
 
         const { channel, guild, client } = interaction;
 
@@ -25,8 +28,16 @@ export const command: Command = {
 
         if (!userDoc) return interaction.reply({ content: "You don't have an account yet! Please run `/link` to create one.", ephemeral: true });
 
-        let userCards = await cards.find({ _id: { $in: userDoc?.cards.map((card) => card.id) } });
-        let currentPage = 0 || interaction.options.getNumber('page')! - 1;
+        let UCAARDS: () => Promise<any[]> = async () => {
+            let userCards: any[] = [];
+            for (const card of userDoc.cards) {
+                userCards.push(await cards.findOne({ _id: new ObjectId(card.id) }));
+            }
+            return Promise.all(userCards);
+        };
+
+        let userCards = await UCAARDS();
+        let currentPage = page - 1;
         let pages = [] as { embeds: MessageEmbed[], row: MessageActionRow }[];
 
         pages = userCards.map((_, index) => {
@@ -42,15 +53,15 @@ export const command: Command = {
                     .addComponents(
                         new MessageButton()
                             .setCustomId('previous')
-                            .setLabel('Previous')
+                            .setEmoji("<:6321appdirectorylarrowblokdark:1126645289164484679>")
                             .setStyle('PRIMARY'),
                         new MessageButton()
-                            .setURL(`https://goddessanime.com/card/${_._id}`)
+                            .setURL(`https://goddessanime.com/card/${_._id}?utm_source=discord&utm_medium=bot&utm_campaign=inventory&user=${interaction.user.id}`)
                             .setLabel('View Card')
                             .setStyle('LINK'),
                         new MessageButton()
                             .setCustomId('next')
-                            .setLabel('Next')
+                            .setEmoji("<:3409appdirectoryrarrowblokdark:1126645287667126333>")
                             .setStyle('PRIMARY')
                     )
 
@@ -59,29 +70,25 @@ export const command: Command = {
 
         if (pages.length === 0) return interaction.reply({ content: 'You have no cards.', ephemeral: true });
 
-        await interaction.reply({ embeds: pages[currentPage].embeds, components: [pages[currentPage].row] });
+        await interaction.editReply({ embeds: pages[currentPage].embeds, components: [pages[currentPage].row] });
 
 
+        client.on('interactionCreate', async (i) => {
+            if (!i.isButton()) return;
 
-        const collector = interaction.channel?.createMessageComponentCollector({ componentType: 'BUTTON', time: 60000 });
+            if (i.user.id !== interaction.user.id) return i.reply({ content: `Sorry, but only ${interaction.user.username} can use this button!`, ephemeral: true });
 
-        collector?.on('collect', async (i) => {
             if (i.customId === 'previous') {
                 if (currentPage === 0) return i.reply({ content: 'You are already on the first page.', ephemeral: true });
                 currentPage--;
                 await i.update({ embeds: pages[currentPage].embeds, components: [pages[currentPage].row] });
             }
-            else if (i.customId === 'next') {
+
+            if (i.customId === 'next') {
                 if (currentPage === pages.length - 1) return i.reply({ content: 'You are already on the last page.', ephemeral: true });
                 currentPage++;
                 await i.update({ embeds: pages[currentPage].embeds, components: [pages[currentPage].row] });
             }
         });
-
-        collector?.on('end', async (collected, reason) => {
-            if (reason === 'time') {
-                await interaction.editReply({ content: 'Inventory closed due to inactivity.', components: [] });
-            }
-        });
     }
-} as Command; // console.log(`Current Page: ${currentPage}. Total Pages: ${pages.length}. Pages Left: ${pages.length - currentPage}`);
+} as Command;

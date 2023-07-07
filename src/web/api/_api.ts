@@ -370,7 +370,7 @@ apirouter.get("/process/:type?/:subType?", async (req: Request, res: Response) =
         config: config,
     };
 
-    
+
 
     if (!req.params.type) return res.json({ error: false, message: processInfo });
 
@@ -384,44 +384,44 @@ apirouter.get("/process/:type?/:subType?", async (req: Request, res: Response) =
 
 apirouter.post("/applicaton-auth", async (req: Request, res: Response) => {
     try {
-      const { client_id, client_secret, auth_token } = req.body;
-  
-      if (!client_id || !client_secret || !auth_token) return res.status(400).json({ error: true, message: "Missing required fields." });
-      
-  
-      const userDoc = await user.findOne({ token: auth_token });
-      if (!userDoc) return res.status(404).json({ error: true, message: "Not authorized." });
-      
-  
-      const application = await developer_applications.findOne({ client_secret: client_secret });
-      if (!application) return res.status(404).json({ error: true, message: "Application not found." });
-      
-  
-      if (application.client_id !== client_id) return res.status(401).json({ error: true, message: "Invalid client ID." });
-  
-      if (application.client_secret !== client_secret) return res.status(401).json({ error: true, message: "Invalid client secret." });
-  
-      if (application.status !== ApplicationStatus.ACCEPTED) return res.status(401).json({ error: true, message: "Application not accepted." });
-      
-  
-      if (application.authorized_users.includes(userDoc.discordId)) return res.status(401).json({ error: true, message: "You are already authorized." });
-      
-  
-      application.authorized_users.push(userDoc.discordId);
-      await application.save();
-  
-      userDoc.applications.push(application.client_id);
-      await userDoc.save();
-  
-      res.json({ error: false, message: "Successfully authorized." });
+        const { client_id, client_secret, auth_token } = req.body;
+
+        if (!client_id || !client_secret || !auth_token) return res.status(400).json({ error: true, message: "Missing required fields." });
+
+
+        const userDoc = await user.findOne({ token: auth_token });
+        if (!userDoc) return res.status(404).json({ error: true, message: "Not authorized." });
+
+
+        const application = await developer_applications.findOne({ client_secret: client_secret });
+        if (!application) return res.status(404).json({ error: true, message: "Application not found." });
+
+
+        if (application.client_id !== client_id) return res.status(401).json({ error: true, message: "Invalid client ID." });
+
+        if (application.client_secret !== client_secret) return res.status(401).json({ error: true, message: "Invalid client secret." });
+
+        if (application.status !== ApplicationStatus.ACCEPTED) return res.status(401).json({ error: true, message: "Application not accepted." });
+
+
+        if (application.authorized_users.includes(userDoc.discordId)) return res.status(401).json({ error: true, message: "You are already authorized." });
+
+
+        application.authorized_users.push(userDoc.discordId);
+        await application.save();
+
+        userDoc.applications.push(application.client_id);
+        await userDoc.save();
+
+        res.json({ error: false, message: "Successfully authorized." });
     } catch (error) {
-      console.error("Error in application authorization:", error);
-      res.status(500).json({ error: true, message: "Internal server error." });
+        console.error("Error in application authorization:", error);
+        res.status(500).json({ error: true, message: "Internal server error." });
     }
-  });
+});
 
 
-  apirouter.get("/logs", async (req: Request, res: Response) => {
+apirouter.get("/logs", async (req: Request, res: Response) => {
     const logFilePath = path.resolve(__dirname, "../../../../log.txt");
 
     try {
@@ -432,8 +432,24 @@ apirouter.post("/applicaton-auth", async (req: Request, res: Response) => {
         return res.status(404).json({ error: true, message: "../../../log.txt is not found. Please Contact the developers." });
     }
 
-  });
-  
+});
+
+apirouter.get("/social-name/:name", async (req: Request, res: Response) => {
+    const { name } = req.params;
+
+    if (!name) return res.status(400).json({ error: true, message: "Missing required fields." });
+
+    const socialName = await user.findOne({ customUsername: name });
+
+    if (!socialName) return res.status(404).json({ error: true, message: "Social name not found." });
+
+    return res.json({ error: false, data: {
+        domain: socialName.domain,
+        id: socialName.discordId,
+        username: socialName.username,
+    }});
+});
+
 
 
 

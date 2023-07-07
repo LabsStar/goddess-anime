@@ -8,8 +8,8 @@ import CustomClient from '../interfaces/CustomClient';
 
 const stripe_config = {
     KEYS: {
-        SECRET: "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",
-        PUBLISHABLE: "pk_live_51NLoLxI8Ok4fZCOTDv7Ie6XRVP9mUZnKJvdwYHZTkpbloDfmf64NsomM8BiwxUhvG9j6krkxFETXyUkzmquEMqEN00qsHJx2iA",
+        SECRET: "",
+        PUBLISHABLE: "",
     },
     ITEMS: {
         PREMIUM_OTAKU: "price_1NQYfhI8Ok4fZCOTbYHzLxcq",
