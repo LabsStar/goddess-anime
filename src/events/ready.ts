@@ -9,9 +9,12 @@ import system from "../models/system";
 import cron from "node-cron";
 import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import shop from "../models/shop";
-import ConsoleLogger from "../utils/file.logger";
 import cards from "../models/cards";
 const verison = require("../../package.json").version;
+import user from "../models/user";
+import generateStats from "../utils/generateStats";
+const wait = require("util").promisify(setTimeout);
+import guild from "../models/guild";
 
 module.exports = {
   name: "ready",
@@ -19,8 +22,6 @@ module.exports = {
   async execute(client: Client) {
     const cardService = new CardService(client);
     const activity = new Activity(client);
-    const consolelogger = new ConsoleLogger("log.txt");
-    consolelogger.startLogging();
 
     console.clear();
     console.log(`Logged in as ${client.user?.tag}!`);
@@ -132,6 +133,25 @@ module.exports = {
         return;
       }
     });
+
+
+    for (const guilds of client.guilds.cache.values()) {
+      if (!guilds.available) continue;
+
+      const guildData = await guild.findOne({ guildID: guilds.id });
+
+      if (!guildData) {
+        const newGuild = new guild({
+          guildId: guilds.id,
+          spawnChannel: null,
+          currentCards: [],
+          updateChannel: null,
+        });
+
+        await newGuild.save();
+      }
+    }
+    
 
 
   },

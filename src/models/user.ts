@@ -214,6 +214,11 @@ const UserSchema = new Schema({
         default: "goddessanime.com",
     },
 
+    main_card: {
+        type: String,
+        required: false,
+    },
+
 }, { timestamps: true });
 
 export default mongoose.model("User", UserSchema);

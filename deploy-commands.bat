@@ -1,3 +1,5 @@
 @echo off
 REM Description: Deploy the bot's commands
-npm run deploy-commands
+@REM Get any arguments passed to the script
+set args=%*
+npm run deploy-commands %args%

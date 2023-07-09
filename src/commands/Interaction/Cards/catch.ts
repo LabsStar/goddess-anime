@@ -5,6 +5,7 @@ import user from '../../../models/user';
 import guild from '../../../models/guild';
 import cards from '../../../models/cards';
 import Activity from '../../../services/activity';
+import generateStats from '../../../utils/generateStats';
 
 import { generateCardId } from '../../../utils/generate';
 
@@ -52,7 +53,9 @@ export const command: Command = {
 
     userDB.cards.push({
       id: cardDB._id,
-      personal_id: generateCardId()
+      personal_id: generateCardId(),
+      stats: generateStats(),
+      level: 0 
     });
 
     await userDB.save();
