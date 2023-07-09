@@ -46,7 +46,8 @@ module.exports = {
 
     setInterval(() => {
       const randomActivity = pres[Math.floor(Math.random() * pres.length)];
-      client.user?.setActivity(randomActivity, { type: "WATCHING" });
+      const randomType = Math.random() < 0.5 ? "WATCHING" : "PLAYING"; // 50% chance of watching, 50% chance of playing
+      client.user?.setActivity(randomActivity, { type: randomType });
     }, 5000)
 
 
