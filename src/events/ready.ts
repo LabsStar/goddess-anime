@@ -38,6 +38,7 @@ module.exports = {
       `${client.guilds.cache.size} servers!`,
       `${client.users.cache.size} users!`,
       `Made with ❤️ by hylia.dev & hyperstar.cloud`,
+      `View our source code at: g.hylia.dev`
     ]
 
 
