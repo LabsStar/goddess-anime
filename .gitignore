@@ -5,3 +5,5 @@ package-lock.json
 unused.ts
 .vscode
 log.txt
+src/web/public/assets/js/scripter.js
+src/web/public/assets/js/console.js

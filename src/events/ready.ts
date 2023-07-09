@@ -10,6 +10,7 @@ import cron from "node-cron";
 import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import shop from "../models/shop";
 import ConsoleLogger from "../utils/file.logger";
+import cards from "../models/cards"
 
 module.exports = {
   name: "ready",
@@ -120,6 +121,7 @@ module.exports = {
         return;
       }
     });
+
 
   },
 };
