@@ -11,16 +11,16 @@ const { DEVELOPER_PREFIX, COMMUNITY_UPDATES_CHANNEL, BOT_ID, COINS } = config;
 const supportServer = process.env.SUPPORT_SERVER;
 const staffRole = process.env.STAFF_ROLE;
 
-const generateCoins = async (u: string) => {
+const generateCoins = async (u: string): Promise<boolean> => {
   console.log(`Generating coins for user: ${u}`);
 
   // Step 1: Retrieve the user document from the database
   const userDoc = await user.findOne({ discordId: u });
 
-  // If the user document doesn't exist, return
+  // If the user document doesn't exist, return false
   if (!userDoc) {
     logger.warn('User document not found.');
-    return;
+    return false;
   }
 
   // Assign the user's bank value to user_bank
@@ -34,10 +34,14 @@ const generateCoins = async (u: string) => {
 
   // Step 2: Generate random coins based on verification status
   if (isVerified) {
-    coinsToAdd = Math.floor(Math.random() * COINS.verified) + 1; // Random number between 1 and 100 (inclusive)
+    const verifiedMultiplier = Math.random() < 0.2 ? 5 : 1; // 20% chance to get 5 times more coins
+    coinsToAdd = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 20 (inclusive)
+    coinsToAdd *= verifiedMultiplier;
     console.log(`Generated ${coinsToAdd} coins for verified user.`);
   } else {
-    coinsToAdd = Math.floor(Math.random() * COINS.unverified) + 1; // Random number between 1 and 40 (inclusive)
+    const unverifiedMultiplier = Math.random() < 0.1 ? 10 : 1; // 10% chance to get 10 times more coins
+    coinsToAdd = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10 (inclusive)
+    coinsToAdd *= unverifiedMultiplier;
     console.log(`Generated ${coinsToAdd} coins for unverified user.`);
   }
 
@@ -51,7 +55,9 @@ const generateCoins = async (u: string) => {
   await userDoc.save();
 
   console.log(`Coins generated and saved for user: ${u}`);
+  return true;
 };
+
 
 
 module.exports = {
@@ -135,7 +141,7 @@ module.exports = {
 
     if (message.author.bot) return;
 
-    // await generateCoins(message.author.id);
+    await generateCoins(message.author.id);
 
 
   },
