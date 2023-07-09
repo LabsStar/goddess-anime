@@ -11,8 +11,6 @@ import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import shop from "../models/shop";
 import cards from "../models/cards";
 const verison = require("../../package.json").version;
-import user from "../models/user";
-import generateStats from "../utils/generateStats";
 const wait = require("util").promisify(setTimeout);
 import guild from "../models/guild";
 
@@ -59,9 +57,6 @@ module.exports = {
     db.once("open", () => {
       console.log("Connected to MongoDB");
     });
-
-    console.error("Test")
-    console.warn("Test")
 
     webServer(client);
 
@@ -135,24 +130,14 @@ module.exports = {
     });
 
 
-    for (const guilds of client.guilds.cache.values()) {
-      if (!guilds.available) continue;
+    cron.schedule("0 6 * * *", async () => {
+      for (const guilds of await guild.find({})) {
+        guilds.currentCards = [];
+        await guilds.save();
 
-      const guildData = await guild.findOne({ guildID: guilds.id });
-
-      if (!guildData) {
-        const newGuild = new guild({
-          guildId: guilds.id,
-          spawnChannel: null,
-          currentCards: [],
-          updateChannel: null,
-        });
-
-        await newGuild.save();
+        console.log(`Reset cards for ${client.guilds.cache.get(guilds.guildId as string)?.name}`);
       }
-    }
-    
-
-
+    });
+  
   },
 };
