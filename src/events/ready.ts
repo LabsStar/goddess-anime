@@ -10,7 +10,8 @@ import cron from "node-cron";
 import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import shop from "../models/shop";
 import ConsoleLogger from "../utils/file.logger";
-import cards from "../models/cards"
+import cards from "../models/cards";
+const verison = require("../../package.json").version;
 
 module.exports = {
   name: "ready",
@@ -30,7 +31,15 @@ module.exports = {
       "/link - to link your account",
       "/help - get help information",
       "goddessanime.com",
+      `v${verison}`,
+      "your heart",
+      `${await cards.countDocuments() - 1}+ cards!`,
+      `Open Sourced since ${config.openSourceDate}`,
+      `${client.guilds.cache.size} servers!`,
+      `${client.users.cache.size} users!`,
+      `Made with ❤️ by hylia.dev & hyperstar.cloud`,
     ]
+
 
     client.user?.setActivity("goddessanime.com", { type: "WATCHING" });
 

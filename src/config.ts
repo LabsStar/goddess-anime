@@ -36,6 +36,7 @@ const config = {
     },
     OPEN_FOR_DEVLOPERS: false,
     AUTOMATED_USERS: ["547923574833545226"],
+    openSourceDate: "2023-05-24",
 };
 
 export default config;
