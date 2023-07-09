@@ -31,6 +31,6 @@ export default class BattleClient {
             .setColor("RED")
             .setImage("https://contrib.rocks/image?repo=LabsStar/goddess-anime");
 
-        return interaction.reply({ embeds: [soon_embed], ephemeral: true });
+        return interaction.reply({ embeds: [soon_embed], ephemeral: false });
     }
 }
