@@ -14,7 +14,7 @@ const verison = require("../../package.json").version;
 const wait = require("util").promisify(setTimeout);
 import guild from "../models/guild";
 import VersionManager from "../services/VersionManager";
-const versionManager = new VersionManager();
+const versionManager = new VersionManager(60000); // 1 minute 
 
 module.exports = {
   name: "ready",
@@ -24,7 +24,7 @@ module.exports = {
     const activity = new Activity(client);
 
     console.clear();
-    await versionManager.checkVersion();
+    await versionManager.checkVersion(false);
     console.log(`Logged in as ${client.user?.tag}!`);
 
     mongoose.connect(process.env.MONGO_URI as string);
