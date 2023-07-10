@@ -1,0 +1,62 @@
+# Version Management
+
+We have a versioning system in place for the bot. We check if the version is the same as the GitHub latest release. If not, we call the update function.
+
+# Functions
+
+## Update
+
+| Function     | Description                                            |
+| ------------ | ------------------------------------------------------ |
+| `update()`   | Opens a new process and runs the update script.        |
+
+# Update Script
+
+We have `3` custom programs that we use to update the bot.
+
+## Program 1
+win32.version.manager.exe
+
+This program is used by **Windows** to update the bot. It is a simple program that opens the GitHub releases page.
+
+## Program 2
+linux.version.manager.exe
+
+This program is used by **Linux** to update the bot. It is a simple program that opens the GitHub releases page.
+
+## Program 3
+mac.version.manager.exe
+
+This program is used by **MacOS** to update the bot. It is a simple program that opens the GitHub releases page.
+
+# How it works
+
+The necessary header files are included:
+
+- `<iostream>` for input/output operations
+- `<cstdlib>` for the `system()` function
+- `<string>` for string manipulation.
+
+The `main()` function is defined with two arguments: `int argc` and `char* argv[]`. These arguments represent the number of command-line arguments and an array of strings containing those arguments, respectively.
+
+Inside the `main()` function, the code checks if the number of command-line arguments is exactly 2. If it's not, the program prints a usage message indicating that it expects one command-line argument (`<tag>`) and returns an error code of 1.
+
+If the number of arguments is correct, the first command-line argument (`argv[1]`) is stored in the `arg1` string variable.
+
+The base URL is created by concatenating the `arg1` string with `"https://update-goddess.hylia.dev/tag/"`. This forms the URL for the specific tag of the repository.
+
+A string variable named `command` is declared. Its content depends on the operating system:
+
+- On Windows (`_WIN32` macro is defined), the command is set to `"start "`.
+- On macOS (`__APPLE__` macro is defined), the command is set to `"open "`.
+- On Linux (no specific macro defined), the command is set to `"xdg-open "`.
+
+The constructed URL is appended to the `command` string.
+
+The `system()` function is called with the `command.c_str()` argument. This function executes the command in the default shell.
+
+The return value of `system()` is checked. If it's 0, the command executed successfully. In that case, the program prints a message indicating the redirection to the URL.
+
+If the return value is not 0, an error message is printed, indicating the failure to open the default browser. The program then returns an error code of 1.
+
+Finally, the program returns 0 to indicate successful execution.
