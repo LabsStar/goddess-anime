@@ -131,6 +131,8 @@ export const command: Command = {
 
         userDB.dailyRewards.lastClaimed = new Date();
 
+        await userDB.save();
+
         try {
             await interaction.client.users.fetch(interaction.user.id).then(async (user) => {
                 await user.send({ embeds: [reward.embed] });
