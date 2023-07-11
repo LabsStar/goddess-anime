@@ -219,6 +219,11 @@ const UserSchema = new Schema({
         required: false,
     },
 
+    dailyRewards: {
+        type: Object,
+        required: false,
+    }
+
 }, { timestamps: true });
 
 export default mongoose.model("User", UserSchema);
