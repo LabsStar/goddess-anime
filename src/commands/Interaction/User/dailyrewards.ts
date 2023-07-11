@@ -73,81 +73,93 @@ export const command: Command = {
         .setDescription('Check your daily rewards'),
     hasToBeLinked: true,
     async execute(interaction: CommandInteraction) {
-        await interaction.deferReply();
-        const userDB = await user.findOne({ discordId: interaction.user.id });
+        return interaction.reply({ content: "This command is currently disabled.", ephemeral: true });
+        // await interaction.deferReply();
+        // const userDB = await user.findOne({ discordId: interaction.user.id });
 
-        if (!userDB) return interaction.editReply({ content: 'You need to link your account first!' });
+        // if (!userDB) return interaction.editReply({ content: 'You need to link your account first!' });
 
-        if (!userDB.dailyRewards) {
-            userDB.dailyRewards = {
-                lastClaimed: new Date(),
-            };
+        // if (!userDB.dailyRewards) {
+        //     userDB.dailyRewards = {
+        //         lastClaimed: new Date(),
+        //     };
 
-            await userDB.save();
-        }
+        //     await userDB.save();
+        // }
+
+        // await wait(1000);
+
+        // // Check to see if the user has already claimed their daily rewards
+        // await interaction.editReply({ content: 'Checking if you have already claimed your daily rewards...' });
+
+        // await wait(2000);
+
+        // const check = () => {
+        //     /**
+        //     * lastClaimed: 2023-07-09T14:06:10.230Z,
+        //     */
+
+        //     const lastClaimed = new Date(userDB.dailyRewards.lastClaimed);
+
+        //     const now = new Date();
+
+        //     if (lastClaimed.getDate() === now.getDate() && lastClaimed.getMonth() === now.getMonth() && lastClaimed.getFullYear() === now.getFullYear()) {
+        //         return false;
+        //     } else {
+        //         return true;
+        //     }
+        // }
+
+        // const checkResult = check();
         
-       await wait(1000);
+        // await wait(2000);
 
-        const lastClaimed = new Date(userDB.dailyRewards.lastClaimed);
+        // if (!checkResult) return interaction.editReply({ content: 'You have already claimed your daily rewards!' });
 
-        const nextClaim = new Date(lastClaimed.getTime() + 86400000);
+        // await interaction.editReply({ content: 'Generating your daily rewards...' });
 
-        if (nextClaim > new Date()) {
-            const timeLeft = nextClaim.getTime() - new Date().getTime();
+        // await wait(2000);
 
-            const hours = Math.floor(timeLeft / 3600000);
-            const minutes = Math.floor((timeLeft % 3600000) / 60000);
-            const seconds = Math.floor(((timeLeft % 360000) % 60000) / 1000);
+        // const reward = await g();
 
-            return interaction.editReply({ content: `You can claim your daily rewards in ${hours ? `${hours} hours, ` : ""}${minutes ? `${minutes} minutes, ` : ""}${seconds} seconds!` });
-        }
+        // if (!reward) return interaction.editReply({ content: 'Something went wrong!' });
 
+        // if (reward.type === "card") {
+        //     userDB.cards.push({
+        //         id: reward.card?.id,
+        //         personal_id: reward.card?.personal_id,
+        //         stats: generateStats(),
+        //         level: 0
+        //     });
 
+        //     userDB.dailyRewards.lastClaimed = new Date();
 
-        const reward = await g();
+        //     await userDB.save();
+        // }
 
-        if (!reward) return interaction.editReply({ content: 'Something went wrong!' });
+        // if (reward.type === "coins") {
+        //     userDB.bank += reward.coins || 0;
 
-        if (reward.type === "card") {
-            userDB.cards.push({
-                id: reward.card?.id,
-                personal_id: reward.card?.personal_id,
-                stats: generateStats(),
-                level: 0
-            });
+        //     userDB.dailyRewards.lastClaimed = new Date();
 
-            userDB.dailyRewards.lastClaimed = new Date();
+        //     await userDB.save();
+        // }
 
-            await userDB.save();
-        }
+        // try {
+        //     await interaction.client.users.fetch(interaction.user.id).then(async (user) => {
+        //         await user.send({ embeds: [reward.embed] });
+        //     });
 
-        if (reward.type === "coins") {
-            userDB.bank += reward.coins || 0;
+        //     await interaction.editReply({ content: 'Check your DMs!' });
+        // } catch (err) {
+        //     const checkErrorMessage = (err as Error).message.toLowerCase();
 
-            userDB.dailyRewards.lastClaimed = new Date();
-
-            await userDB.save();
-        }
-
-        userDB.dailyRewards.lastClaimed = new Date();
-
-        await userDB.save();
-
-        try {
-            await interaction.client.users.fetch(interaction.user.id).then(async (user) => {
-                await user.send({ embeds: [reward.embed] });
-            });
-
-            await interaction.editReply({ content: 'Check your DMs!' });
-        } catch (err) {
-            const checkErrorMessage = (err as Error).message.toLowerCase();
-
-            if (checkErrorMessage.includes("cannot send messages to this user")) {
-                await interaction.editReply({ content: `I cannot send you DMs!` });
-            } else {
-                await interaction.editReply({ content: `Something went wrong!\n\n\`\`\`${(err as Error).message}\`\`\`` });
-            }
-        }
+        //     if (checkErrorMessage.includes("cannot send messages to this user")) {
+        //         await interaction.editReply({ content: `I cannot send you DMs!` });
+        //     } else {
+        //         await interaction.editReply({ content: `Something went wrong!\n\n\`\`\`${(err as Error).message}\`\`\`` });
+        //     }
+        // }
 
     }
 } as Command;
