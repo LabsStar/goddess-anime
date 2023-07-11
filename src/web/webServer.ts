@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-import { Client } from "discord.js";
+import { Client, MessageEmbed } from 'discord.js';
 import logger from '../utils/logger';
 import cron from "node-cron";
 import fetch from "node-fetch";
@@ -26,6 +26,7 @@ import devrouter from './developer/_api';
 import { ApplicationStatus, Permissions } from "../utils/developerapps";
 import striperouter from './api/stripe';
 import componentsrouter from './api/components';
+import guild from '../models/guild';
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
 
