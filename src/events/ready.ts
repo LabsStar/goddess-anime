@@ -34,11 +34,10 @@ module.exports = {
       "/help - get help information",
       "goddessanime.com",
       `v${verison}`,
-      "your heart",
       `${await cards.countDocuments() - 1}+ cards!`,
       `Open Sourced since ${config.openSourceDate}`,
-      `${client.guilds.cache.size} servers!`,
-      `${client.users.cache.size} users!`,
+      `with ${client.guilds.cache.size} servers!`,
+      `with ${client.users.cache.size} users!`,
       `Made with ❤️ by hylia.dev & hyperstar.cloud`,
       `View our source code at: g.hylia.dev`
     ]
