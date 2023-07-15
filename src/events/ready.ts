@@ -20,11 +20,10 @@ module.exports = {
   once: true,
   async execute(client: Client) {
     const cardService = new CardService(client);
-    const activity = new Activity(client);
 
     console.clear();
     await versionManager.checkVersion(false);
-    console.log(`Logged in as ${client.user?.tag}!`);
+    console.log(`Logged in as ${client.user?.tag}! | ${client.user?.id}`);
 
     mongoose.connect(process.env.MONGO_URI as string);
 
@@ -50,7 +49,6 @@ module.exports = {
       client.user?.setActivity(randomActivity, { type: randomType });
     }, 5000)
 
-
     const db = mongoose.connection;
 
     db.on("error", console.error.bind(console, "connection error:"));
@@ -61,55 +59,10 @@ module.exports = {
 
     webServer(client);
 
-
-    cron.schedule("*/1 * * * *", async () => {
-      const systemStatus = await system.findOne({});
-
-      if (systemStatus?.isDown) {
-        if (systemStatus.expectedDowntime.getTime() < Date.now()) {
-          await system.updateOne({ isDown: false });
-
-          const server = client.guilds.cache.get(process.env.SUPPORT_SERVER as string);
-
-          if (!server) return;
-
-          const pusher = server.members.cache.get(systemStatus.downtimePusher as string);
-
-          const embed = new MessageEmbed()
-            .setTitle("System Status")
-            .setAuthor({ name: `${pusher?.user.tag}`, iconURL: pusher?.user.displayAvatarURL({ dynamic: true }), url: `https://users.goddessanime.com/${pusher?.user.id}` })
-            .setDescription("The system is now back online!")
-            .setColor("GREEN")
-            .setTimestamp();
-
-          const row = new MessageActionRow()
-            .addComponents(
-              new MessageButton()
-                .setURL(`https://status.goddessanime.com/`)
-                .setLabel("Status Page")
-                .setEmoji("📊")
-                .setStyle("LINK"),
-            );
-
-          const channel = await client.channels.fetch(config.COMMUNITY_UPDATES_CHANNEL);
-
-          if (!channel?.isText()) return;
-
-
-          try {
-            await channel.send({ embeds: [embed], components: [row] });
-          }
-          catch (err) {
-            console.log(err);
-          }
-
-        }
-      }
-    });
-
     await cardService.start();
 
-    await cardService.subscribeToUpdates();
+    //? Not needed as of now ( 3.0.0-pre.2)
+    // await cardService.subscribeToUpdates();
 
 
     cron.schedule("*/1 * * * *", async () => {
@@ -133,12 +86,13 @@ module.exports = {
 
     cron.schedule("0 6 * * *", async () => {
       for (const guilds of await guild.find({})) {
+        await wait(2000); //! SAFETY MEASURE
         guilds.currentCards = [];
-        await guilds.save();
+        await wait(2000); //! SAFETY MEASURE
+        await guilds.save(); 
 
         console.log(`Reset cards for ${client.guilds.cache.get(guilds.guildId as string)?.name}`);
       }
     });
-  
   },
 };
