@@ -2,6 +2,7 @@ import { Client, MessageEmbed, MessageActionRow, MessageButton, MessageAttachmen
 import cards from "../models/cards";
 import user from "../models/user";
 import BattleConfig from "../interfaces/BattleConfig";
+import axios from "axios";
 
 const config: BattleConfig = {
     developerMode: false,
@@ -11,6 +12,10 @@ const config: BattleConfig = {
     maxPlayers: 2,
     ownerID: "547923574833545226"
 }
+
+const getCtr = async () => {
+    return await axios.get("https://contrib.rocks/image?repo=LabsStar/goddess-anime", { responseType: "arraybuffer" });
+};
 
 export default class BattleClient {
     client: Client;
@@ -26,10 +31,10 @@ export default class BattleClient {
                 iconURL: `${interaction.client.users.cache.get(config.ownerID)?.displayAvatarURL({ dynamic: true })}`,
                 url: `https://goddessanime.com/user/${config.ownerID}`
             })
-            .setURL("https://github.com/LabsStar/goddess-anime/blob/main/src/services/BattleClient.ts")
-            .setDescription("Sorry but the **battle** feature is not available yet!\n\nIf you want to help us develop this feature, please view our `src/services/BattleClient.ts` file on our GitHub repository. Thank you!\n\n[GitHub Repository](https://github.com/LabsStar/goddess-anime/blob/main/src/services/BattleClient.ts)")
+            .setURL("https://blob.goddessanime.com/main/src/services/BattleClient.ts")
+            .setDescription("Sorry but the **battle** feature is not available yet!\n\nIf you want to help us develop this feature, please view our `src/services/BattleClient.ts` file on our GitHub repository. Thank you!\n\n[GitHub Repository](https://blob.goddessanime.com/main/src/services/BattleClient.ts)")
             .setColor("RED")
-            .setImage("https://contrib.rocks/image?repo=LabsStar/goddess-anime");
+            .setImage((await getCtr()).data)
 
         return interaction.reply({ embeds: [soon_embed], ephemeral: false });
     }

@@ -1,6 +1,6 @@
 import user from "../models/user";
 import { Client, MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
-import logger from "../utils/logger";
+
 import { Document } from "mongoose";
 import cron from "node-cron";
 import * as stripe from "stripe";

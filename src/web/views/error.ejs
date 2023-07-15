@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Goddess Anime Cards :: 404</title>
+	<title>Goddess Anime Cards :: <%= code %></title>
 	<style>
 
 	</style>
@@ -10,7 +10,7 @@
 	<meta property="og:type" content="website">
 	<meta property="og:site_name" content="Goddess Anime Cards">
 	<meta property="og:title" content="Goddess Anime Cards">
-	<meta property="og:description" content="404 Error" />
+	<meta property="og:description" content="It seems like an error has occurred. Please try again later.">
 	<meta property="og:image" content="https://media.tenor.com/hGNZ41ePbjsAAAAC/sagiri-dancing.gif">
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:site" content="Goddess Anime Cards">
@@ -31,7 +31,12 @@
             <div class="col-12">
                 <ul class="breadcrumb">
                     <li class="breadcrumb__item"><a href="/">Home</a></li>
-                    <li class="breadcrumb__item breadcrumb__item--active">Error <%= code %></li>
+                    <% var maxLength = Math.min(path.length, 10); %>
+                    <% for (var i = 0; i < maxLength - 1; i++) { %>
+                      <li class="breadcrumb__item"><a href="/<%= path[i] %>"><%= path[i] %></a></li>
+                    <% } %>
+                      <li class="breadcrumb__item breadcrumb__item--active"><%= path[path.length - 1].toUpperCase() %></li>
+
                 </ul>
             </div>
             <!-- end breadcrumb -->
@@ -43,7 +48,7 @@
                         <div class="page-404__content">
                             <h1 class="page-404__title"><%= code %></h1>
                             <p class="page-404__text" id="error-text"></p>
-                            <button class="page-404__btn" onclick="window.location.href = 'https://docs.goddessanime.com/docs/error-codes/<%= code %>'">Learn More</button>
+                            <button class="page-404__btn" onclick="window.location.href = 'https://docs.goddessanime.com/docs/Error-Codes/<%= code %>'">Learn More</button>
                         </div>
                     </div>
                 </div>

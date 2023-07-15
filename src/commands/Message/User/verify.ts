@@ -8,7 +8,9 @@ import user from "../../../models/user";
 export const command: MessageCommand = {
     name: "verify-user",
     description: "Verify a user",
+    author: "547923574833545226",
     usage: "<user>",
+    category: "User",
     async execute(message: Message, client: CustomClient, args: string[]) {
         const member = message.mentions.users.first()?.id || message.client.users.fetch(args[0]);
         const users = message.client.users.cache;

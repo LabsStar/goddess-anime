@@ -1,6 +1,6 @@
 import user from "../models/user";
 import { Client, MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
-import logger from "../utils/logger";
+
 import { Document } from "mongoose";
 import cron from "node-cron";
 
@@ -66,7 +66,7 @@ class Activity {
                 await this.client.users.cache.get(userid)?.send({ embeds: [embed], components: [row] });
             }
             catch (err) {
-                logger.error(`Failed to send activity to ${this.client.users.cache.get(userid)?.tag}!`);
+                console.error(`Failed to send activity to ${this.client.users.cache.get(userid)?.tag}!`);
             }
 
         });

@@ -5,7 +5,6 @@ import user from '../../../models/user';
 import guild from '../../../models/guild';
 import cards from '../../../models/cards';
 import Activity from '../../../services/activity';
-import logger from '../../../utils/logger';
 import config from '../../../config';
 
 import { generateCardId } from '../../../utils/generate';

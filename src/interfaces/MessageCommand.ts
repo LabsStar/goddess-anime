@@ -5,6 +5,8 @@ interface MessageCommand {
     name: string;
     description: string;
     usage?: string;
+    author: string;
+    category: string;
     execute: (message: Message<boolean>, client: CustomClient, args: string[]) => Promise<void | Message<boolean> | undefined>;
 }
 export default MessageCommand;

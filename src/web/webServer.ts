@@ -1,7 +1,6 @@
 import express from 'express';
 const app = express();
 import { Client, MessageEmbed } from 'discord.js';
-import logger from '../utils/logger';
 import cron from "node-cron";
 import fetch from "node-fetch";
 import bodyParser from "body-parser";
@@ -42,7 +41,8 @@ app.use("/stripe", striperouter);
 app.use("/components", componentsrouter);
 app.set("trust proxy", 1);
 app.use((req, res, next) => {
-    res.setHeader("X-Powered-By", "Hyperstar");
+    res.setHeader("X-Powered-By", "hyperstar.cloud v1.0.0");
+    res.setHeader("Server", "hyperstar.cloud v1.0.0");
     if (req.path.startsWith("/assets") || req.path.startsWith("/api")) return next();
     next();
 });
@@ -89,11 +89,19 @@ async function getUserCards(id: string, split: boolean) {
 function webServer(client: Client) {
 
     async function generateErrorMessage(req: any, res: any, error: string, code?: ErrorCodes) {
-        return res.render("error", {
+
+        const makePathArray = (path: string) => {
+            const pathArray = path.split("/");
+            pathArray.shift();
+            return pathArray;
+        };
+
+        return res.status(code || ErrorCodes.DEFAULT_ERROR).render("error", {
             discord: client,
             auth: await auth(req, res, null),
             error: error,
             code: code || ErrorCodes.DEFAULT_ERROR,
+            path: makePathArray(req.path),
         });
     
     }
@@ -405,10 +413,12 @@ function webServer(client: Client) {
     });
 
     app.get("/premium/:field?", async (req, res) => {
-        res.render(`premium/${req.params.field || "buy"}`, {
-            discord: client,
-            auth: await auth(req, res, null),
-        });
+        await generateErrorMessage(req, res, "Premium is currently disabled", ErrorCodes.PREMIUM_DISABLED);
+        
+        // res.render(`premium/${req.params.field || "buy"}`, {
+        //     discord: client,
+        //     auth: await auth(req, res, null),
+        // });
     });
 
     app.get("/card/:id", async (req, res) => {
@@ -594,6 +604,8 @@ function webServer(client: Client) {
 
 
     app.get("*", async (req, res) => {
+        if (req.url.includes("/assets")) return res.status(404).send("404 Not Found");
+
         return await generateErrorMessage(req, res, `Page not found`, ErrorCodes.NO_PAGE);
     });
 

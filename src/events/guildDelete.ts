@@ -2,7 +2,7 @@ import { Client, MessageEmbed, MessageActionRow, MessageButton, Guild, GuildChan
 import CustomClient from "../interfaces/CustomClient";
 import guild from "../models/guild";
 import config from "../config";
-import logger from "../utils/logger";
+
 
 module.exports = {
   name: "guildDelete",

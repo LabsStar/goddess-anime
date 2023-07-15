@@ -1,6 +1,5 @@
 import { Client } from "discord.js";
 import user from "../models/user";
-import logger from '../utils/logger';
 
 module.exports = {
     name: "userUpdate",

@@ -1,6 +1,5 @@
 import { Client } from "discord.js";
 import mongoose from "mongoose";
-import logger from '../utils/logger';
 import webServer from "../web/webServer";
 import CardService from "../services/card";
 import Activity from "../services/activity";

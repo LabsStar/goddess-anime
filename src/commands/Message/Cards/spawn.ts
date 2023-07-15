@@ -6,6 +6,8 @@ import CardService from "../../../services/card";
 export const command: MessageCommand = {
     name: "spawn-card",
     description: "Force spawn a card in the current channel",
+    author: "547923574833545226",
+    category: "Cards",
     async execute(message: Message, client: CustomClient, args: string[]) {
         const cardService = new CardService(client);
     

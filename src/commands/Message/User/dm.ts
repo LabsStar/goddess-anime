@@ -10,7 +10,9 @@ const { AUTOMATED_USERS } = config;
 export const command: MessageCommand = {
     name: "dm",
     description: "Dm a User",
+    author: "547923574833545226",
     usage: "<user> <message>",
+    category: "User",
     async execute(message: Message, client: CustomClient, args: string[]) {
 
         if (args.length < 2) return message.reply("Please enter a user and a message `<user>` `<message>`");

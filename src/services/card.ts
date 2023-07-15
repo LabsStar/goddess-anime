@@ -1,6 +1,6 @@
 import cards from "../models/cards";
 import { MessageEmbed, MessageActionRow, MessageButton, Client, TextChannel, MessageCollector, CommandInteraction, GuildChannel, TextBasedChannel } from "discord.js";
-import logger from "../utils/logger";
+
 import guild from "../models/guild";
 import cron from "node-cron";
 import config from "../config";

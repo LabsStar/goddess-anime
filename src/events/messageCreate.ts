@@ -4,7 +4,7 @@ import config from "../config";
 import axios from "axios";
 import guild from "../models/guild";
 import user from "../models/user";
-import logger from "../utils/logger";
+
 
 const { DEVELOPER_PREFIX, COMMUNITY_UPDATES_CHANNEL, BOT_ID, COINS } = config;
 
@@ -19,7 +19,7 @@ const generateCoins = async (u: string): Promise<boolean> => {
 
   // If the user document doesn't exist, return false
   if (!userDoc) {
-    logger.warn('User document not found.');
+    console.warn('User document not found.');
     return false;
   }
 

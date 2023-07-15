@@ -13,6 +13,7 @@ enum ErrorCodes {
     NO_PAGE = 559,
     INVALID_APPLICATION_ID = 18,
     NOT_LOGGED_IN = 357,
+    PREMIUM_DISABLED = 701,
 }
 
 export default ErrorCodes;

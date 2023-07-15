@@ -2,7 +2,7 @@ import { Client, MessageEmbed, MessageActionRow, MessageButton, Guild, GuildChan
 import CustomClient from "../interfaces/CustomClient";
 import guild from "../models/guild";
 import config from "../config";
-import logger from "../utils/logger";
+
 
 module.exports = {
   name: "guildCreate",
@@ -62,7 +62,7 @@ module.exports = {
             firstChannel.send({ embeds: [embed], components: [row] });
         }
         else {
-            logger.error(`No channels found in guild ${guildcreated.name} (${guildcreated.id})`);
+            console.error(`No channels found in guild ${guildcreated.name} (${guildcreated.id})`);
         }
         
     }
