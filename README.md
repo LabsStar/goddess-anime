@@ -1,103 +1,49 @@
+# Goddess Anime
 
 ![Logo](https://i.redd.it/fez-aqua-from-konosuba-fantastic-days-v0-doi4qja2uyo81.jpg?width=1920&format=pjpg&auto=webp&s=3bd26de3516075c5428eb17237557920f35cdefa)
 
+Goddess Anime Cards is a platform that caters to anime enthusiasts who are interested in trading, buying, and selling anime cards. Our website and bot provide a seamless experience for users to connect with each other and indulge in their passion for anime collectibles.
 
-# Goddess Anime
-![Discord](https://img.shields.io/discord/1110574418733838489?color=grey&label=%20&logo=discord&logoColor=red&style=for-the-badge) ![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/LabsStar/goddess-anime/master?color=light-green&label=Version&logo=canonical&style=for-the-badge) ![GitHub top language](https://img.shields.io/github/languages/top/LabsStar/goddess-anime?style=for-the-badge)
+[![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/LabsStar/goddess-anime/master?color=light-green&label=Version&logo=canonical&style=for-the-badge)](https://github.com/LabsStar/goddess-anime/releases)
+[![GitHub top language](https://img.shields.io/github/languages/top/LabsStar/goddess-anime?style=for-the-badge)](https://github.com/LabsStar/goddess-anime)
 
-Goddess Anime Cards is a website / bot where you can trade anime cards with other users. You can also buy cards from the shop and sell your own cards to other users.
+## License
 
+This project is licensed under the **CC0 1.0 Universal** license. You can learn more about it [here](https://creativecommons.org/publicdomain/zero/1.0/).
 
-# Table of Contents
-<details>
-  <summary>Table of Contents</summary>
-  <ul>
-    <li><a href="#enviroment-variables">Environment Variables</a></li>
-    <li><a href="#authors">Authors</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#feedback">Feedback</a></li>
-    <li><a href="#run-locally">Run Locally</a></li>
-    <li><a href="#support">Support</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#developer-documentation">Developer Documentation</a></li>
-  </ul>
-</details>
+## Documentation
 
+Comprehensive documentation is available at [https://docs.goddessanime.com](https://docs.goddessanime.com). It covers the API, database, and bot functionality. Our documentation is continuously updated to provide you with the most accurate and up-to-date information.
 
+## Contributors
 
-## Environment Variables
+We extend our gratitude to the following contributors for their valuable contributions to the project:
 
-To run this project, you will need to add the following environment variables to your .env file
-
-- `token` - Your Discord Bot Token - [Discord Developer Portal](https://discord.com/developers/applications)
-- `MONGO_URI` - Your MongoDB Connection String - [MongoDB](https://www.mongodb.com/)
-- `redirectUri` - Your Discord Login Url - [Discord Developer Portal](https://discord.com/developers/applications)
-- `clientSecret` - Your Discord App Secret - [Discord Developer Portal](https://discord.com/developers/applications)
-- `CARD_UPDATE_CHANNEL` - The channel ID where the bot will send card updates - [Discord Developer Portal](https://discord.com/developers/applications)
-
-
-## Authors
-
-- [@0xhylia](https://www.github.com/0xhylia) - *Initial work*
-
-
-## Features
-
-- Anime Cards
-- Anime Card Spawning / Catching
-- User Profiles
-
-
-## Feedback
-
-If you have any feedback, please reach out to us at [admin@hyperstar.cloud](mailto:admin@hyperstar.cloud)
-
-
-## Run Locally
-
-Clone the project
-
-```bash
-  git clone https://github.com/LabsStar/goddess-anime
-```
-
-Go to the project directory
-
-```bash
-  cd goddess-anime
-```
-
-Install dependencies
-
-```bash
-  npm install
-```
-
-Start the server
-
-```bash
-  npm run dev
-```
-
-
-## Support
-
-For support, email [admin@hyperstar.cloud](mailto:admin@hyperstar.cloud) or join our [Discord Server](https://discord.goddessanime.com)
-
+[![Contributors](https://contrib.rocks/image?repo=LabsStar/goddess-anime)](https://github.com/LabsStar/goddess-anime/graphs/contributors)
 
 ## Roadmap
 
-- Developer Applications
+To gain insights into our future plans and development roadmap, please visit [https://rm.goddessanime.com](https://rm.goddessanime.com).
 
-- Better Api (Add in the interface)
+## Support
 
-## Developer Documentation
-To view the developer documentation, please visit [https://docs.goddessanime.com](https://docs.goddessanime.com). This is a work in progress and will be updated as we go along.
+If you require any assistance, feel free to reach out to us via email at [admin@hyperstar.cloud](mailto:admin@hyperstar.cloud) or join our vibrant [Discord community](https://discord.goddessanime.com) for real-time support.
 
-It contains information about the API, the database, and the bot itself and how you can use it.
+## Running Locally
 
-If you have any questions, please join our [Discord Server](https://discord.goddessanime.com) and ask in the [#「📚」faq](https://discord.com/channels/1110574418733838489/1110577436879507546) channel.
+If you want to run the project locally, please refer to our [documentation](https://docs.goddessanime.com/Self-Hosting/installing-required-dependencies) for detailed instructions.
 
+## Key Features
 
-## Contributors
-![https://goddessanime.com/](https://contrib.rocks/image?repo=LabsStar/goddess-anime)
+- Anime Card Trading
+- Anime Card Spawning/Catching
+- User Profiles
+- Auto-Updating User Documents
+
+## Authors
+
+This project was initiated by [@0xhylia](https://www.github.com/0xhylia) and received contributions from various individuals.
+
+## Related Projects
+
+- [Shoob.gg](https://shoob.gg): Shoob is a unique and robust discord bot. Looking to keep your members occupied on your server? Trying to play a cool card game with your friends or grind for placements on the leaderboards?
