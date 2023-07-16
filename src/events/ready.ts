@@ -22,7 +22,7 @@ module.exports = {
     const cardService = new CardService(client);
 
     console.clear();
-    await versionManager.checkVersion(false);
+    if (process.env.checkversions) await versionManager.checkVersion(false);
     console.log(`Logged in as ${client.user?.tag}! | ${client.user?.id}`);
 
     mongoose.connect(process.env.MONGO_URI as string);
@@ -90,7 +90,7 @@ module.exports = {
         await wait(2000); //! SAFETY MEASURE
         guilds.currentCards = [];
         await wait(2000); //! SAFETY MEASURE
-        await guilds.save(); 
+        await guilds.save();
 
         console.log(`Reset cards for ${client.guilds.cache.get(guilds.guildId as string)?.name}`);
       }
