@@ -16,16 +16,8 @@ const getVersionManagerType = () => {
 };
 
 const getUpdateScript = () => {
-  switch (process.platform) {
-    case "win32":
-      return `start ./bin/Managers/Versions/${getVersionManagerType()}`;
-    case "linux":
-      return `./bin/Managers/Versions/${getVersionManagerType()}`;
-    case "darwin":
-      return `./bin/Managers/Versions/${getVersionManagerType()}`;
-    default:
-      return `./bin/Managers/Versions/${getVersionManagerType()}`;
-  }
+  const versionManagerType = getVersionManagerType();
+  return `./bin/Managers/Versions/${versionManagerType} ${version}`;
 };
 
 export default class VersionManager {
@@ -36,10 +28,8 @@ export default class VersionManager {
   }
 
   private checkCorrectTime() {
-    if (this.sleepTime < 60000) return false;
-    return true;
+    return this.sleepTime >= 60000;
   }
-
 
   private async clock() {
     setInterval(() => {
@@ -50,12 +40,12 @@ export default class VersionManager {
   async checkVersion(interval?: boolean) {
     if (!this.checkCorrectTime()) throw new Error("The sleep time must be greater than 1 minute");
     console.log(`[${interval ? "Interval" : "Manual"}] Checking for updates...`);
-    
+
     try {
       const { data } = await axios.get(`http://api.github.com/repos/${github}/releases/latest`);
 
       if (data.tag_name !== version) {
-        const updateScript = `${getUpdateScript()} ${data.tag_name}`;
+        const updateScript = getUpdateScript();
 
         exec(updateScript, (err, stdout, stderr) => {
           if (err) {
