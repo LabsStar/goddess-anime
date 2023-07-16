@@ -379,7 +379,7 @@ $(document).ready(function () {
 	/*==============================
 	Section bg
 	==============================*/
-	$('.main__video-bg, .author__cover--bg, .main__user, .collection__cover, .hero__slide').each(function(){
+	$('.main__vinv_btn-bg, .author__cover--bg, .main__user, .collection__cover, .hero__slide').each(function(){
 		if ($(this).attr('data-bg')){
 			$(this).css({
 				'background': 'url(' + $(this).data('bg') + ')',

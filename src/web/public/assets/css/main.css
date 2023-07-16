@@ -1230,17 +1230,17 @@ body::-webkit-scrollbar-thumb {
   color: #fff;
   background-color: #6164ff;
 }
-.main__video-bg {
+.main__vinv_btn-bg {
   margin-top: 60px;
   padding-bottom: 60px;
   overflow: hidden;
   position: relative;
 }
-.main__video-bg .container {
+.main__vinv_btn-bg .container {
   z-index: 2;
   position: relative;
 }
-.main__video {
+.main__vinv_btn {
   width: 160px;
   height: 50px;
   border-radius: 12px;
@@ -1258,7 +1258,7 @@ body::-webkit-scrollbar-thumb {
   font-weight: 500;
   margin-top: 30px;
 }
-.main__video:hover {
+.main__vinv_btn:hover {
   color: #6164ff;
   background-color: #222227;
 }
@@ -1334,11 +1334,11 @@ body::-webkit-scrollbar-thumb {
   .main__tabs li:last-child {
     margin-right: 0;
   }
-  .main__video-bg {
+  .main__vinv_btn-bg {
     margin-top: 70px;
     padding-bottom: 70px;
   }
-  .main__video {
+  .main__vinv_btn {
     margin-top: 40px;
   }
   .main__user {
