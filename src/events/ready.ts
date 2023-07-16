@@ -22,7 +22,7 @@ module.exports = {
     const cardService = new CardService(client);
 
     console.clear();
-    if (process.env.checkversions) await versionManager.checkVersion(false);
+    await versionManager.checkVersion(false);
     console.log(`Logged in as ${client.user?.tag}! | ${client.user?.id}`);
 
     mongoose.connect(process.env.MONGO_URI as string);

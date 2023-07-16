@@ -15,6 +15,19 @@ const getVersionManagerType = () => {
   }
 };
 
+const getUpdateScript = () => {
+  switch (process.platform) {
+    case "win32":
+      return `start ./bin/Managers/Versions/${getVersionManagerType()}`;
+    case "linux":
+      return `./bin/Managers/Versions/${getVersionManagerType()}`;
+    case "darwin":
+      return `./bin/Managers/Versions/${getVersionManagerType()}`;
+    default:
+      return `./bin/Managers/Versions/${getVersionManagerType()}`;
+  }
+};
+
 export default class VersionManager {
   private sleepTime: number;
 
@@ -42,7 +55,7 @@ export default class VersionManager {
       const { data } = await axios.get(`http://api.github.com/repos/${github}/releases/latest`);
 
       if (data.tag_name !== version) {
-        const updateScript = `start ./bin/Managers/Versions/${getVersionManagerType()} ${data.tag_name}`;
+        const updateScript = `${getUpdateScript()} ${data.tag_name}`;
 
         exec(updateScript, (err, stdout, stderr) => {
           if (err) {
