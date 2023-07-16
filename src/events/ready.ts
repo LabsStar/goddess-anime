@@ -71,6 +71,7 @@ module.exports = {
       if (!cards) return;
 
       const expiredCards = cards.filter((card) => {
+        //@ts-ignore
         return card.expires.getTime() < Date.now();
       });
 

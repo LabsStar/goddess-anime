@@ -9,13 +9,14 @@
 
 
 import { Octokit } from '@octokit/rest';
+import axios from 'axios';
 
 const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
 });
 
 
-export default async function fetchGithubRepo(repo: string, owner?: string) {
+export async function fetchGithubRepo(repo: string, owner?: string) {
     const { data } = await octokit.repos.get({
         owner: owner || 'LabsStar',
         repo,
@@ -48,4 +49,43 @@ export async function fetchGithubUserRepos(username: string) {
     });
 
     return data;
+}
+
+export async function getGithubRepoInfo(repo: string, owner?: string, locale?: string) {
+    const { data } = await octokit.repos.get({
+        owner: owner || 'LabsStar',
+        repo,
+    });
+
+    const sizeConversion = (size: number) => {
+        if (size > 1000000) {
+            return `${Math.round(size / 1000000)} MB`;
+        } else if (size > 1000) {
+            return `${Math.round(size / 1000)} KB`;
+        } else {
+            return `${size} B`;
+        }
+    };
+
+    const formatedDate = (date: string, withTime: boolean, locale: string) => {
+        const dateObj = new Date(date);
+        if (!withTime) return dateObj.toLocaleDateString(locale);
+
+        return dateObj.toLocaleString(locale);
+    };
+
+    const repoInfo = {
+        stars: data.stargazers_count,
+        forks: data.forks_count,
+        issues: data.open_issues_count,
+        size: sizeConversion(data.size),
+        language: data.language,
+        license: data.license?.name,
+        pullRequests: data.open_issues_count,
+        watchers: data.watchers_count,
+        createdAt: formatedDate(data.created_at, false, locale || "en-US"),
+        recentCommit: formatedDate(data.pushed_at, true, locale || "en-US"),
+    }
+
+    return repoInfo;
 }

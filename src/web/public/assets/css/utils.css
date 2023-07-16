@@ -97,7 +97,11 @@ ul.list li:before {
 
 
 .version {
-    color: #dcddde;
-    opacity: 0.8;
-    font-size: 0.8em;
+    background-color: #4caf50; /* Green background color */
+    color: #ffffff; /* White text color */
+    font-weight: bold; /* Bold text */
+    padding: 4px 8px; /* Add some padding around the text */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 14px; /* Adjust font size to your preference */
+    display: inline-block; /* Display as an inline element */
 }

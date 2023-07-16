@@ -36,7 +36,7 @@ export default class VersionManager {
 
   async checkVersion(interval?: boolean) {
     if (!this.checkCorrectTime()) throw new Error("The sleep time must be greater than 1 minute");
-    console.log(`[${interval ? "Manual" : "Interval"}] Checking for updates...`);
+    console.log(`[${interval ? "Interval" : "Manual"}] Checking for updates...`);
     
     try {
       const { data } = await axios.get(`http://api.github.com/repos/${github}/releases/latest`);
@@ -55,10 +55,10 @@ export default class VersionManager {
           process.exit(0);
         }, 1000);
       } else {
-        console.log(`[${interval ? "Manual" : "Interval"}] No updates found!`);
+        console.log(`[${interval ? "Interval" : "Manual"}] No updates found!`);
       }
     } catch (error) {
-      console.error(`[${interval ? "Manual" : "Interval"}] Failed to check for updates: ${(error as Error).message}`);
+      console.error(`[${interval ? "Interval" : "Manual"}] Failed to check for updates: ${(error as Error).message}`);
     }
 
     if (interval) this.clock();

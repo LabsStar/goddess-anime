@@ -8,6 +8,7 @@ export const command: Command = {
     data: new SlashCommandBuilder()
         .setName('profile')
         .setDescription('Get the profile of a user')
+        //@ts-ignore
         .addUserOption(option => option.setName('user').setDescription('The user to get the profile of').setRequired(false)),
         hasToBeLinked: false,
     async execute(interaction: CommandInteraction) {
@@ -57,6 +58,7 @@ export const command: Command = {
 
             if (!userDoc) return;
 
+            //@ts-ignore
             for (const badge of userDoc?.badges) {
                 const badgeDoc = await badges.findOne({ _id: badge });
                 badgesArray.push(badgeDoc);
@@ -84,7 +86,7 @@ export const command: Command = {
             .setURL(`https://user.goddessanime.com/${userDoc.discordId}`)
             .setThumbnail(`https://cdn.discordapp.com/avatars/${userDoc.discordId}/${userDoc.avatar}.${userDoc.avatar?.startsWith('a_') ? 'gif' : 'png'}?size=1024`)
             .setColor('GREEN')
-            .setImage(userDoc.banner)
+            .setImage(userDoc.banner || "https://media.discordapp.net/attachments/1102922824580091927/1114337386894209115/image_error.webp?width=806&height=453")
             .setTimestamp()
             .addFields(
                 { name: 'Balance', value: `$${userDoc.wallet}`, inline: true },

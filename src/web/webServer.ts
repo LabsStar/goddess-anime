@@ -26,6 +26,10 @@ import { ApplicationStatus, Permissions } from "../utils/developerapps";
 import striperouter from './api/stripe';
 import componentsrouter from './api/components';
 import guild from '../models/guild';
+import CustomClient from '../interfaces/CustomClient';
+import { getGithubRepoInfo } from '../utils/githubFetcher';
+import acceptLanguageParser from 'accept-language-parser';
+
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
 
@@ -73,7 +77,7 @@ async function getUserCards(id: string, split: boolean) {
         return null;
     }
 
-    const cardIds = userDoc.cards.map((card) => String(card.id)); // Extract id value from card object
+    const cardIds = userDoc.cards?.map((card) => String(card.id)); // Extract id value from card object
     const userCards = await cards.find({ _id: { $in: cardIds } });
 
     if (!split) {
@@ -103,7 +107,7 @@ function webServer(client: Client) {
             code: code || ErrorCodes.DEFAULT_ERROR,
             path: makePathArray(req.path),
         });
-    
+
     }
 
     app.get('/', async (req, res) => {
@@ -164,6 +168,27 @@ function webServer(client: Client) {
             code: code ? code : null,
             staff: slicedStaff,
         })
+    });
+
+    app.get("/features", async (req, res) => {
+        const langQueryParam = Array.isArray(req.query.lang) ? req.query.lang[0] : req.query.lang;
+        const langHeader = Array.isArray(req.headers["accept-language"]) ? req.headers["accept-language"][0] : req.headers["accept-language"];
+        const locale = langQueryParam || langHeader.split(",")[0] || "en-US";
+    
+        res.render("features", {
+            discord: client,
+            auth: await auth(req, res, null),
+            config: {
+                discord: {
+                    commands_count: (client as CustomClient).commands.size,
+                    guilds_count: client.guilds.cache.size,
+                    users_count: client.users.cache.size,
+                },
+                info: {
+                    github: await getGithubRepoInfo("goddess-anime", "LabsStar", locale),
+                },
+            },
+        });
     });
 
     app.get("/login", async (req, res) => {
@@ -351,10 +376,10 @@ function webServer(client: Client) {
 
 
 
-        activity.forEach((activity) => {
+        activity?.forEach((activity) => {
             activity.timestamp = new Date(activity.timestamp).getTime();
         });
-        activity.sort((a, b) => b.timestamp - a.timestamp);
+        activity?.sort((a, b) => b.timestamp - a.timestamp);
 
         res.render("user/activity", {
             discord: client,
@@ -414,7 +439,7 @@ function webServer(client: Client) {
 
     app.get("/premium/:field?", async (req, res) => {
         await generateErrorMessage(req, res, "Premium is currently disabled", ErrorCodes.PREMIUM_DISABLED);
-        
+
         // res.render(`premium/${req.params.field || "buy"}`, {
         //     discord: client,
         //     auth: await auth(req, res, null),

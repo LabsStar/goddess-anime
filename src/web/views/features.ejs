@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Goddess Anime Cards :: Features</title>
+    <style>
+
+    </style>
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Goddess Anime Cards">
+    <meta property="og:title" content="Goddess Anime Cards">
+    <meta property="og:description" content="It seems like an error has occurred. Please try again later.">
+    <meta property="og:image" content="https://media.tenor.com/hGNZ41ePbjsAAAAC/sagiri-dancing.gif">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="Goddess Anime Cards">
+    <meta name="twitter:creator" content="Goddess Anime Cards">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+    <link rel="stylesheet" href="/assets/css/utils.css">
+    <style>
+        .command {
+            color: #fff;
+            background-color: #7289da63;
+            /*#7289da1a*/
+            border-radius: 3px;
+            padding: 3px 6px;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: nowrap;
+            vertical-align: baseline;
+            font-weight: 400;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+        }
+
+        .command::before {
+            content: "/";
+        }
+
+        .command::after {
+            content: " ";
+        }
+
+        /* Tooltip Styles */
+        .tooltip-inner {
+            background-color: #333;
+            color: #fff;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: nowrap;
+            font-weight: 400;
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip.bs-tooltip-bottom .arrow::before,
+        .tooltip.bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+            border-bottom-color: #333;
+        }
+
+        .tooltip.bs-tooltip-top .arrow::before,
+        .tooltip.bs-tooltip-auto[x-placement^="top"] .arrow::before {
+            border-top-color: #333;
+        }
+
+        .tooltip.bs-tooltip-left .arrow::before,
+        .tooltip.bs-tooltip-auto[x-placement^="left"] .arrow::before {
+            border-left-color: #333;
+        }
+
+        .tooltip.bs-tooltip-right .arrow::before,
+        .tooltip.bs-tooltip-auto[x-placement^="right"] .arrow::before {
+            border-right-color: #333;
+        }
+
+        .tooltip.bs-tooltip-bottom .arrow::after,
+        .tooltip.bs-tooltip-auto[x-placement^="bottom"] .arrow::after {
+            border-bottom-color: #333;
+        }
+
+        .tooltip.bs-tooltip-top .arrow::after,
+        .tooltip.bs-tooltip-auto[x-placement^="top"] .arrow::after {
+            border-top-color: #333;
+        }
+
+        .tooltip.bs-tooltip-left .arrow::after,
+        .tooltip.bs-tooltip-auto[x-placement^="left"] .arrow::after {
+            border-left-color: #333;
+        }
+
+        .tooltip.bs-tooltip-right .arrow::after,
+        .tooltip.bs-tooltip-auto[x-placement^="right"] .arrow::after {
+            border-right-color: #333;
+        }
+
+        .tooltip-inner {
+            max-width: 900px;
+        }
+
+
+        .special_link {
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+            cursor: default;
+        }
+
+        .special_link::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            /* Position the pseudo-element just below the text */
+            left: 0;
+            width: 100%;
+            /* Make the pseudo-element cover the full width of the link */
+            height: 1px;
+            /* Set the height of the line */
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff, rgba(255, 255, 255, 0));
+            /* Use a linear gradient to create a fading effect */
+            opacity: 0;
+            /* Set initial opacity to 0 (fully transparent) */
+            animation: fadeLine 2s infinite;
+            /* Use the 'fadeLine' animation to make it fade over 2 seconds infinitely */
+            cursor: default;
+        }
+
+        @keyframes fadeLine {
+
+            0%,
+            100% {
+                opacity: 0;
+                /* At the beginning and end of the animation, the line is fully transparent */
+            }
+
+            50% {
+                opacity: 1;
+                /* At 50% of the animation, the line is fully opaque (white) */
+            }
+        }
+
+        /* feature__icon.i */
+        .icon {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <%- include ("templates/header.ejs") %>
+        <!-- main content -->
+        <main class="main">
+            <div class="container">
+                <div class="row row--grid">
+                    <!-- breadcrumb -->
+                    <div class="col-12">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb__item"><a href="/">Home</a></li>
+                            <li class="breadcrumb__item breadcrumb__item--active">Features</li>
+                        </ul>
+                    </div>
+                    <!-- end breadcrumb -->
+
+                    <!-- title -->
+                    <div class="col-12 col-xl-11">
+                        <div class="main__title main__title--page">
+                            <h1>
+                                <%= discord?.user?.username %>'s Features
+                            </h1>
+                        </div>
+                    </div>
+                    <!-- end title -->
+                </div>
+
+                <div id="term-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
+                    <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z" />
+                        </svg></button>
+
+                    <h4 class="sign__title">
+                    </h4>
+
+                    <p class="modal__text">
+                    </p>
+                </div>
+
+                <div class="row row--grid">
+                    <div class="col-12 col-lg-4">
+                        <div class="step">
+                            <span class="step__number">01</span>
+                            <h3 class="step__title">Link Your account</h3>
+                            <p class="step__text">To use the bot you need to link your <a
+                                    href="https://discord.com/">Discord</a> account to your <a
+                                    href="https://www.goddessanime.com/">Goddess Anime</a> account.
+                                To do this, run the command <span class="command" data-color="fff">link</span>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        <div class="step">
+                            <span class="step__number">02</span>
+                            <h3 class="step__title">Collect cards</h3>
+                            <p class="step__text">If you have linked your account, you can start collecting cards.
+                                To do this, run the command <span class="command" data-color="fff">claim
+                                    :captcha:</span>.
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        <div class="step">
+                            <span class="step__number">03</span>
+                            <h3 class="step__title">Set your Main Card</h3>
+                            <p class="step__text">Coming up in the release <span class="version">3.0.0-pre.4</span> you
+                                will be able to level up your <strong>Main Card</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main__video-bg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-8 col-xl-8">
+                            <div class="main__title">
+                                <h2>Why choose us?</h2>
+
+                                <p>
+                                    Many <i><strong>Anime Discord Bots</strong></i> are <span
+                                        class="modal-open special_link" data-toggle="tooltip"
+                                        title="Any text that looks like this is a explanation of a word or phrase. So click on it to learn more!"
+                                        data-text="Closed software is proprietary software owned by a specific company or individual. Its source code is not accessible to the public, limiting user customization and distribution. Examples include Microsoft Office and Adobe Photoshop."
+                                        data-header="What is Closed Source?">Closed Source</span> and we are <span
+                                        class="modal-open special_link" data-toggle="tooltip"
+                                        title="Any text that looks like this is a explanation of a word or phrase. So click on it to learn more!"
+                                        data-text="Open source software is software with source code that anyone can inspect, modify, and enhance. Examples include the Linux operating system, the Firefox web browser, and the WordPress content management system."
+                                        data-header="What is Open Source?">Open Source</span>.
+
+                                    We wanted to make it so that everyone can use the bot and view the <span class="modal-open special_link" data-toggle="tooltip"
+                                        title="Any text that looks like this is a explanation of a word or phrase. So click on it to learn more!"
+                                        data-text="Source code is the list of human-readable instructions that a programmer writes—often in a word processing program—when he is developing a program. The source code is run through a compiler to turn it into machine code, also called object code, that a computer can understand and execute."
+                                        data-header="What is Source Code?">Source Code</span>.
+
+                                    If there was a <span class="modal-open special_link" data-toggle="tooltip"
+                                        title="Any text that looks like this is a explanation of a word or phrase. So click on it to learn more!"
+                                        data-text="A bug is a general term used to describe any unexpected problem with hardware or software. A bug is an error in coding or logic that causes an unintended or unexpected result. Bugs can manifest in a variety of ways, including (but not limited to) the following: Crashing or freezing. Unexpected program behavior."
+                                        data-header="What is a Bug?">bug</span> that was annoying you, you could fix it yourself or ask someone to and have the piece of mind that it will be fixed.
+
+                                    We also wanted to make it so that you can host the bot yourself if you wanted to.
+                                </p>
+
+                                <a href="https://goddessanime.com/invite" class="main__video">Invite the bot</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row row--grid">
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="feature">
+                            <span class="feature__icon feature__icon--blue">
+                                <i class="bi bi-command icon"></i>
+                            </span>
+                            <h3 class="feature__title">Cool Commands</h3>
+                            <p class="feature__text">We have a lot of commands that you can use to interact with the
+                                bot.
+
+                                We have <%= config.discord.commands_count %>
+                                    <%= config.discord.commands_count> 1 ? 'commands' : 'command' %> for you to use.
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="feature">
+                            <span class="feature__icon feature__icon--red">
+                                <i class="bi bi-bug icon"></i>
+                            </span>
+                            <h3 class="feature__title">Bug Reports</h3>
+                            <p class="feature__text">If you find a bug, you can report it to us on our <a
+                                    href="https://github.com/LabsStar/goddess-anime/issues">GitHub</a> page.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="feature">
+                            <span class="feature__icon feature__icon--purple">
+                                <i class="bi bi-cloud-fill icon"></i>
+                            </span>
+                            <h3 class="feature__title">Open Source</h3>
+                            <p class="feature__text">Our bot is open source, so you can contribute to the bot if you
+                                want.
+                                </br>
+                                </br>
+                                We have been open source since <%= config.info.github.createdAt %>.
+                                    </br>
+                                    </br>
+                                    <span class="modal-open special_link" data-toggle="tooltip"
+                                        title="Any text that looks like this is a explanation of a word or phrase. So click on it to learn more!"
+                                        data-text="Stars: <%= config.info.github.stars %> </br> Forks: <%= config.info.github.forks %> </br> Issues: <%= config.info.github.issues %> </br> License: <%= config.info.github.license %> </br> Pull Requests: <%= config.info.github.pullRequests %> </br> Watchers: <%= config.info.github.watchers %>"
+                                        data-header="Github Data">Learn more</span>.
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="feature">
+                            <span class="feature__icon feature__icon--green">
+                                <i class="bi bi-wrench icon"></i>
+                            </span>
+                            <h3 class="feature__title">Updated Frequently</h3>
+                            <p class="feature__text">We update the bot frequently, so you can get new features and
+                                bug fixes. We also have a <a
+                                    href="https://log.goddessanime.com?utm_source=website&utm_medium=link&utm_campaign=website">changelog</a>
+                                where you can see what we have updated.
+
+                                </br>
+                                </br>
+                                We have updated the bot on <%= config.info.github.recentCommit %>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="feature">
+                            <span class="feature__icon">
+                                <i class="bi bi-braces icon"></i>
+                            </span>
+                            <h3 class="feature__title">Customizable</h3>
+                            <p class="feature__text">Set up your profile and customize your settings to your liking.
+
+                                View your profile with the <span class="command">profile</span> command.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="feature">
+                            <span class="feature__icon">
+                                <i class="bi bi-book icon"></i>
+                            </span>
+                            <h3 class="feature__title">Documentation</h3>
+                            <p class="feature__text">We have in-depth documentation on our website, so you can learn
+                                how to use the bot.
+                            </br>
+                            <a href="https://docs.goddessanime.com?utm_source=website&utm_medium=link&utm_campaign=website" style="color: #fff; text-decoration: none;">View Documentation</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="feature">
+                            <span class="feature__icon">
+                                <i class="bi bi-briefcase-fill icon"></i>
+                            </span>
+                            <h3 class="feature__title">Upcoming Features</h3>
+                            <p class="feature__text">We have a list of upcoming features that we are working on. You
+                                can view the list <a style="color: #fff; text-decoration: none;"
+                                    href="https://github.com/orgs/LabsStar/projects/2?utm_source=website&utm_medium=link&utm_campaign=website">here</a>.
+
+                                </br>
+                                </br>
+
+                                Want to suggest a feature? 
+                                Do it 
+                                <a style="color: #fff; text-decoration: none;"
+                                    href="https://suggest.goddessanime.com?utm_source=website&utm_medium=link&utm_campaign=website">here</a>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="feature feature--last">
+                            <span class="feature__icon">
+                                <i class="bi bi-download icon"></i>
+                            </span>
+                            <h3 class="feature__title">Custom Programs</h3>
+                            <p class="feature__text">We have custom programs that we use to make the bot. You can
+                                check them out <a style="color: #fff; text-decoration: none;"
+                                    href="https://apps.goddessanime.com?utm_source=website&utm_medium=link&utm_campaign=website">here</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- end main content -->
+
+        <%- include ("templates/footer.ejs") %>
+            </div>
+            </div>
+
+            <script>
+                const openModalButtons = document.querySelectorAll('.modal-open')
+
+                openModalButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const textContent = button.getAttribute('data-text');
+                        const headerContent = button.getAttribute('data-header');
+
+                        $.magnificPopup.open({
+                            items: {
+                                src: `#term-popup`,
+                            },
+                            type: 'inline',
+                            preloader: false,
+                            modal: true,
+                            callbacks: {
+                                open: function () {
+                                    $('#term-popup .sign__title').html(headerContent);
+                                    $('#term-popup .modal__text').html(textContent);
+                                }
+                            }
+                        });
+                    })
+                });
+
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
+            </script>
+
+</body>
+
+</html>
