@@ -15,6 +15,14 @@ import guild from "../models/guild";
 import VersionManager from "../services/VersionManager";
 const versionManager = new VersionManager(60000); // 1 minute 
 
+const checkIfHeroku = () => {
+  // Check if Heroku
+  if (process.env.DYNO) {
+    return true;
+  }
+  return false;
+};
+
 module.exports = {
   name: "ready",
   once: true,
@@ -22,7 +30,13 @@ module.exports = {
     const cardService = new CardService(client);
 
     console.clear();
-    await versionManager.checkVersion(false);
+
+    if (checkIfHeroku()) {
+      console.warn("Running on Heroku, disabling version manager");
+    } else {
+      await versionManager.checkVersion(false);
+    }
+    
     console.log(`Logged in as ${client.user?.tag}! | ${client.user?.id}`);
 
     mongoose.connect(process.env.MONGO_URI as string);
