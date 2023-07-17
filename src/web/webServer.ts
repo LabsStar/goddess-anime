@@ -206,7 +206,13 @@ function webServer(client: Client) {
     app.get("/features", async (req, res) => {
         const langQueryParam = Array.isArray(req.query.lang) ? req.query.lang[0] : req.query.lang;
         const langHeader = Array.isArray(req.headers["accept-language"]) ? req.headers["accept-language"][0] : req.headers["accept-language"];
-        const locale = langQueryParam || langHeader.split(",")[0] || "en-US";
+        //* TypeError: Cannot read properties of undefined (reading 'split') = langQueryParam || langHeader.split(",")[0] || "en-US";
+        let locale;
+
+        if (langQueryParam) locale = langQueryParam;
+        else if (langHeader) locale = langHeader.split(",")[0];
+        else locale = "en-US";
+        
     
         res.render("features", {
             discord: client,
