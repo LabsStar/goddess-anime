@@ -292,8 +292,7 @@
                             <p class="feature__text">We have a lot of commands that you can use to interact with the
                                 bot.
 
-                                We have <%= config.discord.commands_count %>
-                                    <%= config.discord.commands_count> 1 ? 'commands' : 'command' %> for you to use.
+                                We have <%= config.discord.commands_count %> <%= config.discord.commands_count > 1 ? 'commands' : 'command' %> for you to use.
                         </div>
                     </div>
 

@@ -40,6 +40,7 @@
     "@discordjs/builders": "^1.6.3",
     "@discordjs/rest": "^1.7.1",
     "@octokit/rest": "^19.0.13",
+    "@top-gg/sdk": "^3.1.5",
     "accept-language-parser": "^1.5.0",
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
@@ -60,6 +61,7 @@
     "pino-pretty": "^10.0.1",
     "querystring": "^0.2.1",
     "stripe": "^12.12.0",
+    "topgg-autoposter": "^2.0.1",
     "url": "^0.11.1",
     "uuid": "^9.0.0"
   },

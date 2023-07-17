@@ -14,6 +14,7 @@ const wait = require("util").promisify(setTimeout);
 import guild from "../models/guild";
 import VersionManager from "../services/VersionManager";
 const versionManager = new VersionManager(60000); // 1 minute 
+const { AutoPoster } = require('topgg-autoposter')
 
 const checkIfHeroku = () => {
   // Check if Heroku
@@ -109,5 +110,18 @@ module.exports = {
         console.log(`Reset cards for ${client.guilds.cache.get(guilds.guildId as string)?.name}`);
       }
     });
+
+    let posted: boolean = false;
+
+    const autoPoster = AutoPoster(process.env.TOPGG_TOKEN, client)
+
+    autoPoster.on('posted', () => {
+      if (!posted) {
+        console.log('Posted stats to Top.gg!')
+        posted = true;
+      } else {
+        console.log('Updated stats on Top.gg!')
+      }
+    })
   },
 };
