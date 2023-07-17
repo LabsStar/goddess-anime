@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Goddess Anime Cards :: Staff Members
+    </title>
+
+</head>
+<style>
+    .cardErrorMessage {
+        /* Make it center */
+        margin: 0 auto;
+        /* Make it color white */
+        color: white;
+    }
+</style>
+
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Goddess Anime Cards">
+<meta property="og:title" content="Take a look at our staff <%= staff.length %> members!">
+<meta property="og:description" content="Look at all the staff members we have!">
+<meta property="og:image"
+    content="https://media.discordapp.net/attachments/1020761875979452458/1130590820114899026/697482.jpg?width=668&height=473">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="Goddess Anime Cards">
+<meta name="twitter:creator" content="Goddess Anime Cards">
+<meta name="twitter:card" content="summary_large_image">
+<meta content="#52FF33" data-react-helmet="true" name="theme-color" />
+
+<body>
+    <%- include ("../templates/header.ejs") %>
+        <link rel="stylesheet" href="/assets/css/card.css">
+
+        <!-- main content -->
+        <main class="main">
+            <div class="container">
+                <div class="row row--grid">
+                    <!-- breadcrumb -->
+                    <div class="col-12">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb__item"><a href="/">Home</a></li>
+                            <li class="breadcrumb__item breadcrumb__item--active">Staff</li>
+                        </ul>
+                    </div>
+                    <!-- end breadcrumb -->
+
+                    <!-- title -->
+                    <div class="col-12">
+                        <div class="main__title main__title--page">
+                            <h1>
+                                <%= discord?.user?.username %>'s Amazing Staff Members!
+                            </h1>
+                        </div>
+                    </div>
+                    <!-- end title -->
+
+                    <!-- filter -->
+                    <div class="col-12">
+                        <div class="main__filter">
+                            <form class="main__filter-search">
+                                <input type="text" placeholder="Search for a member" id="searchInput">
+                                <button type="button" id="searchButton">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- end filter -->
+                </div>
+
+                <!-- authors -->
+                <div class="row row--grid">
+                    <div class="cardErrorMessage" id="errorMessage" style="color:red; display: none;">
+                        <h1></h1>
+                    </div>
+
+                    <% if (staff.length==0) { %>
+                        <span class="text-center cardErrorMessage">We couldn't find any staff members!</span>
+                        <% } else { %>
+                            <% staff.forEach(staff=> { %>
+                                <div class="col-12 col-sm-6 col-lg-4 cards">
+                                    <!-- card -->
+                                    <div class="card">
+                                        <a href="/user/<%= staff.id %>" class="card__cover" id="anime_card-link">
+                                            <img src="<%= staff.avatar %>" alt="" id="anime_card-img" loading="lazy">
+                                        </a>
+                                        <h3 class="card__title" id="anime_card-name">
+                                            <a href="/user/<%= staff.id %>">
+                                                <%= staff.name %>
+                                            </a>
+                                        </h3>
+                                        <div class="card__info">
+                                            <div class="card__price">
+                                                <span id="anime_card-price" style="font-size: 15px;">
+                                                   <%= staff.pronouns.length > 10 ? staff.pronouns.substring(0, 10) + '...' : staff.pronouns %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card -->
+                                </div>
+                                <% }) %>
+                                    <% } %>
+                </div>
+                <!-- end authors -->
+
+                <!-- paginator -->
+                <div class="row row--grid">
+                    <div class="col-12">
+                        <div class="paginator">
+                            <span class="paginator__pages" id="user-len">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- end paginator -->
+            </div>
+        </main>
+        <!-- end main content -->
+
+        <%- include ("../templates/footer.ejs") %>
+
+            <script>
+                const search = document.querySelector('.main__filter-search');
+                const searchButton = search.querySelector('button');
+
+                let cards = document.querySelectorAll('.cards');
+
+                const updateUserLen = () => {
+                    let userLen = 0;
+
+                    cards.forEach(card => {
+                        if (card.style.display != 'none') {
+                            userLen++;
+                        }
+                    });
+
+                    document.querySelector('#user-len').innerHTML = `Showing ${userLen} staff ${userLen == 1 ? 'member' : 'members'}`;
+                }
+
+                const updateDocumentTitle = (m) => {
+                    document.title = `Goddess Anime Cards :: Staff Members ${m ? `(${m})` : ''}`;
+                }
+
+                searchButton.addEventListener('click', () => {
+                    if (search.querySelector('input').value == '') {
+                        cards.forEach(card => {
+                            card.style.display = 'block';
+                        });
+                    } else {
+                        cards.forEach(card => {
+                            if (card.querySelector('.card__title').innerText.toLowerCase().match(search.querySelector('input').value.toLowerCase())) {
+                                card.style.transition = 'all .10s ease-in-out';
+                                card.style.display = 'block';
+                            
+                                updateUserLen();
+                                updateDocumentTitle(search.querySelector('input').value);
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+
+                search.querySelector('input').addEventListener('keyup', (e) => {
+                    searchButton.click();
+                    if (e.target.value.length > 0) console.log(`User searched for ${e.target.value}`);
+                });
+
+                search.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                });
+
+                if (window.location.search) {
+                    const query = window.location.search.split('=')[1];
+                    search.querySelector('input').value = query;
+                    searchButton.click();
+                }
+            </script>
+
+            <script>
+                document.getElementById('user-len').textContent = document.querySelectorAll('.cards').length === 1 ? '1 Staff Member' : document.querySelectorAll('.cards').length + ' Staff Members';
+            </script>
+</body>
+
+</html>

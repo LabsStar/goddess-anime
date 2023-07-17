@@ -170,6 +170,39 @@ function webServer(client: Client) {
         })
     });
 
+    app.get("/staff", async (req, res) => {
+        const staffRole = await client.guilds.cache.get(process.env.SUPPORT_SERVER as string)?.roles.cache.get(process.env.STAFF_ROLE as string);
+
+        const staff = staffRole?.members.map(async (member) => {
+            const userRecord = await user.findOne({ discordId: member.user.id });
+            const pronouns = userRecord?.pronouns || "They/Them"; // Set default value if pronouns are not found
+            const verified = userRecord?.verified || false; // Set default value if verified is not found
+
+            const staffMember = {
+                name: member.user.username,
+                avatar: member.user.displayAvatarURL({ dynamic: true }),
+                id: member.user.id,
+                pronouns: pronouns,
+                verified: verified,
+            };
+
+            return staffMember;
+        });
+
+
+        if (!staff) return await generateErrorMessage(req, res, "An error occurred", ErrorCodes.UNKOWN_ERROR);
+
+
+        const staffPromise = Promise.all(staff);
+        const staffArray = await staffPromise;
+
+        res.render("misc/staff", {
+            discord: client,
+            auth: await auth(req, res, null),
+            staff: staffArray,
+        });
+    });
+
     app.get("/features", async (req, res) => {
         const langQueryParam = Array.isArray(req.query.lang) ? req.query.lang[0] : req.query.lang;
         const langHeader = Array.isArray(req.headers["accept-language"]) ? req.headers["accept-language"][0] : req.headers["accept-language"];
