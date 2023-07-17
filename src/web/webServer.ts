@@ -628,7 +628,7 @@ function webServer(client: Client) {
     });
 
     /** Bot Utils */
-    //! Not Used. Please check out: https://f.goddessanime.com/2f1
+    //! Not Used. Please check out: https://f.goddessanime.com/2f1.md
     // const topWebhook = new Topgg.Webhook(process.env.TOPGG_WEBHOOK_AUTH || "");
 
     // app.post("/bot/utils/topgg", topWebhook.listener(async (vote: any) => {
