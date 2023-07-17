@@ -222,7 +222,12 @@ const UserSchema = new Schema({
     dailyRewards: {
         type: Object,
         required: false,
-    }
+    },
+
+    lastVoted: {
+        type: Number,
+        required: false,
+    },
 
 }, { timestamps: true });
 

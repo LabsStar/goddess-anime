@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-import { Client, MessageEmbed } from 'discord.js';
+import { Client, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js';
 import cron from "node-cron";
 import fetch from "node-fetch";
 import bodyParser from "body-parser";
@@ -29,7 +29,7 @@ import guild from '../models/guild';
 import CustomClient from '../interfaces/CustomClient';
 import { getGithubRepoInfo } from '../utils/githubFetcher';
 import acceptLanguageParser from 'accept-language-parser';
-
+const Topgg = require("@top-gg/sdk")
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
 
@@ -627,6 +627,49 @@ function webServer(client: Client) {
 
     });
 
+    /** Bot Utils */
+    //! Not Used. Please check out: https://f.goddessanime.com/2f1
+    // const topWebhook = new Topgg.Webhook(process.env.TOPGG_WEBHOOK_AUTH || "");
+
+    // app.post("/bot/utils/topgg", topWebhook.listener(async (vote: any) => {
+    //     const userDoc = await user.findOne({ discordId: vote.user });
+
+    //     if (!userDoc) return console.log(`[TOPGG] User ${vote.user} not found`);
+
+    //     const randomAmount = Math.floor(Math.random() * 100) + 1; // 1 - 100
+
+    //     //@ts-ignore
+    //     const newBalance = userDoc.bank += randomAmount;
+
+    //     // Update the user's balance and update lastVoted to now (timestamp)
+    //     await user.findOneAndUpdate({ discordId: vote.user }, { bank: newBalance, lastVoted: Date.now() });
+
+    //     console.log(`[TOPGG] User ${vote.user} voted and got ${randomAmount} coins`);
+
+    //     const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+
+    //     const embed = new MessageEmbed()
+    //         .setTitle("Thanks for voting!")
+    //         .setDescription(`You have been awarded **${randomAmount}** coins for voting!`)
+    //         .setColor("GREEN")
+
+    //     const row = new MessageActionRow()
+    //         .addComponents(
+    //             new MessageButton()
+    //                 .setLabel("Vote again")
+    //                 .setStyle("LINK")
+    //                 .setURL(`https://top.gg/bot/${client.user?.id}/vote`)
+    //         );
+
+    //     try {
+    //         const dmChannel = await client.users.fetch(vote.user);
+
+    //         await dmChannel.send({ embeds: [embed], components: [row] });
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+
+    // }));
 
     app.get("*", async (req, res) => {
         if (req.url.includes("/assets")) return res.status(404).send("404 Not Found");
