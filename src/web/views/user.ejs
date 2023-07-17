@@ -11,11 +11,15 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="Goddess Anime Cards">
     <meta name="twitter:creator" content="Goddess Anime Cards">
-    <meta name="twitter:card" content="summary_large_image"> <% if (user.color) { %>
-    <meta content="<%= user.color %>" data-react-helmet="true" name="theme-color" /> <% } else { %>
-    <meta content="#52FF33" data-react-helmet="true" name="theme-color" /> <% } %>
+    <meta name="twitter:card" content="summary_large_image">
+    <% if (user.color) { %>
+        <meta content="<%= user.color %>" data-react-helmet="true" name="theme-color" />
+    <% } else { %>
+        <meta content="#52FF33" data-react-helmet="true" name="theme-color" />
+    <% } %>
 </head>
 <style>
+    /* Styles for the head section, as it's defined in the <head> tag */
     .cardErrorMessage {
         /* Make it center */
         margin: 0 auto;
@@ -33,7 +37,8 @@
     }
 </style>
 
-<body> <%- include ("templates/header.ejs") %>
+<body>
+    <%- include("templates/header.ejs") %>
     <link rel="stylesheet" href="/assets/css/card.css">
     <link rel="stylesheet" href="/assets/css/utils.css">
     <!-- main content -->
@@ -47,9 +52,9 @@
                             <a href="<%= user.avatar %>" class="author__avatar <%= user.verified ? "author__avatar--verified" : "" %> author__avatar--staff" id="<%= user.discordId %>-avatar">
                                 <img src="<%= user.avatar %>" alt="<%= user.username %>" class="pres-avatar-user">
                             </a>
-			     <p style="display: none;" class="pres_username" id="pres_username"><%= user.username %></p>
+                            <p style="display: none;" class="pres_username" id="pres_username"><%= user.username %></p>
                             <h1 class="author__name"><%= user.username %> <span class="pronouns">(<%= user.pronouns %>)</span></h1>
-                            <p class="author__text"> <%= user.about %> </p> 
+                            <p class="author__text"><%= user.about %></p>
                             <div class="author__wrap">
                                 <div class="author__followers">
                                     <p id="amount"></p>
@@ -64,27 +69,30 @@
                         <!-- tabs nav -->
                         <ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active " data-toggle="tab" href="#claimed" role="tab" aria-controls="claimed" aria-selected="false">Claimed Cards</a>
+                                <a class="nav-link active" data-toggle="tab" href="#claimed" role="tab" aria-controls="claimed" aria-selected="false">Claimed Cards</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#badges" role="tab" aria-controls="badges" aria-selected="false">Badges</a>
-                            </li> <% if (auth?.discordId === user.discordId) { %> <li class="nav-item">
-                                <a class="nav-link" href="/settings" aria-selected="false"> Settings </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/logout" aria-selected="false">Logout</a>
-                            </li> <% } %>
+                            <% if (auth?.discordId === user.discordId) { %>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/settings" aria-selected="false"> Settings </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/logout" aria-selected="false">Logout</a>
+                                </li>
+                            <% } %>
                         </ul>
                         <!-- end tabs nav -->
                     </div>
                     <!-- content tabs -->
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="claimed" role="tabpanel">
-                            <div class="row row--grid"> 
-                                <% if (cards.length == 0) { %> 
-                                    <span class="text-center cardErrorMessage">This user has not claimed any cards yet.</span> 
-                                    <% } else { %> 
-                                        <% cards.forEach(card => { %> 
+                            <div class="row row--grid">
+                                <% if (cards.length == 0) { %>
+                                    <span class="text-center cardErrorMessage">This user has not claimed any cards yet.</span>
+                                <% } else { %>
+                                    <% cards.forEach(card => { %>
                                         <div class="col-12 col-sm-6 col-lg-4">
                                             <!-- card -->
                                             <div class="card" id="user-cards">
@@ -94,32 +102,30 @@
                                                 <h3 class="card__title" id="anime_card-name"><a href="/card/<%= card._id %>"><%= card.name %></a></h3>
                                                 <div class="card__info">
                                                     <div class="card__price">
-                                                       <img src="https://cdn.discordapp.com/attachments/1093655688431013909/1110627110298583130/1824_coin.png"
-												alt="Coin" title="Coin">
+                                                        <img src="https://cdn.discordapp.com/attachments/1093655688431013909/1110627110298583130/1824_coin.png" alt="Coin" title="Coin">
                                                         <p>Price</p>
                                                         <span id="anime_card-price"><%= card.price %> Shards</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        <!-- end card -->
-                                    </div> 
-                                <% }) %> 
-                                <% if (fullCards.length > 9) { %>
-                                    <div class="col-12">
-                                        <button class="main__load" type="button" onclick="window.location.pathname = '/user/<%= user.discordId %>/cards'">Load More</button>
-                                    </div> 
+                                            <!-- end card -->
+                                        </div>
+                                    <% }) %>
+                                    <% if (fullCards.length > 9) { %>
+                                        <div class="col-12">
+                                            <button class="main__load" type="button" onclick="window.location.pathname = '/user/<%= user.discordId %>/cards'">Load More</button>
+                                        </div>
+                                    <% } %>
                                 <% } %>
-
-                                <% } %> 
                             </div>
                             <!-- end collapse -->
                         </div>
                         <div class="tab-pane fade" id="badges" role="tabpanel">
-                            <div class="row row--grid"> 
-                                <% if (badges.length == 0) { %> 
+                            <div class="row row--grid">
+                                <% if (badges.length == 0) { %>
                                     <span class="text-center cardErrorMessage">This user has no badges yet.</span>
-                                    <% } else { %> 
-                                        <% badges.forEach(badge => { %> 
+                                <% } else { %>
+                                    <% badges.forEach(badge => { %>
                                         <div class="col-12 col-sm-6 col-lg-4">
                                             <!-- card -->
                                             <div class="card" id="user-badges">
@@ -133,10 +139,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        <!-- end card -->
-                                    </div> 
-                                <% }) %>  
-                                <% } %> 
+                                            <!-- end card -->
+                                        </div>
+                                    <% }) %>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -145,36 +151,37 @@
             </div>
 
             <div id="new-user-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
-                <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/></svg></button>
-                
+                <button class="modal__close" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/>
+                    </svg>
+                </button>
+
                 <h4 class="sign__title">
                     Welcome to <strong>Goddess Anime</strong>!
                 </h4>
-                
+
                 <p class="modal__text">
                     Welcome to our vibrant anime community! We're thrilled to have you here, joining a passionate group of fellow anime enthusiasts. Prepare to embark on a delightful journey of collecting anime cards and immersing yourself in the captivating world of anime.
-                </br>
-                </br>
-                 </br>
+                    <br>
+                    <br>
+                    <br>
                     As you settle in, we want to ensure you make the most of your experience. Here are some exciting recommendations to get you started:
-
-                    </br>
-                    </br>
+                    <br>
+                    <br>
                     <span style="color: #dcddde; opacity: 0.8;">Here are some recommendations.</span>
                     <ul class="list">
                         <li><a href="/explore/cards" class="onboarding-featured-links">Explore a vast collection of captivating cards</a></li>
                         <li><a href="/shop" class="onboarding-featured-links">Discover unique merchandise in our shop</a></li>
                         <li><a href="https://git.goddessanime.com" class="onboarding-featured-links">Check out our open-source code on Github</a></li>
                     </ul>
-
                     <img src="https://qph.cf2.quoracdn.net/main-qimg-4d12abe6def148c08ed59136413ee7a1-lq" style="width: 100%; margin-top: 20px; border-radius: 5px;" />
                 </p>
             </div>
         </div>
-        
     </main>
-    <!-- end main content --> 
-    <%- include ("templates/footer.ejs") %>
+    <!-- end main content -->
+    <%- include("templates/footer.ejs") %>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
@@ -196,21 +203,15 @@
             });
         }
 
-        function fomatNumber(number) {
+        function formatNumber(number) {
             return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
         function setAmount() {
-            document.getElementById("amount").innerHTML = `$${fomatNumber('<%= user.wallet + user.bank %>')}`;
+            document.getElementById("amount").innerHTML = `$${formatNumber('<%= user.wallet + user.bank %>')}`;
         }
 
-        
         setAmount();
-
-        
-
-
-        
     </script>
 </body>
 
