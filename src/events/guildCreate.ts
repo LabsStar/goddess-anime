@@ -24,13 +24,8 @@ module.exports = {
 
     const embed = new MessageEmbed()
         .setTitle("Thanks for adding me!")
-        .setDescription(`Thanks for adding me to your server! My prefix is \`${config.prefix}\` and you can use </${config.help.name}:${config.help.id}> to get started!`)
+        .setDescription(`Thanks for adding me to your server! My prefix is \`${config.prefix}\` and you can use \`${config.prefix}help\` to see all my commands!`)
         .setColor("GREEN")
-        .addFields(
-            { name: "Link Your Account", value: `</${config.link.name}:${config.link.id}> ` },
-            { name: "View Source Code", value: "[GitHub](https://github.com/LabsStar/goddess-anime)" },
-            { name: "Support Server", value: "[Discord](https://discord.gg/u9cudxBVTG)" },
-        )
         .setFooter({
             text: "Made with ❤️ by Hylia and the Goddess Anime Open Source Team",
             iconURL: `https://cdn.discordapp.com/avatars/${config.BOT_ID}/${client.user?.avatar}.png?size=256`,
@@ -41,11 +36,18 @@ module.exports = {
             new MessageButton()
                 .setLabel("Invite Me")
                 .setStyle("LINK")
+                .setEmoji("🔗")
                 .setURL(`https://discord.com/oauth2/authorize?client_id=${config.BOT_ID}&permissions=8&scope=bot%20applications.commands`),
             new MessageButton()
-                .setLabel("Support Server")
+                .setLabel("Features")
+                .setEmoji("🔥")
                 .setStyle("LINK")
-                .setURL("https://discord.gg/u9cudxBVTG"),
+                .setURL("https://g-features.hylia.dev"),
+            new MessageButton()
+                .setLabel("Source Code")
+                .setEmoji("📁")
+                .setStyle("LINK")
+                .setURL("https://github.com/LabsStar/goddess-anime"),
         );
 
     const channel = await guildcreated.channels.fetch(guildcreated.systemChannelId as string);

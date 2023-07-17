@@ -34,18 +34,19 @@ const generateCoins = async (u: string): Promise<boolean> => {
 
   // Step 2: Generate random coins based on verification status
   if (isVerified) {
-    const verifiedMultiplier = Math.random() < 0.2 ? 5 : 1; // 20% chance to get 5 times more coins
-    coinsToAdd = Math.floor(Math.random() * 20) + 1; // Random number between 1 and 20 (inclusive)
+    const verifiedMultiplier = Math.random() < 0.02 ? 5 : 1; // 2% chance to get 5 times more coins
+    coinsToAdd = Math.floor(Math.random() * 5) + 1; // Random number between 1 and 5 (inclusive)
     coinsToAdd *= verifiedMultiplier;
     console.log(`Generated ${coinsToAdd} coins for verified user.`);
   } else {
-    const unverifiedMultiplier = Math.random() < 0.1 ? 10 : 1; // 10% chance to get 10 times more coins
-    coinsToAdd = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10 (inclusive)
+    const unverifiedMultiplier = Math.random() < 0.01 ? 10 : 1; // 1% chance to get 10 times more coins
+    coinsToAdd = Math.floor(Math.random() * 3) + 1; // Random number between 1 and 3 (inclusive)
     coinsToAdd *= unverifiedMultiplier;
     console.log(`Generated ${coinsToAdd} coins for unverified user.`);
   }
 
   // Step 3: Add coinsToAdd to user_bank
+  if (!user_bank) user_bank = 0; // If user_bank is null, set it to 0 (this should never happen though)
   user_bank += coinsToAdd;
 
   // Step 4: Update the user's bank value in the user document to user_bank
@@ -55,6 +56,7 @@ const generateCoins = async (u: string): Promise<boolean> => {
   await userDoc.save();
 
   console.log(`Coins generated and saved for user: ${u}`);
+
   return true;
 };
 
@@ -99,50 +101,17 @@ module.exports = {
       }
     }
 
-    // if (message.channel.id === COMMUNITY_UPDATES_CHANNEL) {
-    //   const checkIfWebhook = message.webhookId;
-    //   if (message.author.id != BOT_ID && !checkIfWebhook) {
-    //     try {
-    //       await message.delete();
-    //     }
-    //     catch (err) {
-    //       console.log(`Error deleting message: ${err}`);
-    //     }
-    //   }
-
-    //   const embed = message.embeds[0];
-    //   const buttons = message.components[0].components;
-    //   const attachments = message.attachments;
-
-    //   const guilds = await guild.find({});
-
-    //   for (const guildData of guilds) {
-    //     const guild_ = client.guilds.cache.get(guildData.guildId);
-
-    //     if (!guild_) continue;
-
-    //     const channel = guild_.channels.cache.get(guildData.updateChannel as Channel["id"]);
-
-    //     if (!channel || !(channel instanceof TextChannel)) continue;
-
-    //     const getImages = async () => {
-    //       const images = [];
-    //       for (const attachment of attachments.values()) {
-    //         const { data } = await axios.get(attachment.url, { responseType: "arraybuffer" });
-    //         images.push({ name: attachment.name, data });
-    //       }
-    //       return images;
-    //     };
-
-    //     await channel.send({ embeds: [embed], components: [new MessageActionRow().addComponents(buttons)], files: await getImages() as any });
-    //   }
-
-    // }
-
     if (message.author.bot) return;
 
-    await generateCoins(message.author.id);
+    const checkMsg = () => {
+      // Check if the message is empty, emojis, or a link
+      if (message.content === "" || message.content === null || message.content === undefined) return false;
+      if (message.content.match(/<a?:.+?:\d+>/g)) return false;
+      if (message.content.match(/https?:\/\/\S+/g)) return false;
+      return true;
+    };
 
+    if (checkMsg()) await generateCoins(message.author.id);
 
   },
 };
