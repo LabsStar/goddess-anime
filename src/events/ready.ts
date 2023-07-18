@@ -113,15 +113,15 @@ module.exports = {
 
     let posted: boolean = false;
 
-    // const autoPoster = AutoPoster(process.env.TOPGG_TOKEN, client)
+    const autoPoster = AutoPoster(process.env.TOPGG_TOKEN, client)
 
-    // autoPoster.on('posted', () => {
-    //   if (!posted) {
-    //     console.log('Posted stats to Top.gg!')
-    //     posted = true;
-    //   } else {
-    //     console.log('Updated stats on Top.gg!')
-    //   }
-    // })
+    autoPoster.on('posted', () => {
+      if (!posted) {
+        console.log('Posted stats to Top.gg!')
+        posted = true;
+      } else {
+        console.log('Updated stats on Top.gg!')
+      }
+    })
   },
 };
