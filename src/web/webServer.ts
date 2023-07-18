@@ -206,7 +206,6 @@ function webServer(client: Client) {
     app.get("/features", async (req, res) => {
         const langQueryParam = Array.isArray(req.query.lang) ? req.query.lang[0] : req.query.lang;
         const langHeader = Array.isArray(req.headers["accept-language"]) ? req.headers["accept-language"][0] : req.headers["accept-language"];
-        //* TypeError: Cannot read properties of undefined (reading 'split') = langQueryParam || langHeader.split(",")[0] || "en-US";
         let locale;
 
         if (langQueryParam) locale = langQueryParam;
@@ -667,48 +666,48 @@ function webServer(client: Client) {
     });
 
     /** Bot Utils */
-    //! Not Used. Please check out: https://f.goddessanime.com/2f1.md
-    // const topWebhook = new Topgg.Webhook(process.env.TOPGG_WEBHOOK_AUTH || "");
+    const topWebhook = new Topgg.Webhook(process.env.TOPGG_WEBHOOK_AUTH || "");
 
-    // app.post("/bot/utils/topgg", topWebhook.listener(async (vote: any) => {
-    //     const userDoc = await user.findOne({ discordId: vote.user });
+    app.post("/bot/utils/topgg", topWebhook.listener(async (vote: any) => {
+        console.log(vote);
+        const userDoc = await user.findOne({ discordId: vote.user });
 
-    //     if (!userDoc) return console.log(`[TOPGG] User ${vote.user} not found`);
+        if (!userDoc) return console.log(`[TOPGG] User ${vote.user} not found`);
 
-    //     const randomAmount = Math.floor(Math.random() * 100) + 1; // 1 - 100
+        const randomAmount = Math.floor(Math.random() * 100) + 1; // 1 - 100
 
-    //     //@ts-ignore
-    //     const newBalance = userDoc.bank += randomAmount;
+        //@ts-ignore
+        const newBalance = userDoc.bank += randomAmount;
 
-    //     // Update the user's balance and update lastVoted to now (timestamp)
-    //     await user.findOneAndUpdate({ discordId: vote.user }, { bank: newBalance, lastVoted: Date.now() });
+        // Update the user's balance and update lastVoted to now (timestamp)
+        await user.findOneAndUpdate({ discordId: vote.user }, { bank: newBalance, lastVoted: Date.now() });
 
-    //     console.log(`[TOPGG] User ${vote.user} voted and got ${randomAmount} coins`);
+        console.log(`[TOPGG] User ${vote.user} voted and got ${randomAmount} coins`);
 
-    //     const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+        const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 
-    //     const embed = new MessageEmbed()
-    //         .setTitle("Thanks for voting!")
-    //         .setDescription(`You have been awarded **${randomAmount}** coins for voting!`)
-    //         .setColor("GREEN")
+        const embed = new MessageEmbed()
+            .setTitle("Thanks for voting!")
+            .setDescription(`You have been awarded **${randomAmount}** coins for voting!`)
+            .setColor("GREEN")
 
-    //     const row = new MessageActionRow()
-    //         .addComponents(
-    //             new MessageButton()
-    //                 .setLabel("Vote again")
-    //                 .setStyle("LINK")
-    //                 .setURL(`https://top.gg/bot/${client.user?.id}/vote`)
-    //         );
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setLabel("Vote again")
+                    .setStyle("LINK")
+                    .setURL(`https://top.gg/bot/${client.user?.id}/vote`)
+            );
 
-    //     try {
-    //         const dmChannel = await client.users.fetch(vote.user);
+        try {
+            const dmChannel = await client.users.fetch(vote.user);
 
-    //         await dmChannel.send({ embeds: [embed], components: [row] });
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
+            await dmChannel.send({ embeds: [embed], components: [row] });
+        } catch (err) {
+            console.log(err);
+        }
 
-    // }));
+    }));
 
     app.get("*", async (req, res) => {
         if (req.url.includes("/assets")) return res.status(404).send("404 Not Found");

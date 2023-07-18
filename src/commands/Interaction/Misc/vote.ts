@@ -11,39 +11,39 @@ export const command: Command = {
     hasToBeLinked: true,
   async execute(interaction: CommandInteraction) {
 
-    return await interaction.reply({ content: "We are currently getting approved by:\n\nhttps://top.gg", ephemeral: true })
+    //return await interaction.reply({ content: "We are currently getting approved by:\n\nhttps://top.gg", ephemeral: true })
    
-    // const userDoc = await user.findOne({ discordId: interaction.user.id });
+    const userDoc = await user.findOne({ discordId: interaction.user.id });
 
-    // if (!userDoc) return interaction.reply({ content: "You need to link your account first!", ephemeral: true });
+    if (!userDoc) return interaction.reply({ content: "You need to link your account first!", ephemeral: true });
 
-    // // Check if user has voted in the last 12 hours
-    // if (userDoc.lastVoted && userDoc.lastVoted > Date.now() - 43200000) {
-    //     const embed = new MessageEmbed()
-    //         .setTitle("Vote")
-    //         .setDescription("Sorry, you can only vote once every 12 hours!")
-    //         .setColor("RED")
-    //         .setTimestamp();
+    // Check if user has voted in the last 12 hours
+    if (userDoc.lastVoted && userDoc.lastVoted > Date.now() - 43200000) {
+        const embed = new MessageEmbed()
+            .setTitle("Vote")
+            .setDescription("Sorry, you can only vote once every 12 hours!")
+            .setColor("RED")
+            .setTimestamp();
     
-    //     return interaction.reply({ embeds: [embed] });
-    // }
+        return interaction.reply({ embeds: [embed] });
+    }
 
-    // const embed = new MessageEmbed()
-    //     .setTitle("Vote")
-    //     .setDescription("Your daily vote is available!")
-    //     .setColor("GREEN")
-    //     .setImage("https://cdn.top.gg/web-assets/social-preview.png")
-    //     .setTimestamp();
+    const embed = new MessageEmbed()
+        .setTitle("Vote")
+        .setDescription("Your daily vote is available!")
+        .setColor("GREEN")
+        .setImage("https://cdn.top.gg/web-assets/social-preview.png")
+        .setTimestamp();
 
-    // const row = new MessageActionRow()
-    //     .addComponents(
-    //         new MessageButton()
-    //             .setLabel("Vote")
-    //             .setStyle("LINK")
-    //             .setURL(`https://top.gg/bot/${interaction.client.user?.id}/vote`)
-    //     );
+    const row = new MessageActionRow()
+        .addComponents(
+            new MessageButton()
+                .setLabel("Vote")
+                .setStyle("LINK")
+                .setURL(`https://top.gg/bot/${interaction.client.user?.id}/vote`)
+        );
 
-    // interaction.reply({ embeds: [embed], components: [row] });
+    interaction.reply({ embeds: [embed], components: [row] });
     
 
   }
