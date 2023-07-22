@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from "express";
 const app = express();
 import { Client, MessageEmbed, MessageActionRow, MessageButton } from 'discord.js';
 import cron from "node-cron";
@@ -29,7 +29,9 @@ import guild from '../models/guild';
 import CustomClient from '../interfaces/CustomClient';
 import { getGithubRepoInfo } from '../utils/githubFetcher';
 import acceptLanguageParser from 'accept-language-parser';
-const Topgg = require("@top-gg/sdk")
+const Topgg = require("@top-gg/sdk");
+import { getSortedGuides, getGuideData } from "../utils/guide";
+
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
 
@@ -211,8 +213,8 @@ function webServer(client: Client) {
         if (langQueryParam) locale = langQueryParam;
         else if (langHeader) locale = langHeader.split(",")[0];
         else locale = "en-US";
-        
-    
+
+
         res.render("features", {
             discord: client,
             auth: await auth(req, res, null),
@@ -665,11 +667,34 @@ function webServer(client: Client) {
 
     });
 
+    app.get("/guide/:slug*?", async (req: Request, res: Response) => {
+        // Extract the slug parameter from the URL
+        const guides = await getSortedGuides();
+        const { slug } = req.params;
+    
+        if (!slug || slug === "/") {
+            // If there's no slug provided, render the "index" page
+            return res.render("guide/index", {
+                discord: client,
+                auth: await auth(req, res, null),
+                guides,
+            });
+        }
+    
+        res.render("guide/slug", {
+            discord: client,
+            auth: await auth(req, res, null),
+            document: await getGuideData(slug),
+            //@ts-ignore
+            author: await user.findOne({ discordId: (await getGuideData(slug)).author }),
+        });
+    });
+    
+
     /** Bot Utils */
     const topWebhook = new Topgg.Webhook(process.env.TOPGG_WEBHOOK_AUTH || "");
 
     app.post("/bot/utils/topgg", topWebhook.listener(async (vote: any) => {
-        console.log(vote);
         const userDoc = await user.findOne({ discordId: vote.user });
 
         if (!userDoc) return console.log(`[TOPGG] User ${vote.user} not found`);

@@ -11,6 +11,7 @@ import fs from "fs";
 import developer_applications from '../../models/developer_applications';
 import { ApplicationStatus, Permissions } from "../../utils/developerapps";
 import path from "path";
+import { getGuides_Name_Slug } from '../../utils/guide';
 
 
 const findTimeZone = async (ipAddress: string) => {
@@ -404,13 +405,13 @@ apirouter.post("/applicaton-auth", async (req: Request, res: Response) => {
         if (application.status !== ApplicationStatus.ACCEPTED) return res.status(401).json({ error: true, message: "Application not accepted." });
 
 
-        if (application.authorized_users.includes(userDoc.discordId)) return res.status(401).json({ error: true, message: "You are already authorized." });
+        if (application.authorized_users?.includes(userDoc.discordId)) return res.status(401).json({ error: true, message: "You are already authorized." });
 
 
-        application.authorized_users.push(userDoc.discordId);
+        application.authorized_users?.push(userDoc.discordId);
         await application.save();
 
-        userDoc.applications.push(application.client_id);
+        userDoc.applications?.push(application.client_id);
         await userDoc.save();
 
         res.json({ error: false, message: "Successfully authorized." });
@@ -418,6 +419,13 @@ apirouter.post("/applicaton-auth", async (req: Request, res: Response) => {
         console.error("Error in application authorization:", error);
         res.status(500).json({ error: true, message: "Internal server error." });
     }
+});
+
+apirouter.get("/guides", async (req: Request, res: Response) => {
+    const guides = await getGuides_Name_Slug();
+
+    res.json(guides);
+
 });
 
 

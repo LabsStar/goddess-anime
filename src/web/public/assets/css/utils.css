@@ -105,3 +105,10 @@ ul.list li:before {
     font-size: 14px; /* Adjust font size to your preference */
     display: inline-block; /* Display as an inline element */
 }
+
+.highlight {
+    /* Make it bold */
+    font-weight: bold;
+    /* Space it a little */
+    margin: 0 10px;
+}

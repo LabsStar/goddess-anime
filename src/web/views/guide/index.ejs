@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Goddess Anime Cards :: Guide
+    </title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Goddess Anime Cards">
+    <meta property="og:title" content="Goddess Anime Cards :: Guide">
+    <meta property="og:description" content="Here you can find all the information you need to know about Goddess Anime Cards.">
+    <meta property="og:image" content="https://media.tenor.com/xEVkMZC-r3IAAAAS/aqua-goddess.gif">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="Goddess Anime Cards">
+    <meta name="twitter:creator" content="Goddess Anime Cards">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+</head>
+
+
+
+<body>
+    <%- include ("../templates/header.ejs") %>
+
+        <!-- main content -->
+        <main class="main">
+            <div class="container">
+                <div class="row row--grid">
+                    <!-- breadcrumb -->
+                    <div class="col-12">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb__item"><a href="/">Home</a></li>
+                            <li class="breadcrumb__item breadcrumb__item--active">Guide</li>
+                        </ul>
+                    </div>
+                    <!-- end breadcrumb -->
+    
+                    <!-- title -->
+                    <div class="col-12">
+                        <div class="main__title main__title--page">
+                            <h1>Learn how to play <span class="highlight">Goddess Anime Cards</span></h1>
+                        </div>
+                    </div>
+                    <!-- end title -->
+                </div>
+    
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel">
+                        <div class="row row--grid">
+                            <% guides.forEach(guide => { %>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <div class="post">
+                                        <a href="<%= guide.path %>" class="post__img">
+                                            <img src="<%= guide.image %>" alt="">
+                                        </a>
+        
+                                        <div class="post__content">
+                                            <h3 class="post__title"><a href="<%= guide.path %>"><%= guide.title %></a></h3>
+                                            <div class="post__meta">
+                                                <span class="post__date"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,2A10,10,0,1,0,22,12,10.01114,10.01114,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8.00917,8.00917,0,0,1,12,20ZM14.09814,9.63379,13,10.26807V7a1,1,0,0,0-2,0v5a1.00025,1.00025,0,0,0,1.5.86621l2.59814-1.5a1.00016,1.00016,0,1,0-1-1.73242Z"/></svg> <%= guide.date %></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- end main content -->
+
+        <%- include ("../templates/footer.ejs") %>
+
+
+
+
+
+
+
+        </div>
+        </div>
+
+
+</body>
+
+</html>

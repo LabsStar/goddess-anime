@@ -89,6 +89,10 @@
             role="button" id="dropdownMenu1">Features</a> 
         </li>
         <li class="header__nav-item">
+          <a class="header__nav-link" href="/guide?utm_source=website&utm_medium=link&utm_campaign=headernav"
+            role="button" id="dropdownMenu1">Guides</a>
+        </li>
+        <li class="header__nav-item">
           <a class="header__nav-link" href="https://docs.goddessanime.com?utm_source=website&utm_medium=link&utm_campaign=headernav" role="button" id="dropdownMenu1">Documentation</a>
         </li>
       </ul>
@@ -174,91 +178,3 @@
     Sign in to your account to continue using our service.
   </p>
 </div>
-
-<div id="ping-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
-  <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path
-        d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z" />
-    </svg></button>
-
-  <h4 class="sign__title">
-    Connection lost
-  </h4>
-
-  <p class="modal__text">
-    It seems that you have lost connection to the server. Please check your internet connection and try again.
-
-    </br>
-    Here are some things that could have happened:
-  <ul class="number-list">
-    <li>Server is down</li>
-    <li>Server is restarting</li>
-    <li>Server is under maintenance</li>
-    <li>Api Error</li>
-    <li>You have lost internet connection</li>
-  </ul>
-
-  <button class="sign__btn" type="button" onclick="neverShowPopup()">Never show this again</button>
-  </p>
-</div>
-
-<div id="script-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
-  <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path
-        d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z" />
-    </svg></button>
-
-  <h4 class="sign__title">
-    Are you sure you want to run this script?
-  </h4>
-
-  <p class="modal__text">
-    <p id="script-data" style="display: none;"></p>
-    <button class="sign__btn" type="button" id="conf" onclick="scriptInstance.confirmScript(document.getElementById('script-data').innerHTML)">Yes</button>
-  </p>
-</div>
-
-
-<script>
-
-  const openModal = () => {
-    $.magnificPopup.open({
-      items: {
-        src: '#ping-popup'
-      },
-      type: 'inline',
-      preloader: false,
-      modal: true,
-      callbacks: {
-        open: function () {
-          $('.mfp-close').on('click', function () {
-            $.magnificPopup.close();
-          });
-        }
-      }
-    });
-  };
-
-  const ping = () => {
-    // Check if the user has internet connection
-    // If not, show popup
-
-    const internet = navigator.onLine;
-
-    if (!internet) {
-      if (!localStorage.getItem('neverShowPopup')) {
-        openModal();
-      }
-      else {
-        console.warn('User has disabled [Lost Connection] popup');
-      }
-    }
-  };
-
-  setInterval(ping, 10000);
-
-  function neverShowPopup() {
-    $.magnificPopup.close();
-    localStorage.setItem('neverShowPopup', true);
-  }
-</script>

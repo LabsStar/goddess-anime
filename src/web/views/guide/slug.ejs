@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Goddess Anime Cards :: Guide - <%= document.title %>
+    </title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Goddess Anime Cards">
+    <meta property="og:title" content="Goddess Anime Cards :: Guide - <%= document.title %>">
+    <meta property="og:image" content="<%= document.image %>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="Goddess Anime Cards">
+    <meta name="twitter:creator" content="Goddess Anime Cards">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+    <style>
+        code {
+            color: #fff;
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <%- include ("../templates/header.ejs") %>
+
+        <!-- main content -->
+        <main class="main">
+            <div class="container">
+                <div class="row row--grid">
+                    <!-- breadcrumb -->
+                    <div class="col-12">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb__item"><a href="/">Home</a></li>
+                            <li class="breadcrumb__item">Guide</li>
+                            <li class="breadcrumb__item breadcrumb__item--active">
+                                <%= document.title %>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end breadcrumb -->
+
+                    <div class="col-12 col-xl-10 offset-xl-1">
+                        <div class="article">
+                            <!-- article content -->
+                            <div class="article__content">
+                                <img src="<%= document.image %>" alt="">
+
+                                <div class="article__meta">
+                                    <span></span>
+                                    <span class="article__date center"><svg xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M12,2A10,10,0,1,0,22,12,10.01114,10.01114,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8.00917,8.00917,0,0,1,12,20ZM14.09814,9.63379,13,10.26807V7a1,1,0,0,0-2,0v5a1.00025,1.00025,0,0,0,1.5.86621l2.59814-1.5a1.00016,1.00016,0,1,0-1-1.73242Z" />
+                                        </svg>
+                                        <%= document.date %>
+                                    </span>
+                                </div>
+
+                                </br>
+                                </br>
+                                </br>
+
+                                <%- document.content %>
+                            </div>
+                            <!-- end article content -->
+
+                            <!-- comments (Was going to add, but i said fuck it) -->
+                            <div class="comments">
+                                <div class="comments__title">
+                                    <h4>Author</h4>
+                                </div>
+
+                                <ul class="comments__list">
+                                    <li class="comments__item">
+                                        <div class="comments__autor">
+                                            <img class="comments__avatar" src="<%= author.avatar %>" alt="">
+                                            <span class="comments__name" id="name_author">
+                                                <%= author.username %>
+                                            </span>
+                                            <span class="comments__time">30.08.2021, 17:53</span>
+                                        </div>
+                                        <p class="comments__text">
+                                            <%= author.about %>
+                                        </p>
+                                    </li>
+                                </ul>
+
+                            </div>
+                            <!-- end comments -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- end main content -->
+
+        <%- include ("../templates/footer.ejs") %>
+
+
+
+            <script>
+                const name_author = document.getElementById("name_author");
+
+                name_author.addEventListener("click", () => {
+                    window.location.href = "/user/<%= author.discordId %>"
+                })
+            </script>
+
+
+
+
+            </div>
+            </div>
+
+
+</body>
+
+</html>

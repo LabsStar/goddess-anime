@@ -16,6 +16,19 @@ export const command: Command = {
     async execute(interaction: CommandInteraction) {
         const channel = interaction.options.getChannel('channel')!;
 
+        // Check if the user has the permisison MANAGE_CHANNELS
+        let perms = interaction.client.guilds.cache.get(interaction.guildId!)?.members.cache.get(interaction.user.id)?.permissions.has('MANAGE_CHANNELS');
+
+        if (!perms) {
+            const embed = new MessageEmbed()
+                .setTitle('Error!')
+                .setDescription('You must have the permission `MANAGE_CHANNELS` to use this command')
+                .setColor('RED')
+                .setTimestamp();
+
+            return interaction.reply({ embeds: [embed] });
+        }
+
         if (channel.type !== 'GUILD_TEXT') {
             const randomChannel = interaction.guild!.channels.cache.filter(channel => channel.type === 'GUILD_TEXT').first();
             
