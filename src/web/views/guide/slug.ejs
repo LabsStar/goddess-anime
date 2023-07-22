@@ -80,7 +80,7 @@
                                             <span class="comments__name" id="name_author">
                                                 <%= author.username %>
                                             </span>
-                                            <span class="comments__time">30.08.2021, 17:53</span>
+                                            <span class="comments__time" id="author_date"></span>
                                         </div>
                                         <p class="comments__text">
                                             <%= author.about %>
@@ -103,10 +103,24 @@
 
             <script>
                 const name_author = document.getElementById("name_author");
+                const author_date = document.getElementById("author_date");
+
+                let date = Math.floor(Date.parse("<%= author.createdAt %>") / 1000);
 
                 name_author.addEventListener("click", () => {
                     window.location.href = "/user/<%= author.discordId %>"
-                })
+                });
+
+                const setTime = () => {
+                    const createdDate = new Date("<%= author.createdAt %>");
+                    // Make it local time
+                    createdDate.setHours(createdDate.getHours() - 4);
+
+                    // Set the time
+                    author_date.innerHTML = createdDate.toLocaleString();
+                }
+
+                setTime();
             </script>
 
 
