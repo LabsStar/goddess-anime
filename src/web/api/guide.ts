@@ -87,7 +87,8 @@ guiderouter.post("/update-views", async (req: Request, res: Response) => {
         });
     }
 
-    guide.views++;
+    // Use optional chaining to safely access the 'views' property
+    guide.views = (guide.views || 0) + 1;
 
     await guide.save();
 
