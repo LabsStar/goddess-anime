@@ -94,7 +94,7 @@ guiderouter.post("/update-views", async (req: Request, res: Response) => {
     return res.status(200).json({
         error: false,
         message: 'Views updated',
-        views: formatNumber(guide.views),
+        views: formatNumber(guide.views || 0),
     });
 });
 
