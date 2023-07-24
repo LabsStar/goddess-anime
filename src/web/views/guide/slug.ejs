@@ -34,7 +34,7 @@
                     <div class="col-12">
                         <ul class="breadcrumb">
                             <li class="breadcrumb__item"><a href="/">Home</a></li>
-                            <li class="breadcrumb__item">Guide</li>
+                            <li class="breadcrumb__item"><a href="/guide">Guide</a></li>
                             <li class="breadcrumb__item breadcrumb__item--active">
                                 <%= document.title %>
                             </li>
@@ -49,7 +49,10 @@
                                 <img src="<%= document.image %>" alt="">
 
                                 <div class="article__meta">
-                                    <span></span>
+                                    <a href="#" class="article__category" id="views">
+                                        <%= views %> views
+                                    </a>
+
                                     <span class="article__date center"><svg xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 24 24">
                                             <path
@@ -67,27 +70,40 @@
                             </div>
                             <!-- end article content -->
 
-                            <!-- comments (Was going to add, but i said fuck it) -->
+                            <!-- comments -->
                             <div class="comments">
                                 <div class="comments__title">
-                                    <h4>Author</h4>
+                                    <h4>Comments</h4>
+                                    <span id="comments_count">
+                                        <%= comments.length %>
+                                    </span>
                                 </div>
 
                                 <ul class="comments__list">
-                                    <li class="comments__item">
-                                        <div class="comments__autor">
-                                            <img class="comments__avatar" src="<%= author.avatar %>" alt="">
-                                            <span class="comments__name" id="name_author">
-                                                <%= author.username %>
-                                            </span>
-                                            <span class="comments__time" id="author_date"></span>
-                                        </div>
-                                        <p class="comments__text">
-                                            <%= author.about %>
-                                        </p>
-                                    </li>
+                                    <% comments.forEach(comment=> { %>
+                                        <li class="comments__item">
+                                            <div class="comments__autor">
+                                                <img class="comments__avatar" src="<%= comment.user.avatar %>"
+                                                    alt="<%= comment.user.username %>"
+                                                    title="<%= comment.user.username %>">
+                                                <span class="comments__name">
+                                                    <%= comment.user.username %>
+                                                </span>
+                                            </div>
+                                            <p class="comments__text">
+                                                <%= comment.text %>
+                                            </p>
+                                        </li>
+                                        <% }) %>
                                 </ul>
 
+                                <form action="#" class="comments__form">
+                                    <div class="sign__group">
+                                        <textarea id="text" name="text" class="sign__textarea"
+                                            placeholder="Add comment"></textarea>
+                                    </div>
+                                    <button type="button" class="sign__btn" id="post_comments">Send</button>
+                                </form>
                             </div>
                             <!-- end comments -->
                         </div>
@@ -101,18 +117,18 @@
 
 
 
-            <script>
+            <!-- <script>
                 const name_author = document.getElementById("name_author");
                 const author_date = document.getElementById("author_date");
 
-                let date = Math.floor(Date.parse("<%= author.createdAt %>") / 1000);
+                let date = Math.floor(Date.parse("") / 1000);
 
                 name_author.addEventListener("click", () => {
-                    window.location.href = "/user/<%= author.discordId %>"
+                    window.location.href = "/user/"
                 });
 
                 const setTime = () => {
-                    const createdDate = new Date("<%= author.createdAt %>");
+                    const createdDate = new Date("");
                     // Make it local time
                     createdDate.setHours(createdDate.getHours() - 4);
 
@@ -121,13 +137,119 @@
                 }
 
                 setTime();
+            </script> -->
+
+
+
+
+            </div>
+            </div>
+
+            <script>
+                const requestProtocol = window.location.protocol;
+                const requestHost = window.location.host;
+
+
+
+                fetch(`/guide-data/update-views`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        guide_slug: "<%= document.id %>"
+                    })
+                }).then(res => res.json()).then(data => {
+                    document.getElementById("views").innerHTML = `${data.views} views`;
+                }).catch(err => {
+                    console.log(err);
+                });
+
+                // Check if the user is logged in
+                const user = "<%= isLogged %>";
+
+                if (!user) {
+                    const post_comment_button = document.getElementById("post_comments");
+
+                    // Set it to disabled
+                    post_comment_button.innerHTML = "Login to comment";
+
+                    // Make it so the user can't click it
+                    post_comment_button.disabled = true;
+                    post_comment_button.style.cursor = "not-allowed";
+                    post_comment_button.style.backgroundColor = "#2f3136";
+                    post_comment_button.style.color = "#fff";
+                }
             </script>
 
+            <script>
+                const post_comment_button = document.getElementById("post_comments");
 
+                post_comment_button.addEventListener("click", () => {
+                    const text = document.getElementById("text").value;
 
+                    if (text.length > 0) {
+                        fetch(`/guide-data/comment`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `<%= auth.token %>`
+                            },
+                            body: JSON.stringify({
+                                guide_slug: "<%= document.id %>",
+                                comment: document.getElementById("text").value
+                            })
+                        }).then(res => {
+                            if (res.status === 401) {
+                                alert("You already commented on this guide");
+                            } else {
+                                return res.json();
+                            }
+                        }).then(data => {
 
-            </div>
-            </div>
+                            // Add the comment to the list
+                            const comments_list = document.querySelector(".comments__list");
+
+                            const comment = document.createElement("li");
+                            comment.classList.add("comments__item");
+
+                            const comment_author = document.createElement("div");
+                            comment_author.classList.add("comments__autor");
+
+                            const comment_author_avatar = document.createElement("img");
+                            comment_author_avatar.classList.add("comments__avatar");
+                            comment_author_avatar.src = data.user.avatar;
+                            comment_author_avatar.alt = data.user.username;
+                            comment_author_avatar.title = data.user.username;
+
+                            const comment_author_name = document.createElement("span");
+                            comment_author_name.classList.add("comments__name");
+                            comment_author_name.innerHTML = data.user.username;
+
+                            comment_author.appendChild(comment_author_avatar);
+                            comment_author.appendChild(comment_author_name);
+
+                            const comment_text = document.createElement("p");
+                            comment_text.classList.add("comments__text");
+                            comment_text.innerHTML = data.text;
+
+                            comment.appendChild(comment_author);
+                            comment.appendChild(comment_text);
+
+                            comments_list.appendChild(comment);
+
+                            // Clear the text area
+                            document.getElementById("text").value = "";
+                            document.getElementById("comments_count").innerHTML = parseInt(document.getElementById("comments_count").innerHTML) + 1;
+
+                        }).catch(err => {
+                            console.log(err);
+                        });
+                    } else {
+                        alert("Please enter a comment");
+                    }
+                });
+            </script>
 
 
 </body>

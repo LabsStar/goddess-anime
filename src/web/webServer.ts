@@ -31,6 +31,9 @@ import { getGithubRepoInfo } from '../utils/githubFetcher';
 import acceptLanguageParser from 'accept-language-parser';
 const Topgg = require("@top-gg/sdk");
 import { getSortedGuides, getGuideData } from "../utils/guide";
+import guides from "../models/guides";
+import { formatNumber } from "../utils/generate";
+import guiderouter from "./api/guide";
 
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
@@ -45,6 +48,7 @@ app.use("/api", apirouter);
 app.use("/dev", devrouter);
 app.use("/stripe", striperouter);
 app.use("/components", componentsrouter);
+app.use("/guide-data", guiderouter);
 app.set("trust proxy", 1);
 app.use((req, res, next) => {
     res.setHeader("X-Powered-By", "hyperstar.cloud v1.0.0");
@@ -669,7 +673,7 @@ function webServer(client: Client) {
 
     app.get("/guide/:slug*?", async (req: Request, res: Response) => {
         // Extract the slug parameter from the URL
-        const guides = await getSortedGuides();
+        const guides_index = await getSortedGuides();
         const { slug } = req.params;
     
         if (!slug || slug === "/") {
@@ -677,9 +681,40 @@ function webServer(client: Client) {
             return res.render("guide/index", {
                 discord: client,
                 auth: await auth(req, res, null),
-                guides,
+                guides: guides_index,
             });
         }
+
+        const guide_document = await guides.findOne({ slug: slug });
+
+        if (!guide_document) {
+            const newGuide = new guides({
+                slug: slug,
+                views: 0,
+                comments: [],
+            });
+
+            await newGuide.save();
+        }
+
+        const getComments = async () => {
+            let commentData: any[] = [];
+        
+            // Check if guide_document exists before accessing its comments property
+            for (const comment of guide_document?.comments ?? []) {
+                commentData.push({
+                    text: comment.text,
+                    user: await user.findOne({ discordId: comment.user }),
+                });
+            }
+
+            return commentData;
+        };
+
+        const isLogged = () => {
+            if (req.cookies.token) return true;
+            else return false;
+        };
     
         res.render("guide/slug", {
             discord: client,
@@ -687,6 +722,9 @@ function webServer(client: Client) {
             document: await getGuideData(slug),
             //@ts-ignore
             author: await user.findOne({ discordId: (await getGuideData(slug)).author }),
+            comments: await getComments(),
+            views: formatNumber(guide_document?.views || 0),
+            isLogged: isLogged(),
         });
     });
     
