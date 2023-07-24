@@ -168,87 +168,34 @@
                 // Check if the user is logged in
                 const user = "<%= isLogged %>";
 
-                if (!user) {
-                    const post_comment_button = document.getElementById("post_comments");
+                // if (!user) {
+                //     const post_comment_button = document.getElementById("post_comments");
+
+                //     // Set it to disabled
+                //     post_comment_button.innerHTML = "Login to comment";
+
+                //     // Make it so the user can't click it
+                //     post_comment_button.disabled = true;
+                //     post_comment_button.style.cursor = "not-allowed";
+                //     post_comment_button.style.backgroundColor = "#2f3136";
+                //     post_comment_button.style.color = "#fff";
+                // }
+
+                     const post_comment_button = document.getElementById("post_comments");
+                     const post_comment_text = document.getElementById("text");
 
                     // Set it to disabled
-                    post_comment_button.innerHTML = "Login to comment";
+                    post_comment_button.innerHTML = "Currently Disabled";
 
                     // Make it so the user can't click it
                     post_comment_button.disabled = true;
                     post_comment_button.style.cursor = "not-allowed";
                     post_comment_button.style.backgroundColor = "#2f3136";
                     post_comment_button.style.color = "#fff";
-                }
-            </script>
 
-            <script>
-                const post_comment_button = document.getElementById("post_comments");
-
-                post_comment_button.addEventListener("click", () => {
-                    const text = document.getElementById("text").value;
-
-                    if (text.length > 0) {
-                        fetch(`/guide-data/comment`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Authorization": `<%= auth.token %>`
-                            },
-                            body: JSON.stringify({
-                                guide_slug: "<%= document.id %>",
-                                comment: document.getElementById("text").value
-                            })
-                        }).then(res => {
-                            if (res.status === 401) {
-                                alert("You already commented on this guide");
-                            } else {
-                                return res.json();
-                            }
-                        }).then(data => {
-
-                            // Add the comment to the list
-                            const comments_list = document.querySelector(".comments__list");
-
-                            const comment = document.createElement("li");
-                            comment.classList.add("comments__item");
-
-                            const comment_author = document.createElement("div");
-                            comment_author.classList.add("comments__autor");
-
-                            const comment_author_avatar = document.createElement("img");
-                            comment_author_avatar.classList.add("comments__avatar");
-                            comment_author_avatar.src = data.user.avatar;
-                            comment_author_avatar.alt = data.user.username;
-                            comment_author_avatar.title = data.user.username;
-
-                            const comment_author_name = document.createElement("span");
-                            comment_author_name.classList.add("comments__name");
-                            comment_author_name.innerHTML = data.user.username;
-
-                            comment_author.appendChild(comment_author_avatar);
-                            comment_author.appendChild(comment_author_name);
-
-                            const comment_text = document.createElement("p");
-                            comment_text.classList.add("comments__text");
-                            comment_text.innerHTML = data.text;
-
-                            comment.appendChild(comment_author);
-                            comment.appendChild(comment_text);
-
-                            comments_list.appendChild(comment);
-
-                            // Clear the text area
-                            document.getElementById("text").value = "";
-                            document.getElementById("comments_count").innerHTML = parseInt(document.getElementById("comments_count").innerHTML) + 1;
-
-                        }).catch(err => {
-                            console.log(err);
-                        });
-                    } else {
-                        alert("Please enter a comment");
-                    }
-                });
+                    post_comment_text.disabled = true;
+                    post_comment_text.style.cursor = "not-allowed";
+                    post_comment_text.innerText = "Currently Disabled";
             </script>
 
 
