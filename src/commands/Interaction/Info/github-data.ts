@@ -20,17 +20,6 @@ const getGithubData = async () => {
         return (size / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
     };
 
-    const getSocialImage = async () => {
-        // Using axios and html parsing we need to get the social image of the repo
-        // This is because the github api doesn't provide the social image
-
-        const html = await axios.get(github_repo.replace('api.', '').replace('/repos', ''));
-
-        const image = html.data.split('<meta property="og:image" content="')[1].split('"')[0];
-
-        return image;
-    }
-
     function convertTimeToRaw(time: any) {
         return Math.floor(Date.parse(time) / 1000);
     }
@@ -43,8 +32,8 @@ const getGithubData = async () => {
         stars: basicData.data.stargazers_count,
         forks: basicData.data.forks_count,
         license: basicData.data.license?.name,
-        lastCommit: basicData.data.updated_at,
-        _formatedLastCommit: `<t:${convertTimeToRaw(basicData.data.updated_at)}:R>`,
+        lastCommit: basicData.data.pushed_at,
+        _formatedLastCommit: `<t:${convertTimeToRaw(basicData.data.pushed_at)}:R>`,
         link: basicData.data.html_url,
         issues: {
             open: issues.data.filter((issue: any) => !issue.pull_request).length,
@@ -109,11 +98,7 @@ export const command: Command = {
                     name: 'Link',
                     value: `${data.link}`,
                 })
-                .addFields({
-                    name: 'Issues',
-                    value: `Open: ${data.issues.open}\nClosed: ${data.issues.closed}\nRecent: ${data.issues.recent.title}`,
-                })
-                .setTimestamp(new Date(data.lastCommit))
+                .setTimestamp(new Date(data.lastCommit));
 
             await interaction.editReply({
                 embeds: [embed],

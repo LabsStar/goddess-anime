@@ -54,6 +54,7 @@ app.use((req, res, next) => {
     res.setHeader("X-Powered-By", "hyperstar.cloud v1.0.0");
     res.setHeader("Server", "hyperstar.cloud v1.0.0");
     if (req.path.startsWith("/assets") || req.path.startsWith("/api")) return next();
+    if (req.path.includes("favicon")) return res.redirect("https://api.goddessanime.com/users/1045919089048178828/avatar?raw=true");
     next();
 });
 
@@ -780,7 +781,7 @@ function webServer(client: Client) {
 
 
     app.listen(process.env.PORT || 80, () => {
-        console.log(`Goddess Anime is listening at http://localhost:${process.env.PORT || 80}`);
+        console.log(`Goddess Anime is listening at http://localhost${process.env.PORT ? `:${process.env.PORT}` : ""}`);
     });
 }
 

@@ -5,8 +5,9 @@
  */
 
 import { version } from "../package.json";
+import IConfig from "./interfaces/Config";
 
-const config = {
+const config: IConfig = {
     prefix: "/",
     link: {
         name: "link",
@@ -23,13 +24,13 @@ const config = {
     TIME_TO_DELETE: 60000,
     SHOP_EXPIRE_DAYS: 3,
     RATE_LIMIT_WINDOW: 60000,
-    NO_RATE_LIMIT: ["hylia.dev", "hyperstar.cloud", "nanoha.live", "goddessanime.com", "localhost"],
+    NO_RATE_LIMIT: ["hylia.dev", "hyperstar.cloud", "goddessanime.com", "localhost", "hyperstar.live"],
     VERSION: version,
     allow_developer_applications: true,
     DEVELOPER_PREFIX: "dev/",
     COMMUNITY_UPDATES_CHANNEL:  process.env.COMMUNITY_UPDATES_CHANNEL || "1110434165670821948",
     IS_IN_DEV_MODE: true,
-    BOT_ID: process.env.BOT_ID,
+    BOT_ID: process.env.BOT_ID as string,
     COINS: {
         unverified: 40,
         verified: 100,
