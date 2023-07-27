@@ -279,8 +279,6 @@ function webServer(client: Client) {
 
                     const connections = await axios.get(connection_options.url, { headers: connection_options.headers });
 
-                    console.log(connections.data);
-
                     user.findOne({ discordId: userData.id }).then(async (userDoc: any) => {
                         if (!userDoc) {
                             isNewUser = true;
