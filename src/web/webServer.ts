@@ -34,6 +34,7 @@ import { getSortedGuides, getGuideData } from "../utils/guide";
 import guides from "../models/guides";
 import { formatNumber } from "../utils/generate";
 import guiderouter from "./api/guide";
+import usersrouter from "./api/users";
 
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
@@ -49,6 +50,7 @@ app.use("/dev", devrouter);
 app.use("/stripe", striperouter);
 app.use("/components", componentsrouter);
 app.use("/guide-data", guiderouter);
+app.use("/u", usersrouter);
 app.set("trust proxy", 1);
 app.use((req, res, next) => {
     res.setHeader("X-Powered-By", "hyperstar.cloud v1.0.0");

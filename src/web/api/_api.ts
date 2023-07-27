@@ -458,6 +458,34 @@ apirouter.get("/social-name/:name", async (req: Request, res: Response) => {
     }});
 });
 
+apirouter.get("/@me", async (req: Request, res: Response) => {
+    const getToken = () => {
+        if (req.headers["authorization"]) {
+            return req.headers["authorization"];
+        }
+        else if (req.cookies.token) {
+            return req.cookies.token;
+        } else {
+            return null;
+        }
+    };
+
+    const token = getToken();
+
+    if (!token) return res.status(401).json({ error: 'Unauthorized' });
+
+    try {
+        const userDoc = await user.findOne({ token: token });
+
+        if (!userDoc) return res.status(404).json({ error: 'User not found' });
+
+        return res.json(userDoc);
+    } catch (err) {
+        console.error('Error fetching user:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 
 
