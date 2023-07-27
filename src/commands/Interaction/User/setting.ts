@@ -26,6 +26,15 @@ export const command: Command = {
                     option
                         .setName('about')
                         .setDescription('The about me you want to set')
+                        .setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('pronouns')
+                .setDescription('Change your pronouns')
+                .addStringOption(option =>
+                    option
+                        .setName('pronouns')
+                        .setDescription('The pronouns you want to set')
                         .setRequired(true))),
     hasToBeLinked: true,
     async execute(interaction: CommandInteraction) {

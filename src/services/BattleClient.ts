@@ -13,10 +13,6 @@ const config: BattleConfig = {
     ownerID: "547923574833545226"
 }
 
-const getCtr = async () => {
-    return await axios.get("https://contrib.rocks/image?repo=LabsStar/goddess-anime", { responseType: "arraybuffer" });
-};
-
 export default class BattleClient {
     client: Client;
     constructor(client: Client) {
@@ -34,7 +30,6 @@ export default class BattleClient {
             .setURL("https://blob.goddessanime.com/main/src/services/BattleClient.ts")
             .setDescription("Sorry but the **battle** feature is not available yet!\n\nIf you want to help us develop this feature, please view our `src/services/BattleClient.ts` file on our GitHub repository. Thank you!\n\n[GitHub Repository](https://blob.goddessanime.com/main/src/services/BattleClient.ts)")
             .setColor("RED")
-            .setImage((await getCtr()).data)
 
         return interaction.reply({ embeds: [soon_embed], ephemeral: false });
     }

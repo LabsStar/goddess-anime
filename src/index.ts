@@ -4,6 +4,9 @@ import CustomClient from './interfaces/CustomClient';
 import Command from './interfaces/Command';
 import { readdirSync } from 'fs';
 import { join } from 'path';
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v9';
+import guild from './models/guild';
 
 const client = new Client({
     intents: [
@@ -19,6 +22,7 @@ const client = new Client({
 
 client.commands = new Collection();
 client.messageCommands = new Collection();
+client.betaCommands = new Collection();
 config();
 
 const commandFolders = readdirSync(join(__dirname, "commands", 'Interaction'));
@@ -27,6 +31,16 @@ for (const folder of commandFolders) {
     const commandFiles = readdirSync(join(__dirname, "commands", 'Interaction', folder)).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
     for (const file of commandFiles) {
         const command = require(join(__dirname, "commands", 'Interaction', folder, file));
+        client.commands.set(command.command.data.name, command.command);
+    }
+}
+
+const commandFolders_BETA = readdirSync(join(__dirname, "commands", 'Beta'));
+
+for (const folder of commandFolders_BETA) {
+    const commandFiles = readdirSync(join(__dirname, "commands", 'Beta', folder)).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
+    for (const file of commandFiles) {
+        const command = require(join(__dirname, "commands", 'Beta', folder, file));
         client.commands.set(command.command.data.name, command.command);
     }
 }
@@ -80,5 +94,37 @@ process.on("uncaughtException", (error: any) => {
 
     console.error(error);
 });
+
+client.setBetaCommands = async (guildId: string, msg: any) => {
+    const commandFolders_BETA = readdirSync(join(__dirname, "commands", 'Beta'));
+    const rest = new REST({ version: '9' }).setToken(process.env.token as string || ''); // Set the token
+
+    const settingCommands = new Collection<string, Command>();
+
+    for (const folder of commandFolders_BETA) {
+        const commandFiles = readdirSync(join(__dirname, "commands", 'Beta', folder)).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
+        for (const file of commandFiles) {
+            const command = require(join(__dirname, "commands", 'Beta', folder, file));
+            settingCommands.set(command.command.data.name, command.command);
+        }
+    }
+
+    const guildData = client.guilds.cache.get(guildId);
+
+    if (!guildData) return;
+
+
+    const guildDocs = await guild.find({ guildId: guildData.id });
+
+    if (!guildDocs) return;
+
+    const guildDoc = guildDocs[0];
+
+    if (guildDoc.isBeta === false) return msg.channel.send({ content: "This server is not a beta server!" });
+
+    await rest.put(Routes.applicationGuildCommands(client.user?.id as string, guildDoc.guildId), { body: settingCommands.map((command) => command.data.toJSON()) });
+    if (msg) msg.channel.send({ content: `Successfully set beta commands for guild \`${guildData.name}\`!` });
+
+};
 
 client.login(process.env.token as string || "");

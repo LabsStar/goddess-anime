@@ -23,6 +23,12 @@ const GuildsSchema = new Schema({
         type: String,
         required: false,
     },
+
+    isBeta: {
+        type: Boolean,
+        required: false,
+        default: false,
+    }, /* This will mainly be used to have custom beta commands in a server. (ROLLING RELEASES) */
     
 
 }, { timestamps: true });
