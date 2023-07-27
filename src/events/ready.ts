@@ -37,7 +37,7 @@ module.exports = {
     } else {
       await versionManager.checkVersion(false);
     }
-    
+
     console.log(`Logged in as ${client.user?.tag}! | ${client.user?.id}`);
 
     mongoose.connect(process.env.MONGO_URI as string);
@@ -115,13 +115,13 @@ module.exports = {
 
     const autoPoster = AutoPoster(process.env.TOPGG_TOKEN, client)
 
-    // autoPoster.on('posted', () => {
-    //   if (!posted) {
-    //     console.log('Posted stats to Top.gg!')
-    //     posted = true;
-    //   } else {
-    //     console.log('Updated stats on Top.gg!')
-    //   }
-    // })
+    autoPoster.on('posted', () => {
+      if (!posted) {
+        console.log('Posted stats to Top.gg!')
+        posted = true;
+      } else {
+        console.log('Updated stats on Top.gg!')
+      }
+    })
   },
 };

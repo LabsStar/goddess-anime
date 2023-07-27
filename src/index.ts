@@ -97,7 +97,8 @@ process.on("uncaughtException", (error: any) => {
 
 client.setBetaCommands = async (guildId: string, msg: any) => {
     const commandFolders_BETA = readdirSync(join(__dirname, "commands", 'Beta'));
-    const rest = new REST({ version: '9' }).setToken(process.env.token as string || ''); // Set the token
+    //@ts-ignore
+    const rest = new REST({ version: '9' }).setToken(process.env.token); // Set the token
 
     const settingCommands = new Collection<string, Command>();
 
