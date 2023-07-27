@@ -6,17 +6,16 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Goddess Anime Cards">
     <meta property="og:title" content="Check out <%= user.username %> on Goddess Anime!">
-    <meta property="og:description" content="<%= user.bio %>">
+    <meta name="description" content="Check out <%= user.username %>'s profile on Goddess Anime Cards. <%= user.bio %>">
     <meta property="og:image" content="<%= user.banner %>">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="Goddess Anime Cards">
     <meta name="twitter:creator" content="Goddess Anime Cards">
     <meta name="twitter:card" content="summary_large_image">
-    <% if (user.color) { %>
-        <meta content="<%= user.color %>" data-react-helmet="true" name="theme-color" />
-    <% } else { %>
-        <meta content="#52FF33" data-react-helmet="true" name="theme-color" />
-    <% } %>
+    <!-- Set a custom favicon -->
+    <link rel="shortcut icon" href="<%= user.avatar %>">
+    <meta content="#7994F3" data-react-helmet="true" name="theme-color" />
+    <link rel="canonical" href="https://goddessanime.com/user/<%= user.discordId %>">
 </head>
 <style>
     /* Styles for the head section, as it's defined in the <head> tag */
@@ -77,9 +76,6 @@
                             <% if (auth?.discordId === user.discordId) { %>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/settings" aria-selected="false"> Settings </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/logout" aria-selected="false">Logout</a>
                                 </li>
                             <% } %>
                         </ul>
