@@ -75,7 +75,7 @@ usersrouter.get('/@me', async (req: Request, res: Response) => {
 
         if (!user) return res.redirect('/login');
 
-        return res.redirect(`/users/${user.discordId}`);
+        return res.redirect(`/user/${user.discordId}`);
     } catch (err) {
         console.error('Error fetching user:', err);
         return res.status(500).json({ error: 'Internal Server Error' });
