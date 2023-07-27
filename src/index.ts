@@ -123,7 +123,7 @@ client.setBetaCommands = async (guildId: string, msg: any) => {
 
     if (guildDoc.isBeta === false) return msg.channel.send({ content: "This server is not a beta server!" });
 
-    await rest.put(Routes.applicationGuildCommands(process.env.BOT_ID as string, guildDoc.guildId), { body: settingCommands.map((command) => command.data.toJSON()) });
+    await rest.put(Routes.applicationGuildCommands(process.env.BOT_ID as string || '1045919089048178828', guildDoc.guildId), { body: settingCommands.map((command) => command.data.toJSON()) });
     if (msg) msg.channel.send({ content: `Successfully set beta commands for guild \`${guildData.name}\`!` });
 
 };
