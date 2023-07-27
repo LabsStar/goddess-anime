@@ -156,8 +156,7 @@
 
                             <!-- actions -->
                             <div class="asset__btns">
-                                <a href="#buy-card"
-                                    class="asset__btn asset__btn--full asset__btn--clr open-modal">Buy</a>
+                                <button class="asset__btn asset__btn--full asset__btn--clr" id="buy">Buy</button>
                             </div>
 
                             <!-- end actions -->
@@ -241,6 +240,19 @@
                     }, 500);
                 });
             </script>
+
+<script>
+    const buyBtn = document.getElementById('buy');
+
+    buyBtn.addEventListener("click", async (e) => {
+      swal({
+        title: "Sorry!",
+        text: "This feature is not yet available.",
+        icon: "error",
+        button: "Ok",
+      });
+    })
+  </script>
 
 </body>
 

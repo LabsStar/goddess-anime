@@ -149,35 +149,6 @@
                     <!-- end content tabs -->
                 </div>
             </div>
-
-            <div id="new-user-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
-                <button class="modal__close" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/>
-                    </svg>
-                </button>
-
-                <h4 class="sign__title">
-                    Welcome to <strong>Goddess Anime</strong>!
-                </h4>
-
-                <p class="modal__text">
-                    Welcome to our vibrant anime community! We're thrilled to have you here, joining a passionate group of fellow anime enthusiasts. Prepare to embark on a delightful journey of collecting anime cards and immersing yourself in the captivating world of anime.
-                    <br>
-                    <br>
-                    <br>
-                    As you settle in, we want to ensure you make the most of your experience. Here are some exciting recommendations to get you started:
-                    <br>
-                    <br>
-                    <span style="color: #dcddde; opacity: 0.8;">Here are some recommendations.</span>
-                    <ul class="list">
-                        <li><a href="/explore/cards" class="onboarding-featured-links">Explore a vast collection of captivating cards</a></li>
-                        <li><a href="/shop" class="onboarding-featured-links">Discover unique merchandise in our shop</a></li>
-                        <li><a href="https://git.goddessanime.com" class="onboarding-featured-links">Check out our open-source code on Github</a></li>
-                    </ul>
-                    <img src="https://qph.cf2.quoracdn.net/main-qimg-4d12abe6def148c08ed59136413ee7a1-lq" style="width: 100%; margin-top: 20px; border-radius: 5px;" />
-                </p>
-            </div>
         </div>
     </main>
     <!-- end main content -->
@@ -188,17 +159,19 @@
         const newParam = urlParams.get('new');
 
         if (newParam) {
-            $.magnificPopup.open({
-                items: {
-                    src: '#new-user-popup'
-                },
-                type: 'inline',
-                preloader: false,
-                modal: true,
-                callbacks: {
-                    open: function () {
-                        console.log("Opened");
-                    }
+            swal({
+                title: 'Welcome to Goddess Anime!',
+                text: 'Welcome to our vibrant anime community! We\'re thrilled to have you here, joining a passionate group of fellow anime enthusiasts. Prepare to embark on a delightful journey of collecting anime cards and immersing yourself in the captivating world of anime.',
+                imageUrl: 'https://qph.cf2.quoracdn.net/main-qimg-4d12abe6def148c08ed59136413ee7a1-lq',
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Welcome to Goddess Anime!',
+                confirmButtonText: 'Let\'s get started!',
+                confirmButtonColor: '#ff6b6b',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = '/explore/cards';
                 }
             });
         }

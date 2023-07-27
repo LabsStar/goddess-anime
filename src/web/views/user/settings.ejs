@@ -103,22 +103,6 @@
                 [[error]]]
             </p>
         </div>
-
-        <div id="changed-popup" class="zoom-anim-dialog mfp-hide modal modal--form">
-            <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"/></svg></button>
-            
-            <h4 class="sign__title">
-                We have changed your settings!
-            </h4>
-            
-            <p class="modal__text" id="success-text">
-                We have changed your settings!
-
-                Click the button below to close this popup and go back to your profile.
-            </p>
-
-            <button class="sign__btn" type="button" onclick="closePopup()">Close</button>
-        </div>
       </div>
     </main>
 
@@ -133,35 +117,20 @@
 
       <script>
 
-        function closePopup() {
-            $.magnificPopup.close();
 
-            window.location.href = "/user/<%= auth.discordId %>";
-        }
-
-        function showPopup(pop_name) {
-            $.magnificPopup.open({
-                items: {
-                    src: `#${pop_name}`
-                },
-                type: 'inline',
-                preloader: false,
-                modal: true,
-                callbacks: {
-                    open: function () {
-                        console.log("Opened");
-                    }
-                }
-            });
+        function showPopup() {
+           swal({
+            title: 'Success!',
+            text: 'Your profile details have been updated!',
+            icon: 'success',
+            button: 'Close',
+          }).then(() => {
+            window.location.href = '/user/<%= auth.discordId %>';
+          });
         }
         const profileDetailsButton = document.getElementById('profile_details_button');
         const errortext = document.getElementById('error-text');
         const successText = document.getElementById('success-text');
-
-        const successTemplate = `
-                    <ul class="star-list">
-                        <li>{changed}</li>
-                    </ul>`;
 
 
         profileDetailsButton.addEventListener('click', () => {
@@ -189,7 +158,7 @@
                     errortext.innerHTML = data.error;
                     showPopup('error-popup');
                   } else {
-                    showPopup('changed-popup');
+                    showPopup();
                   }
                 });
             })

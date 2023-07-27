@@ -108,30 +108,13 @@
 
               <!-- actions -->
               <div class="asset__btns">
-                <a href="#buy-card" class="asset__btn asset__btn--full asset__btn--clr open-modal">Buy</a>
+                <button class="asset__btn asset__btn--full asset__btn--clr" id="buy">Buy</button>
               </div>
               <!-- end actions -->
             </div>
           </div>
           <!-- end sidebar -->
 
-
-
-        </div>
-
-        <div id="buy-card" class="zoom-anim-dialog mfp-hide modal modal--form">
-          <button class="modal__close" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path
-                d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z" />
-            </svg></button>
-
-          <h4 class="sign__title">
-            Sorry!
-          </h4>
-
-          <p class="modal__text">
-            This feature is not yet available.
-          </p>
 
 
         </div>
@@ -185,6 +168,19 @@
             cardImg.style.transition = 'none';
           }, 500);
         });
+      </script>
+
+      <script>
+        const buyBtn = document.getElementById('buy');
+
+        buyBtn.addEventListener("click", async (e) => {
+          swal({
+            title: "Sorry!",
+            text: "This feature is not yet available.",
+            icon: "error",
+            button: "Ok",
+          });
+        })
       </script>
       </div>
       </div>
