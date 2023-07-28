@@ -1,0 +1,87 @@
+@keyframes skeleton-loader {
+
+    0%,
+    100% {
+        background-position: -200% 50%;
+    }
+
+    50% {
+        background-position: 200% 50%;
+    }
+}
+
+/* Define the skeleton loader animation for the avatar */
+@keyframes skeleton-loader-avatar {
+
+    0%,
+    100% {
+        background-position: -200% 50%;
+    }
+
+    50% {
+        background-position: 200% 50%;
+    }
+}
+
+/* Apply the skeleton loader style to the element */
+.skeleton-loader {
+    /* Set the height of the loader, you can adjust this as needed */
+    height: 20px;
+    /* Set the background color to the color of the skeleton */
+    background-color: #16151a;
+    /* Add some padding and margin for spacing */
+    padding: 4px;
+    margin: 8px 0;
+    /* Add the skeleton loader animation */
+    animation: skeleton-loader 3s linear infinite;
+    /* Changed duration to 3 seconds */
+    /* Add a nice rounded border */
+    border-radius: 4px;
+    /* For SSR appearance, set the background image as a gradient */
+    background-image: linear-gradient(90deg, #16151a 25%, #302d38 50%, #16151a 75%);
+    /* Make the background-size adjust based on the element's width */
+    background-size: 200% 100%;
+}
+
+/* Optional: You can add some additional styles for text-like elements */
+.skeleton-loader-text {
+    width: 50%;
+    /* Adjust the width as needed */
+}
+
+/* Optional: If you want to create a skeleton loader for an image-like element */
+.skeleton-loader-image {
+    width: 200px;
+    /* Set the width of the image */
+    height: 150px;
+    /* Set the height of the image */
+    background-color: #16151a;
+    margin: 8px 0;
+    animation: skeleton-loader 3s linear infinite;
+    /* Changed duration to 3 seconds */
+    border-radius: 4px;
+    background-image: linear-gradient(90deg, #16151a 25%, #302d38 50%, #16151a 75%);
+    background-size: 200% 100%;
+}
+
+/* Apply the skeleton loader style to the avatar element */
+.skeleton-loader-avatar {
+    /* Set the width and height based on the props */
+    width: 160px;
+    max-width: 160px;
+    height: 160px;
+    /* Set the margin-top and margin-bottom based on the props */
+    margin-top: -80px;
+    margin-bottom: 15px;
+    /* Set the background color to the color of the skeleton */
+    background-color: #16151a;
+    /* Add some rounded border for a nice avatar appearance */
+    border-radius: 50%;
+    /* Add the skeleton loader animation */
+    animation: skeleton-loader-avatar 3s linear infinite;
+    /* Changed duration to 3 seconds */
+    /* For SSR appearance, set the background image as a gradient */
+    background-image: linear-gradient(90deg, #16151a 25%, #302d38 50%, #16151a 75%);
+    /* Make the background-size adjust based on the element's width */
+    background-size: 200% 100%;
+}

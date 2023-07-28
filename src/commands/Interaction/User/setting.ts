@@ -46,6 +46,7 @@ export const command: Command = {
         const activity = new Activity(client);
 
 
+
         const subcommand = interaction.options.getSubcommand();
 
         async function updateUser() {

@@ -83,6 +83,13 @@
                       placeholder="<%= auth.pronouns %>">
                   </div>
                 </div>
+                <div class="col-12">
+                  <div class="sign__group">
+                    <label class="sign__label" for="display_name">Display name</label>
+                    <input id="display_name" type="text" name="display_name" class="sign__input"
+                      placeholder="<%= auth.displayName || "No Display Name" %>">
+                  </div>
+                </div>
 
                 <div class="col-12">
                   <button class="sign__btn" type="button" id="profile_details_button">Save</button>
@@ -132,16 +139,25 @@
         const errortext = document.getElementById('error-text');
         const successText = document.getElementById('success-text');
 
+        function SanitizeString(str) {
+          str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, "");
+          return str.trim();
+        }
+
 
         profileDetailsButton.addEventListener('click', () => {
           const about = document.getElementById('about').value;
           const banner = document.getElementById('banner').value;
           const pronouns = document.getElementById('pronouns').value;
+          const displayName = document.getElementById('display_name').value;
+
+
         
           const gData = {
-            about: about,
+            about: SanitizeString(about),
             banner: banner,
             pronouns: pronouns,
+            displayName: SanitizeString(displayName),
           };
       
           fetch('/api/settings', {

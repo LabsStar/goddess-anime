@@ -13,6 +13,8 @@ const verison = require("../../package.json").version;
 const wait = require("util").promisify(setTimeout);
 import guild from "../models/guild";
 import VersionManager from "../services/VersionManager";
+import user from "../models/user";
+import axios from "axios";
 const versionManager = new VersionManager(60000); // 1 minute 
 const { AutoPoster } = require('topgg-autoposter')
 
@@ -40,14 +42,11 @@ module.exports = {
 
     console.log(`Logged in as ${client.user?.tag}! | ${client.user?.id}`);
 
-    mongoose.connect(process.env.MONGO_URI as string);
-
     const pres = [
       "/link - to link your account",
       "/help - get help information",
       "goddessanime.com",
       `v${verison}`,
-      `${await cards.countDocuments() - 1}+ cards!`,
       `Open Sourced since ${config.openSourceDate}`,
       `with ${client.guilds.cache.size} servers!`,
       `with ${client.users.cache.size} users!`,
@@ -55,6 +54,7 @@ module.exports = {
       `View our source code at: g.hylia.dev`
     ]
 
+    mongoose.connect(process.env.MONGO_URI as string);
 
     client.user?.setActivity("goddessanime.com", { type: "WATCHING" });
 
@@ -62,7 +62,7 @@ module.exports = {
       const randomActivity = pres[Math.floor(Math.random() * pres.length)];
       const randomType = Math.random() < 0.5 ? "WATCHING" : "PLAYING"; // 50% chance of watching, 50% chance of playing
       client.user?.setActivity(randomActivity, { type: randomType });
-    }, 5000)
+    }, 5000);
 
     const db = mongoose.connection;
 
@@ -115,13 +115,25 @@ module.exports = {
 
     const autoPoster = AutoPoster(process.env.TOPGG_TOKEN, client)
 
-    autoPoster.on('posted', () => {
-      if (!posted) {
-        console.log('Posted stats to Top.gg!')
-        posted = true;
-      } else {
-        console.log('Updated stats on Top.gg!')
+    // autoPoster.on('posted', () => {
+    //   if (!posted) {
+    //     console.log('Posted stats to Top.gg!')
+    //     posted = true;
+    //   } else {
+    //     console.log('Updated stats on Top.gg!')
+    //   }
+    // })
+
+    cron.schedule("0 6 * * *", async () => {
+      for (const u of await user.find({})) {
+        try {
+          await axios.get(u.avatar as string);
+        } catch (e) {
+          u.avatar = "https://archive.org/download/discordprofilepictures/discordred.png";
+          await u.save();
+          console.log(`Changed avatar for ${u.username} to https://archive.org/download/discordprofilepictures/discordred.png`);
+        }
       }
-    })
+    });
   },
 };

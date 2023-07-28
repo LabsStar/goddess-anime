@@ -68,6 +68,33 @@ function checkIfBsonId(id: string) {
     else return false;
 }
 
+function fDate(date: Date): string {
+    const months = [
+        "January", "February", "March", "April",
+        "May", "June", "July", "August",
+        "September", "October", "November", "December"
+    ];
+
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+    const year = date.getFullYear();
+
+    return `${months[monthIndex]} ${day} ${year}`;
+}
+
+function getDateAmount(date: Date): string {
+    const oneDayMs = 24 * 60 * 60 * 1000; // number of milliseconds in a day
+    const today = new Date();
+    const diffDays = Math.round(Math.abs((today.getTime() - date.getTime()) / oneDayMs));
+    if (diffDays === 0) {
+        return "Today";
+    } else if (diffDays === 1) {
+        return "Yesterday";
+    } else {
+        return `${diffDays} days ago`;
+    }
+}
+
 async function auth(req: any, res: any, next: any) {
     if (req.cookies.token) {
         const userDoc = await user.findOne({ token: req.cookies.token });
@@ -477,6 +504,53 @@ function webServer(client: Client) {
                     auth: await auth(req, res, null),
                     badges: await badges.find({}),
                 });
+            case "users":
+                const AllUsers = await user.find({});
+
+                const GetBadges = async (b: string[]) => {
+                    let badgesArray: any[] = [];
+
+                    for (const badge of b) {
+                        await badges.findOne({ _id: badge }).then((badgeDoc) => {
+                            if (!badgeDoc) return;
+                            badgesArray.push(badgeDoc?.name?.toLowerCase());
+                        });
+                    }
+
+                    return badgesArray;
+                };
+
+                
+
+                const UsersMappped = AllUsers.map(async (user: any) => {
+                    return {
+                        avatar: user.avatar,
+                        username: user.username,
+                        banner: user.banner,
+                        discordId: user.discordId,
+                        about: user.about,
+                        displayName: user.displayName || user.username,
+                        pronouns: user.pronouns,
+                        badges: await GetBadges(user.badges),
+                        isVerified: user.verified,
+                        times: {
+                            created: {
+                                timestamp: getDateAmount(user.createdAt),
+                                date: fDate(user.createdAt),
+                            }
+                        },
+                    }
+                });
+
+                if (req.query.a === "json") {
+                    res.json(await Promise.all(UsersMappped));
+                } else {
+                    return res.render("explore/users", {
+                        discord: client,
+                        auth: await auth(req, res, null),
+                        users: await Promise.all(UsersMappped),
+                    });
+                }
             default:
                 return await generateErrorMessage(req, res, "Invalid content provided", ErrorCodes.INVALID_CONTENT);
         }

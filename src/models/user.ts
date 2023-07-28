@@ -22,6 +22,17 @@ const getRandomBanner = () => {
         "https://cdn.discordapp.com/attachments/1011313563991810188/1099007529389920377/xue_hu_sang_indie_virtual_youtuber_drawn_by_somna__sample-0cb3a56bcd08fb8554c0a5c11e185d65.jpg",
         "https://cdn.discordapp.com/attachments/1011313563991810188/1099007529784189038/tumblr_85bcb796d5b8455b67cf9c6965a734ff_4f885443_1280.png",
         "https://cdn.discordapp.com/attachments/1011313563991810188/1099007530090369044/miko-hanazawa-waifugami-banner-5.jpg",
+        "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6d54da2c-4108-4e69-859f-590673c4aa25/d4pioou-cb084b99-db5b-44bf-b3ad-2327838e661a.png/v1/fit/w_500,h_200,q_70,strp/anime_girl_banner_by_kaitokins_d4pioou-375w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MjAwIiwicGF0aCI6IlwvZlwvNmQ1NGRhMmMtNDEwOC00ZTY5LTg1OWYtNTkwNjczYzRhYTI1XC9kNHBpb291LWNiMDg0Yjk5LWRiNWItNDRiZi1iM2FkLTIzMjc4MzhlNjYxYS5wbmciLCJ3aWR0aCI6Ijw9NTAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.rsEmiW7xHTBQnFEJ6j1pGPXW1RpzafEVeKgQunICJgY",
+        "https://wallpapercave.com/wp/wp5195565.jpg",
+        "https://wallpapercave.com/wp/wp5484593.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2ce7o7G63MKB-fEYQg7zLJDomBDQA4G5Q0Q&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9wW3-Xp7vazx4FoOuik1F8sV0t9ZB9HkTTQ&usqp=CAU",
+        "https://gifdb.com/images/high/anime-banner-gif-file-1880kb-anpk2r6p128lqcbk.gif",
+        "https://media.tenor.com/wRMTDtqfwPsAAAAC/anime-girl-stare.gif",
+        "https://pfps.gg/assets/banners/4173-girl-with-a-sword-banner.gif",
+        "https://pfps.gg/assets/banners/1617-shirakami-fubuki-banner.gif",
+        "https://pfps.gg/assets/banners/4990-blood-river.gif",
+        "https://pfps.gg/assets/banners/7307-blood-borne-banner.gif"
     ];
 
     return banners[Math.floor(Math.random() * banners.length)];
@@ -128,8 +139,8 @@ const UserSchema = new Schema({
             type: String,
             required: true,
         },
-        
-        
+
+
         title: {
             type: String,
             required: true,
@@ -228,6 +239,11 @@ const UserSchema = new Schema({
         type: Number,
         required: false,
     },
+
+    displayName: {
+        type: String,
+        required: false,
+    }
 
 }, { timestamps: true });
 

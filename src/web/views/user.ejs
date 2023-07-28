@@ -52,8 +52,11 @@
                                 <img src="<%= user.avatar %>" alt="<%= user.username %>" class="pres-avatar-user">
                             </a>
                             <p style="display: none;" class="pres_username" id="pres_username"><%= user.username %></p>
-                            <h1 class="author__name"><%= user.username %> <span class="pronouns">(<%= user.pronouns %>)</span></h1>
-                            <p class="author__text"><%= user.about %></p>
+                            <h1 class="author__name"><%= user.displayName || "" %> <span class="pronouns">(<%= user.pronouns %>)</span></h1>
+                            <h2 class="author__nickname"><a href="/explore/users?search=<%= user.username %>">@<%= user.username %></a></h2>
+                            <p class="author__text">
+                               <%= user.about %>
+                            </p>
                             <div class="author__wrap">
                                 <div class="author__followers">
                                     <p id="amount"></p>
