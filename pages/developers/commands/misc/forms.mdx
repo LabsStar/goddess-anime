@@ -1,0 +1,37 @@
+# Forms Developer Command
+
+This command will allow developers of the bot to check forms that are submitted by users.
+
+## Usage
+
+```
+dev/forms [-t <type>] [-c caseId]
+```
+`-t` is the type of form to check. If not specified, it will throw an error.
+
+`-c` is the case ID of the form to check. If not specified, it will throw an error.
+
+## Examples
+
+```
+dev/forms -t beta -c 64c8200baa21e29c31a9c7b0
+```
+
+# Types
+
+The current types of forms are:
+
+- `beta` - Beta Tester Form
+
+# Case ID
+
+We use MongoDB's ObjectID for case IDs. You can find the case ID by going to the form's response in the database and copying the `_id` field.
+
+
+## Screenshots
+
+![No Type](https://cdn.discordapp.com/attachments/1095920079205568532/1135684954295107584/image.png)
+
+![No Case ID](https://cdn.discordapp.com/attachments/1095920079205568532/1135684820521988107/image.png)
+
+![Full](https://cdn.discordapp.com/attachments/1095920079205568532/1135684741572595864/image.png)
