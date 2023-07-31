@@ -35,6 +35,7 @@ import guides from "../models/guides";
 import { formatNumber } from "../utils/generate";
 import guiderouter from "./api/guide";
 import usersrouter from "./api/users";
+import formsrouter from "./api/forms";
 
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
@@ -51,6 +52,7 @@ app.use("/stripe", striperouter);
 app.use("/components", componentsrouter);
 app.use("/guide-data", guiderouter);
 app.use("/u", usersrouter);
+app.use("/fapi", formsrouter);
 app.set("trust proxy", 1);
 app.use((req, res, next) => {
     res.setHeader("X-Powered-By", "hyperstar.cloud v1.0.0");
@@ -127,7 +129,6 @@ async function getUserCards(id: string, split: boolean) {
 
 
 function webServer(client: Client) {
-
     async function generateErrorMessage(req: any, res: any, error: string, code?: ErrorCodes) {
 
         const makePathArray = (path: string) => {
@@ -136,13 +137,24 @@ function webServer(client: Client) {
             return pathArray;
         };
 
-        return res.status(code || ErrorCodes.DEFAULT_ERROR).render("error", {
-            discord: client,
-            auth: await auth(req, res, null),
-            error: error,
-            code: code || ErrorCodes.DEFAULT_ERROR,
-            path: makePathArray(req.path),
-        });
+        const ContentType = req.headers["content-type"];
+
+        if (ContentType === "application/json") {
+            return res.status(501).json({
+                error: error,
+                code: code || ErrorCodes.DEFAULT_ERROR,
+                path: makePathArray(req.path),
+            });
+        } else {
+
+            return res.status(501).render("error", {
+                discord: client,
+                auth: await auth(req, res, null),
+                error: error,
+                code: code || ErrorCodes.DEFAULT_ERROR,
+                path: makePathArray(req.path),
+            });
+        }
 
     }
 
@@ -520,7 +532,7 @@ function webServer(client: Client) {
                     return badgesArray;
                 };
 
-                
+
 
                 const UsersMappped = AllUsers.map(async (user: any) => {
                     return {
@@ -691,6 +703,32 @@ function webServer(client: Client) {
 
     });
 
+    app.get("/forms/:id?", async (req, res) => {
+        const fId = req?.params?.id?.toString();
+
+        if (!req.cookies.token) return res.redirect("/login");
+
+        if (!fId) return await generateErrorMessage(req, res, "No form ID provided", ErrorCodes.INVALID_FORM_ID);
+
+        const LookForForm = async () => {
+            // Look in src\web\views\forms for a file with the same name as the form ID but with .ejs at the end
+            const form = await fs.readdirSync(path.join(__dirname, "..", "web", "views", "forms")).filter((file) => file === `${fId}.ejs`);
+
+            if (form.length === 0) return null;
+
+            return form[0];
+        }
+
+        const form = await LookForForm();
+
+        if (!form) return await generateErrorMessage(req, res, "Invalid form ID provided", ErrorCodes.INVALID_FORM_ID);
+
+        return res.render(`forms/${form}`, {
+            discord: client,
+            auth: await auth(req, res, null),
+        });
+    });
+
 
     app.get("/developers/applications/:id?", async (req, res) => {
         if (!req.cookies.token) return res.redirect("/login");
@@ -750,7 +788,7 @@ function webServer(client: Client) {
         // Extract the slug parameter from the URL
         const guides_index = await getSortedGuides();
         const { slug } = req.params;
-    
+
         if (!slug || slug === "/") {
             // If there's no slug provided, render the "index" page
             return res.render("guide/index", {
@@ -774,7 +812,7 @@ function webServer(client: Client) {
 
         const getComments = async () => {
             let commentData: any[] = [];
-        
+
             // Check if guide_document exists before accessing its comments property
             for (const comment of guide_document?.comments ?? []) {
                 commentData.push({
@@ -790,7 +828,7 @@ function webServer(client: Client) {
             if (req.cookies.token) return true;
             else return false;
         };
-    
+
         res.render("guide/slug", {
             discord: client,
             auth: await auth(req, res, null),
@@ -802,7 +840,7 @@ function webServer(client: Client) {
             isLogged: isLogged(),
         });
     });
-    
+
 
     /** Bot Utils */
     const topWebhook = new Topgg.Webhook(process.env.TOPGG_WEBHOOK_AUTH || "");

@@ -16,6 +16,7 @@ export const command: MessageCommand = {
     name: "remove-badge",
     description: "Remove a badge from your profile",
     usage: "<user> <badge id>",
+    example: "@Goddess#0001 60a7b4b0e6b0b5b4e4b0b5b4",
     author: "547923574833545226",
     category: "Badges",
     async execute(message: Message, client: CustomClient, args: string[]) {

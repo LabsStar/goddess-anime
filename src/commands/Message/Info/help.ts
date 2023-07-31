@@ -7,6 +7,8 @@ export const command: MessageCommand = {
     name: "help",
     description: "Get help with the bot",
     author: "547923574833545226",
+    usage: "(command)",
+    example: "verify",
     category: "Info",
     async execute(message: Message, client: CustomClient, args: string[]) {
 
@@ -52,6 +54,8 @@ export const command: MessageCommand = {
         if (command.usage) embed.addFields({ name: "Usage", value: `\`${config.DEVELOPER_PREFIX}${command.name} ${command.usage}\`` });
 
         if (command.category) embed.addFields({ name: "Category", value: command.category });
+
+        if (command.example) embed.addFields({ name: "Example", value: `\`${config.DEVELOPER_PREFIX}${command.name} ${command.example}\`` });
 
         embed.addFields({ name: "Author", value: `<@${command.author}>` });
 

@@ -12,6 +12,7 @@ export const command: MessageCommand = {
     description: "Dm a User",
     author: "547923574833545226",
     usage: "<user> <message>",
+    example: "@Goddess#0001 YOU SHALL NOT PASS!",
     category: "User",
     async execute(message: Message, client: CustomClient, args: string[]) {
 

@@ -12,6 +12,7 @@ export const command: MessageCommand = {
     description: "Set a server to beta or set beta commands to a server",
     author: "547923574833545226",
     usage: "[-s]",
+    example: "-s",
     category: "Misc",
     async execute(message: Message, client: CustomClient, args: string[]) {
 

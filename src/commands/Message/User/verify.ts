@@ -10,6 +10,7 @@ export const command: MessageCommand = {
     description: "Verify a user",
     author: "547923574833545226",
     usage: "<user>",
+    example: "@user",
     category: "User",
     async execute(message: Message, client: CustomClient, args: string[]) {
         const member = message.mentions.users.first()?.id || message.client.users.fetch(args[0]);

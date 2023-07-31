@@ -22,6 +22,7 @@ export const command: MessageCommand = {
     name: "change-avatar",
     description: "Change the avatar on the bot.",
     usage: "<avatar>",
+    example: "https://example.com/image.png",
     author: "547923574833545226",
     category: "System",
     async execute(message: Message, client: CustomClient, args: string[]) {

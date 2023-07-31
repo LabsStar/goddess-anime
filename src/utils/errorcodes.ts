@@ -14,6 +14,7 @@ enum ErrorCodes {
     INVALID_APPLICATION_ID = 18,
     NOT_LOGGED_IN = 357,
     PREMIUM_DISABLED = 701,
+    INVALID_FORM_ID = 1004,
 }
 
 export default ErrorCodes;

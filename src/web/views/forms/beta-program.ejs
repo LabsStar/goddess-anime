@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goddess Anime Cards - Beta Program</title>
+    <meta name="description"
+        content="Goddess Anime Card Game is a free to play anime trading card game. Collect cards and trade with other players.">
+    <meta name="keywords"
+        content="Shoob, Unfatal, Procs, Anime, Cards, Game, Kiyo, Indivoxy, HyperStar, Aqua, Konosuba, ... (Your other keywords)">
+    <meta name="author" content="HyperStar">
+    <!-- Add relevant social media meta tags here -->
+    <meta property="og:title" content="Goddess Anime Cards">
+    <meta property="og:description"
+        content="Goddess Anime Card Game is a free to play anime trading card game. Collect cards and trade with other players.">
+    <meta property="og:image" content="<%= discord?.user.avatarURL() %>" alt="Goddess Anime Cards Logo">
+    <!-- End of social media meta tags -->
+
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="2 days">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W7P4DXPXTW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-W7P4DXPXTW');
+    </script>
+    <!-- End of Google Analytics -->
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8677814295169281"
+        crossorigin="anonymous"></script>
+    <!-- End of Google AdSense -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2/dist/css/bootstrap.min.css">
+
+    <style>
+        /* styles.css */
+        body {
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+        }
+
+        .key {
+            background-color: #f7f7f7;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 2px 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Beta Program</h1>
+        <p class="text-center">If you need help press <span class="key">/</span> for help.</p>
+        <form>
+            <div class="mb-3">
+                <label for="server-id" class="form-label">Server ID</label>
+                <input type="text" class="form-control" id="server-id" name="server-id"
+                    placeholder="Enter your server ID" required>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">Your Username</label>
+                <input type="text" class="form-control" id="username" name="Your Username" placeholder="<%= auth.username %>" disabled>
+            </div>
+            <div class="mb-3">
+                <label for="id" class="form-label">Your ID</label>
+                <input type="text" class="form-control" id="id" name="Your Id" placeholder="<%= auth.discordId %>" disabled>
+            </div>
+
+            <!-- Create a large input -->
+            <div class="mb-3">
+                <label for="reason" class="form-label">Reason</label>
+                <textarea class="form-control" id="reason" name="reason" rows="3" placeholder="Enter a reason for joining the beta program" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        const SLASH = 191;
+
+        document.addEventListener('keydown', (event) => {
+            if (event.keyCode === SLASH) {
+                event.preventDefault();
+                swal({
+                    title: 'Please click a link below to get help.',
+                    buttons: {
+                        HELP_GET_SERVER_ID: {
+                            text: 'How to get your server ID',
+                            value: 'HELP_GET_SERVER_ID',
+                        },
+                    },
+                }).then((value) => {
+                    switch (value) {
+                        case 'HELP_GET_SERVER_ID':
+                            swal({
+                                title: 'How to get your server ID',
+                                text: '1. Open your server settings.\n2. Click on "Widget".\n3. Copy the "Server ID".\n\n\nClick the "Guide" button below to see an example.',
+                                icon: 'info',
+                                buttons: {
+                                    GUIDE: {
+                                        text: 'Guide',
+                                        value: 'GUIDE',
+                                    },
+                                },
+                            }).then(() => {
+                                window.open('https://cdn.discordapp.com/attachments/1095920079205568532/1135661509733793802/image.png');
+                            });
+                            break;
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        const CHECK_IF_VAILD_SERVERID = () => {
+            const SERVER_ID = document.getElementById('server-id').value;
+            
+            if (SERVER_ID.match(/^[0-9]+$/) === null) {
+                swal({
+                    title: 'Error',
+                    text: 'Your server ID is not valid.',
+                    icon: 'error',
+                });
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        const form = document.querySelector('form');
+
+        const handleSubmit = async (event) => {
+            event.preventDefault();
+
+            
+            
+
+            const SERVER_ID = document.getElementById('server-id').value;
+            const REASON = document.getElementById('reason').value;
+
+            if (CHECK_IF_VAILD_SERVERID()) {
+                const response = await fetch('/fapi/beta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        serverId: SERVER_ID,
+                        reason: REASON,
+                        userId: "<%= auth.discordId %>"
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    
+                    swal({
+                        title: 'Success',
+                        text: data.message,
+                        icon: 'success',
+                    }).then(() => {
+                        window.location.href = '/';
+                    });
+                } else {
+                    
+                    swal({
+                        title: 'Error',
+                        text: data.message,
+                        icon: 'error',
+                    });
+                }
+            }
+        }
+
+        form.addEventListener('submit', handleSubmit);
+    </script>
+</body>
+
+</html>
