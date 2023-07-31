@@ -44,7 +44,7 @@ export const command: Command = {
             return {
                 embeds: [new MessageEmbed()
                     .setTitle(`${interaction.user.username}'s Inventory (${index + 1}/${userCards.length})`)
-                    .setDescription(`${_.name}\nPersonal ID: ${userDoc?.cards[index].personal_id}`)
+                    .setDescription(`${_.name}\nPersonal ID: ${userDoc?.cards[index].personal_id}\n\n${Object.entries(_.stats).map(([key, value]) => `${key}: ${value as number}`).join('\n')}`)
                     .setColor('RANDOM')
                     .setImage(_.image || '')
                     .setTimestamp(),
@@ -54,7 +54,7 @@ export const command: Command = {
                         new MessageButton()
                             .setCustomId('previous')
                             .setEmoji("<:6321appdirectorylarrowblokdark:1126645289164484679>")
-                            .setStyle('PRIMARY'),
+                            .setStyle("SUCCESS"),
                         new MessageButton()
                             .setURL(`https://goddessanime.com/card/${_._id}?utm_source=discord&utm_medium=bot&utm_campaign=inventory&user=${interaction.user.id}`)
                             .setLabel('View Card')
@@ -62,7 +62,7 @@ export const command: Command = {
                         new MessageButton()
                             .setCustomId('next')
                             .setEmoji("<:3409appdirectoryrarrowblokdark:1126645287667126333>")
-                            .setStyle('PRIMARY')
+                            .setStyle("SUCCESS")
                     )
 
             }
@@ -76,11 +76,11 @@ export const command: Command = {
         client.on('interactionCreate', async (i) => {
             if (!i.isButton()) return;
 
-            if (i.user.id !== interaction.user.id) return i.reply({ content: `Sorry, but only ${interaction.user.username} can use this button!`, ephemeral: true });
 
             if (i.customId === 'previous') {
                 if (currentPage === 0) return i.reply({ content: 'You are already on the first page.', ephemeral: true });
                 currentPage--;
+                
                 await i.update({ embeds: pages[currentPage].embeds, components: [pages[currentPage].row] });
             }
 
