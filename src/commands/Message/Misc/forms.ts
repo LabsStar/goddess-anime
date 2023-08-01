@@ -33,7 +33,7 @@ export const command: MessageCommand = {
 
         if (!type) return await message.reply("Please provide a type. You can refer to the docs for more info\nhttps://docs.goddessanime.com/developers/commands/misc/forms#types");
 
-        if (!CaseId) return await message.reply("Please provide a case id. You can refer to the docs for more info\nhttps://docs.goddessanime.com/developers/commands/misc/forms#caseid");
+        if (!CaseId) return await message.reply("Please provide a case id. You can refer to the docs for more info\nhttps://docs.goddessanime.com/developers/commands/misc/forms#case-id");
 
         switch (type) {
             case "beta": {
