@@ -36,6 +36,8 @@ import { formatNumber } from "../utils/generate";
 import guiderouter from "./api/guide";
 import usersrouter from "./api/users";
 import formsrouter from "./api/forms";
+import communityforumsrouter from "./api/CommunityForums";
+import CommunityForums from "../models/CommunityForums";
 
 
 const IS_IN_DEV_MODE = config.IS_IN_DEV_MODE;
@@ -53,6 +55,7 @@ app.use("/components", componentsrouter);
 app.use("/guide-data", guiderouter);
 app.use("/u", usersrouter);
 app.use("/fapi", formsrouter);
+app.use("/cforums", communityforumsrouter);
 app.set("trust proxy", 1);
 app.use((req, res, next) => {
     res.setHeader("X-Powered-By", "hyperstar.cloud v1.0.0");
@@ -838,6 +841,82 @@ function webServer(client: Client) {
             comments: await getComments(),
             views: formatNumber(guide_document?.views || 0),
             isLogged: isLogged(),
+        });
+    });
+
+    app.get("/forums", async (req, res) => {
+        const forums = await CommunityForums.find({});
+    
+        const checkIfNew = async (date: Date) => {
+            // If it was created in the last 24 hours, return true
+            const now = new Date();
+            const diff = Math.abs(now.getTime() - date.getTime());
+            const hours = Math.ceil(diff / (1000 * 60 * 60));
+    
+            if (hours <= 24) return true;
+            else return false;
+        };
+    
+        const mappedForums = await Promise.all(forums.map(async (forum) => {
+            const userDoc = await user.findOne({ discordId: forum.creator });
+    
+            const mappedForum = {
+                title: forum.title.replace(/<[^>]*>?/gm, ''),
+                description: forum.description.replace(/<[^>]*>?/gm, ''),
+                creator: userDoc,
+                id: forum._id,
+                createdAt: forum.createdAt,
+                is_new: await checkIfNew(forum.createdAt),
+                shortDescription: forum.description.length > 100 ? forum.description.replace(/<[^>]*>?/gm, '').substring(0, 100) + "..." : forum.description.replace(/<[^>]*>?/gm, ''),
+            };
+    
+            return mappedForum;
+        }));
+    
+
+        const sortedForums = mappedForums.sort((a, b) => {
+            const dateA = new Date(a.createdAt);
+            const dateB = new Date(b.createdAt);
+        
+            return dateB.getTime() - dateA.getTime();
+        });
+    
+        const forumsPromise = Promise.all(sortedForums);
+    
+        res.render("forums/index", {
+            discord: client,
+            auth: await auth(req, res, null),
+            forums: await forumsPromise,
+        });
+    });
+    
+
+    app.get("/forum/:id?", async (req, res) => {
+        const { id } = req.params;
+
+        if (!id) return res.redirect("/forums");
+
+        const forum = await CommunityForums.findOne({ _id: id });
+
+        if (!forum) return res.redirect("/forums");
+
+        const userDoc = await user.findOne({ discordId: forum.creator });
+
+        const mappedForum = {
+            title: forum.title.replace(/<[^>]*>?/gm, ''),
+            description: forum.description,
+            createdAt: fDate(forum.createdAt),
+            creator: userDoc,
+            id: forum._id,
+            commentLength: forum.comments.length,
+            locked: forum.locked,
+            shortDescription: forum.description.length > 100 ? forum.description.replace(/<[^>]*>?/gm, '').substring(0, 100) + "..." : forum.description.replace(/<[^>]*>?/gm, ''),
+        };
+
+        res.render("forums/view", {
+            discord: client,
+            auth: await auth(req, res, null),
+            forum: mappedForum,
         });
     });
 

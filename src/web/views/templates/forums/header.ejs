@@ -1,0 +1,50 @@
+<header class="p-3 text-bg-dark bg-dark fixed-top">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="<%= discord?.user.avatarURL() %>" alt="Avatar" class="bi me-2" width="40" height="40"
+                    style="border-radius: 50%;">
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
+                <li><a href="/forum" class="nav-link px-2 text-white">Forums</a></li>
+                <li><a href="/faq?utm_source=website&utm_medium=link&utm_campaign=headernav"
+                        class="nav-link px-2 text-white">FAQs</a></li>
+                <li><a href="https://log.goddessanime.com?utm_source=website&utm_medium=link&utm_campaign=headernav"
+                        class="nav-link px-2 text-white">Changelog</a></li>
+                <li><a href="/features?utm_source=website&utm_medium=link&utm_campaign=headernav"
+                        class="nav-link px-2 text-white">Features</a></li>
+                <li><a href="/guides?utm_source=website&utm_medium=link&utm_campaign=headernav"
+                        class="nav-link px-2 text-white">Guides</a></li>
+                <li><a href="https://docs.goddessanime.com?utm_source=website&utm_medium=link&utm_campaign=headernav"
+                        class="nav-link px-2 text-white">Documentation</a></li>
+            </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+                    aria-label="Search" id="search-box">
+            </form>
+
+            <% if (auth===null) { %>
+                <div class="text-end">
+                    <button type="button" class="btn btn-warning"
+                        onclick="window.location.href = '/login'">Login</button>
+                </div>
+                <% } else { %>
+                    <div class="dropdown text-end">
+                        <a href="/profile" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                          <img src="<%= auth.avatar %>" alt="<%= auth.username %>'s Avatar" width="32" height="32" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu text-small">
+                          <li><a class="dropdown-item" href="#" id="create-post">Create a post</a></li>
+                          <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                          <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                        </ul>
+                      </div>
+                <% } %>
+        </div>
+    </div>
+</header>

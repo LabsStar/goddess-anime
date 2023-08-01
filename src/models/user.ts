@@ -243,7 +243,19 @@ const UserSchema = new Schema({
     displayName: {
         type: String,
         required: false,
-    }
+    },
+
+    upvotedForums: {
+        type: Array,
+        required: false,
+        default: [],
+    },
+
+    downvotedForums: {
+        type: Array,
+        required: false,
+        default: [],
+    },
 
 }, { timestamps: true });
 

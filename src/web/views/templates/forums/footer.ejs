@@ -1,0 +1,66 @@
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+            <span class="mb-3 mb-md-0 text-muted"> Made with <i class="bi bi-heart-fill" style="color: red;"></i> by
+                <a href="https://hylia.dev" target="_blank">Hylia</a>
+            </span>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-muted" href="https://www.reddit.com/r/goddessanime/"><img
+                        src="https://media.discordapp.net/attachments/1110434165670821948/1110667510333849630/7103-reddit.png"
+                        alt="Reddit" title="Reddit" style="width: 24px; height: 24px;"></a></li>
+            <li class="ms-3"><a class="text-muted" href="https://discord.gg/u9cudxBVTG"><img
+                        src="https://media.discordapp.net/attachments/1110434165670821948/1110667511030108221/847541504914fd33810e70a0ea73177e-4.png"
+                        alt="Discord" title="Discord" style="width: 24px; height: 24px;"></a></li>
+        </ul>
+    </footer>
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createModalLabel">Create Post</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createPostForm" method="POST" action="/cforums/create">
+                    <div class="mb-3">
+                        <label for="postTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="postTitle" name="postTitle" placeholder="Title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="postContent" class="form-label">Content</label>
+                        <textarea class="form-control" id="postContent" name="postContent" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const createPostLink = document.getElementById('create-post');
+    const createPostModal = new bootstrap.Modal(document.getElementById('createModal'), {
+        keyboard: false
+    });
+
+    createPostLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        createPostModal.show();
+    });
+
+    const createPostForm = document.getElementById('createPostForm');
+    const createPostButton = document.querySelector('#createModal .modal-footer button.btn-primary');
+
+    createPostButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        createPostForm.submit();
+    });
+
+</script>
