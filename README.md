@@ -1,6 +1,11 @@
 # Goddess Anime
 
-![Logo](https://i.redd.it/fez-aqua-from-konosuba-fantastic-days-v0-doi4qja2uyo81.jpg?width=1920&format=pjpg&auto=webp&s=3bd26de3516075c5428eb17237557920f35cdefa)
+> <picture>
+>   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/danger.svg">
+>   <img alt="Danger" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/danger.svg">
+> </picture><br>
+>
+> Currently Goddess Anime is being rewritten. This will include better code, and better intellisense.
 
 Goddess Anime Cards is a platform that caters to anime enthusiasts who are interested in trading, buying, and selling anime cards. Our website and bot provide a seamless experience for users to connect with each other and indulge in their passion for anime collectibles.
 
